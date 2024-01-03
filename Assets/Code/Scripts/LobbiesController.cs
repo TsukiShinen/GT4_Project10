@@ -14,7 +14,8 @@ public class LobbiesController : MonoBehaviour
         m_Root = m_Document.rootVisualElement;
         m_Root.Q<Button>("Add").clicked += () =>
         {
-            ConnectionManager.Instance.CreateLobby();
+            ConnectionManager.Instance.CreateLobby("Test", 8);
+            m_Root.style.display = DisplayStyle.None;
         };
         
         m_Root.Q<Button>("Refresh").clicked += async () =>
@@ -45,6 +46,7 @@ public class LobbiesController : MonoBehaviour
         m_Root.Q<Button>("Join").clicked += () =>
         {
             ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").value);
+            m_Root.style.display = DisplayStyle.None;
         };
     }
 }

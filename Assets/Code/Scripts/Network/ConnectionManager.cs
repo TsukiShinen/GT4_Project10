@@ -11,6 +11,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
 
+
 namespace Network
 {
     public class ConnectionManager : MonoBehaviour
@@ -19,6 +20,8 @@ namespace Network
 
         private Lobby m_HostLobby;
         private float m_HeartBeatTimer;
+
+        private const string KEY_RELAY = "Relay";
 
         private async void Awake()
         {
@@ -56,20 +59,21 @@ namespace Network
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
         }
 
-        public async void CreateLobby()
+        public async void CreateLobby(string pLobbyName, int pMaxPlayers, bool pIsPrivate = false)
         {
-            try
+            var options = new CreateLobbyOptions
             {
-                const string lobbyName = "Lobby Test";
-                const int maxPlayer = 8;
-
-                m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer);
-                Debug.Log($"Created lobby! {lobbyName} {maxPlayer} / {m_HostLobby.LobbyCode}");
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.Log(e);
-            }
+                IsPrivate = pIsPrivate,
+                Data = new Dictionary<string, DataObject>
+                {
+                    { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
+                }
+            };
+            
+            m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, options);
+            Debug.Log($"Created lobby! {pLobbyName} {pMaxPlayers} / {m_HostLobby.LobbyCode}");
+            
+            CreateRelay();
         }
 
         public async Task<List<Lobby>> ListLobbies()
@@ -90,8 +94,10 @@ namespace Network
         {
             try
             {
-                await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
+                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
                 Debug.Log($"Joined lobby with code : {pCode}");
+                
+                JoinRelay(lobby.Data[KEY_RELAY].Value);
             }
             catch (LobbyServiceException e)
             {
@@ -103,12 +109,24 @@ namespace Network
         {
             try
             {
-                var allocation = await RelayService.Instance.CreateAllocationAsync(3);
-                Debug.Log($"Create Relay : {await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId)}");
+                var allocation = await RelayService.Instance.CreateAllocationAsync(8);
+                var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                Debug.Log($"Create Relay : {relayCode}");
 
                 var relayServerData = new RelayServerData(allocation, "dtls");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartHost();
+
+                if (m_HostLobby != null)
+                {
+                    await Lobbies.Instance.UpdateLobbyAsync(m_HostLobby.Id, new UpdateLobbyOptions
+                    {
+                        Data = new Dictionary<string, DataObject>
+                        {
+                            { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                        }
+                    });
+                }
             }
             catch (RelayServiceException e)
             {
