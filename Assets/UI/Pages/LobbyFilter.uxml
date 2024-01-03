@@ -1,17 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Lobby.uss?fileID=7433441132597879392&amp;guid=b539e83421ffa754982e5f08a6638fa4&amp;type=3#Lobby" />
     <ui:VisualElement style="flex-grow: 1; width: 100%; height: 100%; max-height: 100%; min-height: 100%; min-width: 100%; max-width: 100%; justify-content: center; align-items: center;">
         <ui:VisualElement style="flex-grow: 1; background-color: rgb(106, 106, 106); width: 40%; height: 40%; max-height: 40%; min-height: 40%; min-width: 40%; max-width: 40%; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
             <ui:Label text="Filter" style="-unity-text-align: middle-center; font-size: 34px; height: 10%; max-height: 10%; min-height: 10%;" />
             <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 30%; max-height: 30%; min-height: 30%; padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px;">
                 <ui:Toggle label="Is Locked" name="IsLocked" style="align-self: center;" />
             </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 30%; max-height: 30%; min-height: 30%; justify-content: space-around;">
-                <ui:Label text="Min Player" style="-unity-text-align: middle-left;" />
-                <ui:MinMaxSlider value="10,12" low-limit="-10" high-limit="40" name="MinMacPlayerSlider" style="width: 50%; max-width: 50%; min-width: 50%;" />
-                <ui:Label text="Max Player" style="-unity-text-align: middle-center;" />
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 30%; max-height: 30%; min-height: 30%; justify-content: flex-start; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:Slider label="Max Player" value="42" high-value="100" name="MaxPlayerSlider" style="align-self: center; width: 80%; max-width: 80%; min-width: 80%;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 30%; max-height: 30%; min-height: 30%; justify-content: space-between; align-items: center; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
-                <ui:DropdownField label="GameMode" choices="Test 1,Test 1,Test 1" name="GameModeDropDown" style="height: 50%; max-height: 50%; width: 100%; max-width: 100%; min-width: 100%;" />
+                <ui:DropdownField label="GameMode" choices="Test 1,Test 2,Test 3" name="GameModeDropDown" index="0" style="height: 50%; max-height: 50%; width: 80%; max-width: 80%; min-width: 80%; align-self: center; align-items: center;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -458,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 60a2bc671c1158843aa6aa96eadc9c4a, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: a5e82b0f2233b974cb61546994226a0b,
+  sourceAsset: {fileID: 9197481963319205126, guid: 9afd9446fecb38e48867b8500e4ee090,
     type: 3}
   m_SortingOrder: 0
 --- !u!4 &498170474
@@ -483,14 +483,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 498170472}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ade84584b5b7f14a8c73c9e11ed70bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Document: {fileID: 498170473}
-  m_refresh: {fileID: 9197481963319205126, guid: e418bf7211d934f49abe281c94a4431a,
-    type: 3}
   m_room: {fileID: 9197481963319205126, guid: b2ec46c2b37866a4fb7ddadda005596f, type: 3}
 --- !u!1 &669644513
 GameObject:
@@ -523,6 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Document: {fileID: 669644515}
+  m_RoomElement: {fileID: 0}
 --- !u!114 &669644515
 MonoBehaviour:
   m_ObjectHideFlags: 0
