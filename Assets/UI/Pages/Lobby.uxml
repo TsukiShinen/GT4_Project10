@@ -30,7 +30,7 @@
         <ui:VisualElement style="flex-grow: 1; height: 50px; max-height: 50px; width: 66%; max-width: 66%; min-width: 66%; flex-direction: row; padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; min-height: 50px;">
             <ui:VisualElement style="flex-grow: 1; width: 75%; max-width: 75%; align-items: center; justify-content: center; min-width: 50%; flex-direction: row;">
                 <ui:TextField placeholder-text="BC68MC" style="width: 75%; max-width: 75%; min-width: 75%;" />
-                <ui:Button text="Find" name="Find" style="width: 50%; border-top-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-bottom-left-radius: 7px; max-width: 100px; min-width: 50px;" />
+                <ui:Button text="Join" name="Join" style="width: 50%; border-top-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-bottom-left-radius: 7px; max-width: 100px; min-width: 50px;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; width: 25%; max-width: 25%; align-items: flex-end; justify-content: center; min-width: 25%;">
                 <ui:Button text="+" name="Add" style="width: 50%; border-top-left-radius: 7px; border-top-right-radius: 7px; border-bottom-right-radius: 7px; border-bottom-left-radius: 7px; max-width: 100px; min-width: 50px;" />
