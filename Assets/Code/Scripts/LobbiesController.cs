@@ -44,7 +44,7 @@ public class LobbiesController : MonoBehaviour
 
         m_Root.Q<Button>("Join").clicked += () =>
         {
-            ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").text);
+            ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").value);
         };
     }
 }

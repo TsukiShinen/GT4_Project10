@@ -90,7 +90,7 @@ namespace Network
         {
             try
             {
-                await Lobbies.Instance.JoinLobbyByIdAsync(pCode);
+                await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
                 Debug.Log($"Joined lobby with code : {pCode}");
             }
             catch (LobbyServiceException e)
