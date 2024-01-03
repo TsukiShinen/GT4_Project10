@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Main.uss?fileID=7433441132597879392&amp;guid=4547f1e842dd5f24bb08b789d11c9ea2&amp;type=3#Main" />
+    <ui:VisualElement name="Buttons" style="flex-grow: 1; justify-content: flex-start; align-items: flex-end;">
+        <ui:Button text="Host" name="Host" />
+        <ui:Button text="Join" name="Join" />
+    </ui:VisualElement>
+</ui:UXML>
