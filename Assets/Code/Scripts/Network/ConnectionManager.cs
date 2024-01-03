@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -59,7 +61,7 @@ namespace Network
             try
             {
                 const string lobbyName = "Lobby Test";
-                const int maxPlayer = 4;
+                const int maxPlayer = 8;
 
                 m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer);
                 Debug.Log($"Created lobby! {lobbyName} {maxPlayer}");
@@ -70,19 +72,18 @@ namespace Network
             }
         }
 
-        public async void ListLobbies()
+        public async Task<List<Lobby>> ListLobbies()
         {
             try
             {
-                var queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
-
-                Debug.Log($"Lobbies found: {queryResponse.Results.Count}");
-                foreach (var item in queryResponse.Results) Debug.Log($"{item.Name} {item.MaxPlayers}");
+                return (await Lobbies.Instance.QueryLobbiesAsync()).Results;
             }
             catch (LobbyServiceException e)
             {
                 Debug.Log(e);
             }
+
+            return null;
         }
 
         public async void JoinLobbyByCode(string pCode)
