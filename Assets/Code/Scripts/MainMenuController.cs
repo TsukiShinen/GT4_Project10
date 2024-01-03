@@ -11,6 +11,7 @@ public class MainMenuController : MonoBehaviour
     {
         m_Document.rootVisualElement.Q<Button>("Host").clicked += () =>
         {
+            TestLobby.Instance.CreateLobby();
             NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetComponent<UnityTransport>().SetConnectionData(
                 m_Document.rootVisualElement.Q<TextField>("Address").value, 
                 ushort.Parse(m_Document.rootVisualElement.Q<TextField>("Port").value)
@@ -19,6 +20,7 @@ public class MainMenuController : MonoBehaviour
         };
         m_Document.rootVisualElement.Q<Button>("Join").clicked += () =>
         {
+            TestLobby.Instance.ListLobbies();
             NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetComponent<UnityTransport>().SetConnectionData(
                 m_Document.rootVisualElement.Q<TextField>("Address").value,
                 ushort.Parse(m_Document.rootVisualElement.Q<TextField>("Port").value)
