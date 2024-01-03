@@ -4,7 +4,7 @@
             <ui:VisualElement name="Lock" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4154780841294389669&amp;guid=9489b13b507b3394c9af2ff636d9073b&amp;type=3#arrow-down&apos;); height: 50px; width: 50px; max-width: 50px; min-width: 50px;" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; width: 20%; max-width: 20%; min-width: 20%; align-items: center;">
-            <ui:Label text="Name" name="Roomname" style="font-size: 28px; -unity-text-align: middle-center;" />
+            <ui:Label text="Name" name="Name" style="font-size: 28px; -unity-text-align: middle-center;" />
         </ui:VisualElement>
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 20%; max-width: 20%; min-width: 20%; align-items: center;">
             <ui:Label text="1/8" name="PlayerCount" style="font-size: 28px; -unity-text-align: middle-center;" />
