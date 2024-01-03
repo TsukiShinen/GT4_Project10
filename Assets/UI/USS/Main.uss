@@ -7,3 +7,18 @@
     margin-right: 10px;
     margin-left: 10px;
 }
+
+#unity-text-input > .unity-text-element {
+    -unity-text-align: upper-center;
+}
+
+#unity-text-input {
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-center;
+    align-items: stretch;
+    justify-content: center;
+    align-self: auto;
+}

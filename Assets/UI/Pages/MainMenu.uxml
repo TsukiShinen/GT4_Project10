@@ -3,5 +3,7 @@
     <ui:VisualElement name="Buttons" style="flex-grow: 1; justify-content: flex-start; align-items: flex-end;">
         <ui:Button text="Host" name="Host" />
         <ui:Button text="Join" name="Join" />
+        <ui:TextField placeholder-text="127.0.0.1" value="127.0.0.1" name="Address" style="justify-content: flex-start; align-self: auto; -unity-text-align: upper-left; color: rgb(0, 0, 0); height: 50px; width: 300px; padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; margin-right: 10px; margin-top: 10px; margin-left: 10px; margin-bottom: 10px;" />
+        <ui:TextField placeholder-text="9568" name="Port" value="9586" style="justify-content: flex-start; align-self: auto; -unity-text-align: upper-left; color: rgb(0, 0, 0); height: 50px; width: 300px; padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; margin-right: 10px; margin-top: 10px; margin-left: 10px; margin-bottom: 10px;" />
     </ui:VisualElement>
 </ui:UXML>
