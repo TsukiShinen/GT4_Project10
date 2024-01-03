@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -100,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1704271933864</updated>
       <workItem from="1704271936411" duration="484000" />
-      <workItem from="1704275072492" duration="7318000" />
+      <workItem from="1704275072492" duration="8071000" />
     </task>
     <servers />
   </component>
