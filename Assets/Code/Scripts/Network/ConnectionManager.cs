@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -101,12 +102,11 @@ namespace Network
         {
             try
             {
-                var allocation = await RelayService.Instance.CreateAllocationAsync(8);
+                var allocation = await RelayService.Instance.CreateAllocationAsync(3);
                 Debug.Log($"Create Relay : {await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId)}");
 
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(allocation.RelayServer.IpV4,
-                    (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key,
-                    allocation.ConnectionData);
+                var relayServerData = new RelayServerData(allocation, "dtls");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartHost();
             }
             catch (RelayServiceException e)
@@ -121,9 +121,8 @@ namespace Network
             {
                 var allocation = await RelayService.Instance.JoinAllocationAsync(pCode);
 
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(allocation.RelayServer.IpV4,
-                    (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key,
-                    allocation.ConnectionData, allocation.HostConnectionData);
+                var relayServerData = new RelayServerData(allocation, "dtls");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartClient();
             }
             catch (RelayServiceException e)
