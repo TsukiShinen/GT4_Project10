@@ -41,5 +41,10 @@ public class LobbiesController : MonoBehaviour
             listView.itemsSource = items;
             listView.Rebuild();
         };
+
+        m_Root.Q<Button>("Join").clicked += () =>
+        {
+            ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").text);
+        };
     }
 }

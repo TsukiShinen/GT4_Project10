@@ -64,7 +64,7 @@ namespace Network
                 const int maxPlayer = 8;
 
                 m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayer);
-                Debug.Log($"Created lobby! {lobbyName} {maxPlayer}");
+                Debug.Log($"Created lobby! {lobbyName} {maxPlayer} / {m_HostLobby.LobbyCode}");
             }
             catch (LobbyServiceException e)
             {
