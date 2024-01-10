@@ -1,13 +1,19 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; height: 10%; max-height: 10%; min-height: 10%; flex-direction: row; justify-content: space-around; align-self: flex-start;">
-        <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: center; justify-content: flex-start;">
-            <ui:Button text="Settings" name="Settings" style="width: 25%;" />
+    <ui:VisualElement style="flex-grow: 1; justify-content: space-between;">
+        <ui:VisualElement style="flex-grow: 1; height: 10%; max-height: 10%; min-height: 10%; flex-direction: row; justify-content: space-around; align-self: center; width: 100%; max-width: 100%; min-width: 100%;">
+            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: center; justify-content: center;">
+                <ui:Button text="Settings" name="Settings" style="width: 25%; -unity-text-align: upper-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; align-self: center; align-items: center; justify-content: flex-start; -unity-text-align: middle-left; flex-direction: column;">
+                <ui:Label text="JIJDS" name="Code" style="-unity-text-align: lower-left; font-size: 50px; align-items: center; justify-content: flex-start; align-self: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: column;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: flex-end; justify-content: center; padding-right: 40px;">
+                <ui:Button text="Quit" name="Quit" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; align-self: center; align-items: center; justify-content: flex-start; -unity-text-align: middle-left;">
-            <ui:Label text="MCV7SD" name="Code" style="-unity-text-align: lower-left; font-size: 50px; align-items: center; justify-content: flex-start; align-self: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: column;" />
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: flex-end; justify-content: flex-start;">
-            <ui:Button text="Quit" name="Quit" />
+        <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: flex-end;">
+            <ui:Label text="0 / 8" name="Players" style="font-size: 30px;" />
+            <ui:Button text="Button" name="Ready" style="width: 25%; max-width: 25%; min-width: 25%; max-height: none;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
