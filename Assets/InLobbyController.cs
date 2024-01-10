@@ -6,6 +6,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 public class InLobbyController : MonoBehaviour
 {
@@ -33,12 +35,12 @@ public class InLobbyController : MonoBehaviour
 
     private void OnEnable()
     {
-        ConnectionManager.Instance.OnLobbyChangeAction += OnPlayerUpdated;
+        ConnectionManager.Instance.OnPlayerJoin += OnPlayerUpdated;
     }
 
     private void OnDisable()
     {
-        ConnectionManager.Instance.OnLobbyChangeAction -= OnPlayerUpdated;
+        ConnectionManager.Instance.OnPlayerJoin -= OnPlayerUpdated;
     }
 
     public void SetEnable(bool isActive)
@@ -55,8 +57,8 @@ public class InLobbyController : MonoBehaviour
         m_Root.Q<TextElement>("Code").text = m_Lobby.LobbyCode;
     }
 
-    private void OnPlayerUpdated()
+    private void OnPlayerUpdated(List<LobbyPlayerJoined> obj)
     {
-        m_Root.Q<TextElement>("Players").text = m_Lobby.Players.Count + " / " + m_Lobby.MaxPlayers;
+        m_Root.Q<TextElement>("Players").text = obj.Count + " / " + m_Lobby.MaxPlayers;
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Unity.Netcode;
 using Network;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Lobbies;
 
 public class PlayerLobbyUI : MonoBehaviour
 {
@@ -25,15 +26,15 @@ public class PlayerLobbyUI : MonoBehaviour
 
     private void OnEnable()
     {
-        ConnectionManager.Instance.OnLobbyChangeAction += OnLobbyChange;     
+        ConnectionManager.Instance.OnPlayerDataChange += OnLobbyChange;     
     }
 
     private void OnDisable()
     {
-        ConnectionManager.Instance.OnLobbyChangeAction -= OnLobbyChange;
+        ConnectionManager.Instance.OnPlayerDataChange -= OnLobbyChange;
     }
 
-    private void OnLobbyChange()
+    private void OnLobbyChange(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> obj)
     {
         m_NameText.text = m_Player.Profile.Name;
         m_NameText.rectTransform.sizeDelta = new Vector2(m_NameText.preferredWidth, m_NameText.rectTransform.sizeDelta.y);

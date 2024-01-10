@@ -19,12 +19,13 @@ namespace Network
     public class ConnectionManager : MonoBehaviour
     {
         public static ConnectionManager Instance;
-        public Lobby Lobby => m_HostLobby;
-        public Action OnLobbyChangeAction;
-        public Action OnKickedFromLobbyAction;
+        public Lobby Lobby => m_JoinedLobby;
+        public Action<List<LobbyPlayerJoined>> OnPlayerJoin;
+        public Action<Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>>> OnPlayerDataChange;
 
         private ILobbyEvents m_LobbyEvents;
         private Lobby m_HostLobby;
+        private Lobby m_JoinedLobby;
         private float m_HeartBeatTimer;
 
         private const string KEY_RELAY = "Relay";
@@ -97,16 +98,19 @@ namespace Network
                     }
                 )
             };
-            
+
             m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, options);
+            m_JoinedLobby = m_HostLobby;
+
             Debug.Log($"Created lobby! {pLobbyName} {pMaxPlayers} / {m_HostLobby.LobbyCode}");
 
             var callbacks = new LobbyEventCallbacks();
-            callbacks.LobbyChanged += OnLobbyChanged;
-            callbacks.KickedFromLobby += OnKickedFromLobby;
+            callbacks.PlayerJoined += test1;
+            callbacks.PlayerDataChanged += test2;
+
             try
             {
-                m_LobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(m_HostLobby.Id, callbacks);
+                m_LobbyEvents = await LobbyService.Instance.SubscribeToLobbyEventsAsync(m_HostLobby.Id, callbacks);
             }
             catch (LobbyServiceException ex)
             {
@@ -148,11 +152,11 @@ namespace Network
                         profile: new PlayerProfile(pClientName)
                     )
                 };
-                
-                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode, options);
+
+                m_JoinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode, options);
                 Debug.Log($"Joined lobby with code : {pCode}");
 
-                JoinRelay(lobby.Data[KEY_RELAY].Value);
+                JoinRelay(m_JoinedLobby.Data[KEY_RELAY].Value);
             }
             catch (LobbyServiceException e)
             {
@@ -172,9 +176,9 @@ namespace Network
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartHost();
 
-                if (m_HostLobby != null)
+                if (m_JoinedLobby != null)
                 {
-                    await Lobbies.Instance.UpdateLobbyAsync(m_HostLobby.Id, new UpdateLobbyOptions
+                    await Lobbies.Instance.UpdateLobbyAsync(m_JoinedLobby.Id, new UpdateLobbyOptions
                     {
                         Data = new Dictionary<string, DataObject>
                         {
@@ -205,34 +209,26 @@ namespace Network
             }
         }
 
-        private void OnLobbyChanged(ILobbyChanges changes)
-        {
-            if (changes.LobbyDeleted)
-            {
-                // Handle lobby being deleted
-                // Calling changes.ApplyToLobby will log a warning and do nothing
-            }
-            else
-            {
-                OnLobbyChangeAction?.Invoke();
-            }
-            changes.ApplyToLobby(m_HostLobby);
-            // Refresh the UI in some way
-        }
-
-        private void OnKickedFromLobby()
-        {
-            m_LobbyEvents = null;
-        }
-
         public Player GetOwnPlayer()
         {
-            return m_HostLobby.Players.Find(player => player.Id == AuthenticationService.Instance.PlayerId);
+            return m_JoinedLobby.Players.Find(player => player.Id == AuthenticationService.Instance.PlayerId);
         }
 
         public Player GetPlayerById(string id)
         {
-            return m_HostLobby.Players.Find(player => player.Id == id);
+            return m_JoinedLobby.Players.Find(player => player.Id == id);
+        }
+
+        public void test1(List<LobbyPlayerJoined> aOnPlayerJoin)
+        {
+            Debug.LogError("test1");
+            OnPlayerJoin?.Invoke(aOnPlayerJoin);
+        }
+
+        public void test2(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> aOnPlayerDataChange)
+        {
+            Debug.LogError("test2");
+            OnPlayerDataChange?.Invoke(aOnPlayerDataChange);
         }
     }
 }
