@@ -10,6 +10,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 namespace Network
@@ -79,14 +80,10 @@ namespace Network
                 {
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
                 },
-                Player = new Player(
+                Player = new Player (
                     id: AuthenticationService.Instance.PlayerId,
-                    data: new Dictionary<string, PlayerDataObject>
-                    {
-                        {
-                            "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, pHostName)
-                        }
-                    })
+                    profile: new PlayerProfile(pHostName)
+                )
             };
             
             m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, options);
@@ -113,20 +110,17 @@ namespace Network
         {
             try
             {
-                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
-                pClientName = pClientName != "" ? pClientName : $"Client{lobby.Players.Count}";
-                Debug.Log($"Joined lobby with code : {pCode}");
-                var options = new UpdatePlayerOptions()
+                pClientName = pClientName != "" ? pClientName : $"Client{Random.Range(1, 100)}";
+                var options = new JoinLobbyByCodeOptions
                 {
-                    Data = new Dictionary<string, PlayerDataObject>
-                    {
-                        {
-                            "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, pClientName)
-                        }
-                    }
+                    Player = new Player (
+                        id: AuthenticationService.Instance.PlayerId,
+                        profile: new PlayerProfile(pClientName)
+                    )
                 };
-                var playerId = AuthenticationService.Instance.PlayerId;
-                await LobbyService.Instance.UpdatePlayerAsync(lobby.Id, playerId, options);
+                
+                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode, options);
+                Debug.Log($"Joined lobby with code : {pCode}");
                 
                 JoinRelay(lobby.Data[KEY_RELAY].Value);
             }
@@ -179,6 +173,11 @@ namespace Network
             {
                 Debug.Log(e);
             }
+        }
+
+        public Player GetOwnPlayer()
+        {
+            return m_HostLobby.Players.Find(player => player.Id == AuthenticationService.Instance.PlayerId);
         }
     }
 }
