@@ -140,6 +140,8 @@ namespace Network
             }
 
             CreateRelay();
+
+            await UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("PVE");
         }
 
         public async Task<List<Lobby>> ListLobbies()

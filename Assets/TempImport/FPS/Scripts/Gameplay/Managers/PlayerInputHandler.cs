@@ -1,9 +1,11 @@
-﻿using Unity.FPS.Game;
+﻿using Unity.Netcode;
+using UnityEngine.InputSystem;
+using Unity.FPS.Game;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : NetworkBehaviour
     {
         [Tooltip("Sensitivity multiplier for moving the camera around")]
         public float LookSensitivity = 1f;
@@ -20,6 +22,11 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Used to flip the horizontal input axis")]
         public bool InvertXAxis = false;
 
+        [SerializeField] private Rigidbody m_rigidbody;
+        [SerializeField] private float m_speed;
+
+        private Vector3 m_inputDirection;
+
         GameFlowManager m_GameFlowManager;
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
@@ -34,6 +41,12 @@ namespace Unity.FPS.Gameplay
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if (!IsOwner) return;
+            m_rigidbody.velocity = m_inputDirection * m_speed;
         }
 
         void LateUpdate()
