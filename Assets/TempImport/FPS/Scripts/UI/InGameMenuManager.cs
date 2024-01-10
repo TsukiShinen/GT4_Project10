@@ -3,10 +3,11 @@ using Unity.FPS.Gameplay;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 namespace Unity.FPS.UI
 {
-    public class InGameMenuManager : MonoBehaviour
+    public class InGameMenuManager : NetworkBehaviour
     {
         [Tooltip("Root GameObject of the menu used to toggle its activation")]
         public GameObject MenuRoot;

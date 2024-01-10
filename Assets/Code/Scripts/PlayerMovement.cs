@@ -15,8 +15,8 @@ public class PlayerMovement : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!IsOwner) return;
-        //m_rigidbody.velocity = m_inputDirection * m_speed;
-        transform.position += m_inputDirection * m_speed * Time.fixedDeltaTime;
+        m_rigidbody.velocity = m_inputDirection * m_speed;
+        //transform.position += m_inputDirection * m_speed * Time.fixedDeltaTime;
     }
 
     public void MoveAction(InputAction.CallbackContext context)
