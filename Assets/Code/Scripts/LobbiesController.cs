@@ -7,15 +7,17 @@ public class LobbiesController : MonoBehaviour
 {
     [SerializeField] private UIDocument m_Document;
     [SerializeField] private VisualTreeAsset m_RoomElement;
+    [SerializeField] private InLobbyController m_InLobbyController;
     private VisualElement m_Root;
 
     private void Awake()
     {
         m_Root = m_Document.rootVisualElement;
-        m_Root.Q<Button>("Add").clicked += () =>
+        m_Root.Q<Button>("Add").clicked += async () =>
         {
-            ConnectionManager.Instance.CreateLobby("Test", 8);
             m_Root.style.display = DisplayStyle.None;
+            await ConnectionManager.Instance.CreateLobby("Test", 8);
+            m_InLobbyController.SetEnable(true);
         };
         
         m_Root.Q<Button>("Refresh").clicked += async () =>
@@ -43,10 +45,11 @@ public class LobbiesController : MonoBehaviour
             listView.Rebuild();
         };
 
-        m_Root.Q<Button>("Join").clicked += () =>
+        m_Root.Q<Button>("Join").clicked += async () =>
         {
-            ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").value);
             m_Root.style.display = DisplayStyle.None;
+            await ConnectionManager.Instance.JoinLobbyByCode(m_Root.Q<TextField>("JoinCode").value);
+            m_InLobbyController.SetEnable(true);
         };
     }
 }
