@@ -68,15 +68,25 @@ namespace Network
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
         }
 
-        public async void CreateLobby(string pLobbyName, int pMaxPlayers, bool pIsPrivate = false)
+        public async void CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
         {
+            pHostName = pHostName != "" ? pHostName : $"Host";
+            
             var options = new CreateLobbyOptions
             {
                 IsPrivate = pIsPrivate,
                 Data = new Dictionary<string, DataObject>
                 {
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
-                }
+                },
+                Player = new Player(
+                    id: AuthenticationService.Instance.PlayerId,
+                    data: new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, pHostName)
+                        }
+                    })
             };
             
             m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, options);
@@ -99,12 +109,24 @@ namespace Network
             return null;
         }
 
-        public async void JoinLobbyByCode(string pCode)
+        public async void JoinLobbyByCode(string pCode, string pClientName = "")
         {
             try
             {
                 var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
+                pClientName = pClientName != "" ? pClientName : $"Client{lobby.Players.Count}";
                 Debug.Log($"Joined lobby with code : {pCode}");
+                var options = new UpdatePlayerOptions()
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, pClientName)
+                        }
+                    }
+                };
+                var playerId = AuthenticationService.Instance.PlayerId;
+                await LobbyService.Instance.UpdatePlayerAsync(lobby.Id, playerId, options);
                 
                 JoinRelay(lobby.Data[KEY_RELAY].Value);
             }
