@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using NUnit.Framework.Internal;
 
 public class InLobbyController : MonoBehaviour
 {
@@ -21,26 +22,20 @@ public class InLobbyController : MonoBehaviour
         m_Root = m_Document.rootVisualElement;
         m_Root.Q<Button>("Ready").clicked += async () =>
         {
-            var player = ConnectionManager.Instance.GetOwnPlayer();
-            UpdatePlayerOptions options = new UpdatePlayerOptions();
-            if(player.Data.TryGetValue("IsReady", out var value))
-            {
-                value.Value = (!bool.Parse(value.Value)).ToString();
-                options.Data = player.Data;
-                await LobbyService.Instance.UpdatePlayerAsync(ConnectionManager.Instance.Lobby.Id, player.Id, options);
-            }
+            var status = GameManager.Instance.LocalUser.UserStatus.Value == PlayerStatus.Ready ? PlayerStatus.Lobby : PlayerStatus.Ready;
+            GameManager.Instance.SetLocalUserStatus(status);
         };
         SetEnable(false);
     }
 
     private void OnEnable()
     {
-        ConnectionManager.Instance.OnPlayerJoin += OnPlayerUpdated;
+        GameManager.Instance.LocalLobby.onUserJoined += OnPlayerUpdated;
     }
 
     private void OnDisable()
     {
-        ConnectionManager.Instance.OnPlayerJoin -= OnPlayerUpdated;
+        GameManager.Instance.LocalLobby.onUserJoined -= OnPlayerUpdated;
     }
 
     public void SetEnable(bool isActive)
@@ -53,12 +48,11 @@ public class InLobbyController : MonoBehaviour
 
     private void Join()
     {
-        m_Lobby = ConnectionManager.Instance.Lobby;
-        m_Root.Q<TextElement>("Code").text = m_Lobby.LobbyCode;
+        m_Root.Q<TextElement>("Code").text = GameManager.Instance.LocalLobby.LobbyCode.Value;
     }
 
-    private void OnPlayerUpdated(List<LobbyPlayerJoined> obj)
+    private void OnPlayerUpdated(LocalPlayer player)
     {
-        m_Root.Q<TextElement>("Players").text = obj.Count + " / " + m_Lobby.MaxPlayers;
+        m_Root.Q<TextElement>("Players").text = GameManager.Instance.LocalLobby.PlayerCount + " / " + GameManager.Instance.LocalLobby.MaxPlayerCount.Value;
     }
 }

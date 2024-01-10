@@ -18,6 +18,7 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    public LocalPlayer LocalUser => m_LocalUser;
     public LocalLobby LocalLobby => m_LocalLobby;
     public Action<GameState> onGameStateChanged;
 
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public async void CreateLobby(string name, bool isPrivate, string password = null, int maxPlayers = 4)
+    public async Task CreateLobby(string name, bool isPrivate, string password = null, int maxPlayers = 4)
     {
         try
         {
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
 
             LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
             await CreateLobby();
+            RelayManager.CreateRelay(lobby);
         }
         catch (LobbyServiceException exception)
         {
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public async void JoinLobby(string lobbyID, string lobbyCode, string password = null)
+    public async Task JoinLobby(string lobbyID, string lobbyCode, string password = null)
     {
         try
         {
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour
 
             LobbyConverters.RemoteToLocal(lobby, m_LocalLobby);
             await JoinLobby();
+            RelayManager.JoinRelay(lobbyCode);
         }
         catch (LobbyServiceException exception)
         {
@@ -204,7 +207,7 @@ public class GameManager : MonoBehaviour
     async void Awake()
     {
         Application.wantsToQuit += OnWantToQuit;
-        m_LocalUser = new LocalPlayer("", 0, false, "LocalPlayer");
+        m_LocalUser = new LocalPlayer("Tsukishinen", 0, false, "LocalPlayer");
         m_LocalLobby = new LocalLobby { LocalLobbyState = { Value = LobbyState.Lobby } };
         LobbyManager = new LobbyManager();
 

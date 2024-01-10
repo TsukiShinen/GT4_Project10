@@ -39,5 +39,10 @@ namespace Network
             IsHost.Value = false;
             UserStatus.Value = PlayerStatus.Menu;
         }
+
+        public void SetStatuts(PlayerStatus pStatus)
+        {
+            UserStatus.Value = pStatus;
+        }
     }
 }

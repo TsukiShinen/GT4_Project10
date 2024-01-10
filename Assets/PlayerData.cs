@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    public string PlayerId { get; private set; }
+    public int PlayerIndex { get; private set; }
 
     private void Awake()
     {
-        PlayerId = ConnectionManager.Instance.Lobby.Players[ConnectionManager.Instance.Lobby.Players.Count - 1].Id;
+        PlayerIndex = GameManager.Instance.LocalLobby.PlayerCount - 1;
     }
 }

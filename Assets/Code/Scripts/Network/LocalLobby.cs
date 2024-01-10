@@ -48,6 +48,7 @@ namespace Network
 
         public CallbackValue<long> LastUpdated = new CallbackValue<long>();
 
+        public List<LocalPlayer> Players => m_LocalPlayers;
         public int PlayerCount => m_LocalPlayers.Count;
         ServerAddress m_RelayServer;
 

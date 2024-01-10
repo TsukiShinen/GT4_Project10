@@ -17,43 +17,41 @@ public class PlayerLobbyUI : MonoBehaviour
     [SerializeField] private Sprite m_NotReadySprite;
     [SerializeField] private RectTransform m_LayoutGroup;
 
-    private Player m_Player;
+    private LocalPlayer m_Player;
 
-    private void Start()
+    private void Awake()
     {
-        m_Player = ConnectionManager.Instance.GetPlayerById(m_PlayerData.PlayerId);
+        m_Player = GameManager.Instance.LocalLobby.GetLocalPlayer(m_PlayerData.PlayerIndex);
+        m_NameText.text = m_Player.DisplayName.Value;
     }
 
     private void OnEnable()
     {
-        ConnectionManager.Instance.OnPlayerDataChange += OnLobbyChange;     
+        m_Player.UserStatus.onChanged += OnLobbyChange;     
     }
 
     private void OnDisable()
     {
-        ConnectionManager.Instance.OnPlayerDataChange -= OnLobbyChange;
+        m_Player.UserStatus.onChanged -= OnLobbyChange;
     }
 
-    private void OnLobbyChange(Dictionary<int, Dictionary<string, ChangedOrRemovedLobbyValue<PlayerDataObject>>> obj)
+    private void OnLobbyChange(PlayerStatus statut)
     {
-        m_NameText.text = m_Player.Profile.Name;
+        m_NameText.text = m_Player.DisplayName.Value;
         m_NameText.rectTransform.sizeDelta = new Vector2(m_NameText.preferredWidth, m_NameText.rectTransform.sizeDelta.y);
 
         m_LayoutGroup.sizeDelta = new Vector2(m_NameText.rectTransform.sizeDelta.x + m_IsReadyImage.rectTransform.sizeDelta.x, m_LayoutGroup.sizeDelta.y);
 
-        if (m_Player.Data.TryGetValue("IsReady", out var ready))
+        if (statut == PlayerStatus.Ready)
         {
-            if (ready.Value == true.ToString())
-            {
-                m_IsReadyImage.sprite = m_ReadySprite;
-                m_IsReadyImage.color = Color.green;
-            }
-            else
-            {
-                m_IsReadyImage.sprite = m_NotReadySprite;
-                m_IsReadyImage.color = Color.red;
+            m_IsReadyImage.sprite = m_ReadySprite;
+            m_IsReadyImage.color = Color.green;
+        }
+        else
+        {
+            m_IsReadyImage.sprite = m_NotReadySprite;
+            m_IsReadyImage.color = Color.red;
 
-            }
         }
 
     }

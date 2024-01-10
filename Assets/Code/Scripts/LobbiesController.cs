@@ -18,7 +18,7 @@ public class LobbiesController : MonoBehaviour
         m_Root.Q<Button>("Add").clicked += async () =>
         {
             m_Root.style.display = DisplayStyle.None;
-                GameManager.Instance.CreateLobby("Test", false);
+            await GameManager.Instance.CreateLobby("Test", false);
             m_InLobbyController.SetEnable(true);
         };
         
@@ -50,7 +50,7 @@ public class LobbiesController : MonoBehaviour
         m_Root.Q<Button>("Join").clicked += async () =>
         {
             m_Root.style.display = DisplayStyle.None;
-            GameManager.Instance.JoinLobby("", m_Root.Q<TextField>("JoinCode").value);
+            await GameManager.Instance.JoinLobby("", m_Root.Q<TextField>("JoinCode").value);
             m_InLobbyController.SetEnable(true);
         };
     }
