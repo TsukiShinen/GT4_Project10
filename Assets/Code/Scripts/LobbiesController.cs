@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Network;
+using ScriptableObjects.GameModes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,6 +8,7 @@ public class LobbiesController : MonoBehaviour
 {
     [SerializeField] private UIDocument m_Document;
     [SerializeField] private VisualTreeAsset m_RoomElement;
+    [SerializeField] private GameModeConfig m_TempVariableGameMode;
     private VisualElement m_Root;
 
     private void Awake()
@@ -14,7 +16,7 @@ public class LobbiesController : MonoBehaviour
         m_Root = m_Document.rootVisualElement;
         m_Root.Q<Button>("Add").clicked += () =>
         {
-            ConnectionManager.Instance.CreateLobby("Test", 8);
+            ConnectionManager.Instance.CreateLobby("Test", 8, m_TempVariableGameMode);
             m_Root.style.display = DisplayStyle.None;
         };
         

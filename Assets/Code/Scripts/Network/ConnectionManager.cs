@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -69,7 +70,7 @@ namespace Network
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
         }
 
-        public async void CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
+        public async void CreateLobby(string pLobbyName, int pMaxPlayers, GameModeConfig pGameMode, string pHostName = "", bool pIsPrivate = false)
         {
             pHostName = pHostName != "" ? pHostName : $"Host";
             
@@ -78,6 +79,7 @@ namespace Network
                 IsPrivate = pIsPrivate,
                 Data = new Dictionary<string, DataObject>
                 {
+                    { "GAMEMODE", new DataObject(DataObject.VisibilityOptions.Public, pGameMode.Name)},
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
                 },
                 Player = new Player (
