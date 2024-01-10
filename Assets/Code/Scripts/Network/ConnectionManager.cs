@@ -10,6 +10,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 namespace Network
@@ -72,15 +73,21 @@ namespace Network
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
         }
 
-        public async Task CreateLobby(string pLobbyName, int pMaxPlayers, bool pIsPrivate = false)
+        public async void CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
         {
+            pHostName = pHostName != "" ? pHostName : $"Host";
+            
             var options = new CreateLobbyOptions
             {
                 IsPrivate = pIsPrivate,
                 Data = new Dictionary<string, DataObject>
                 {
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
-                }
+                },
+                Player = new Player (
+                    id: AuthenticationService.Instance.PlayerId,
+                    profile: new PlayerProfile(pHostName)
+                )
             };
             
             m_HostLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, options);
@@ -121,11 +128,20 @@ namespace Network
             return null;
         }
 
-        public async Task JoinLobbyByCode(string pCode)
+        public async void JoinLobbyByCode(string pCode, string pClientName = "")
         {
             try
             {
-                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode);
+                pClientName = pClientName != "" ? pClientName : $"Client{Random.Range(1, 100)}";
+                var options = new JoinLobbyByCodeOptions
+                {
+                    Player = new Player (
+                        id: AuthenticationService.Instance.PlayerId,
+                        profile: new PlayerProfile(pClientName)
+                    )
+                };
+                
+                var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode, options);
                 Debug.Log($"Joined lobby with code : {pCode}");
                 
                 JoinRelay(lobby.Data[KEY_RELAY].Value);
@@ -199,6 +215,11 @@ namespace Network
         private void OnKickedFromLobby()
         {
             m_LobbyEvents = null;
+        }
+
+        public Player GetOwnPlayer()
+        {
+            return m_HostLobby.Players.Find(player => player.Id == AuthenticationService.Instance.PlayerId);
         }
     }
 }
