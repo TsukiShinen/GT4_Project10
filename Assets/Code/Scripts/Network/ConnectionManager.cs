@@ -27,6 +27,7 @@ namespace Network
         private Lobby m_HostLobby;
         private Lobby m_JoinedLobby;
         private float m_HeartBeatTimer;
+        private float m_LobbyPollTimer;
 
         private const string KEY_RELAY = "Relay";
 
@@ -60,6 +61,7 @@ namespace Network
         private void Update()
         {
             HandleLobbyHeartBeat();
+            HandlePollForUpdates();
         }
 
         private async void HandleLobbyHeartBeat()
@@ -73,6 +75,20 @@ namespace Network
             m_HeartBeatTimer = heartBeatTimerMax;
 
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
+        }
+
+        private async void HandlePollForUpdates()
+        {
+            if (m_JoinedLobby == null)
+                return;
+
+            m_LobbyPollTimer -= Time.deltaTime;
+            if (m_LobbyPollTimer > 0f) return;
+
+            const float lobbyPollTimerMax = 1.1f;
+            m_LobbyPollTimer = lobbyPollTimerMax;
+
+            m_JoinedLobby = await LobbyService.Instance.GetLobbyAsync(m_JoinedLobby.Id);
         }
 
         public async Task CreateLobby(string pLobbyName, int pMaxPlayers, GameModeConfig pGameMode, string pHostName = "", bool pIsPrivate = false)
