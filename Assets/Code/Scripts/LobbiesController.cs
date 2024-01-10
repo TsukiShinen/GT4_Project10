@@ -17,9 +17,8 @@ public class LobbiesController : MonoBehaviour
         m_Root = m_Document.rootVisualElement;
         m_Root.Q<Button>("Add").clicked += async () =>
         {
-            ConnectionManager.Instance.CreateLobby("Test", 8, m_TempVariableGameMode);
             m_Root.style.display = DisplayStyle.None;
-            await ConnectionManager.Instance.CreateLobby("Test", 8);
+            await ConnectionManager.Instance.CreateLobby("Test", 8, m_TempVariableGameMode);
             m_InLobbyController.SetEnable(true);
         };
         
