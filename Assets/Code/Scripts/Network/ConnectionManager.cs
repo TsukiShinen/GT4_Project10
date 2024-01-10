@@ -73,7 +73,7 @@ namespace Network
             await LobbyService.Instance.SendHeartbeatPingAsync(m_HostLobby.Id);
         }
 
-        public async void CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
+        public async Task CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
         {
             pHostName = pHostName != "" ? pHostName : $"Host";
             
@@ -128,7 +128,7 @@ namespace Network
             return null;
         }
 
-        public async void JoinLobbyByCode(string pCode, string pClientName = "")
+        public async Task JoinLobbyByCode(string pCode, string pClientName = "")
         {
             try
             {
