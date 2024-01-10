@@ -75,8 +75,8 @@ namespace Network
 
         public async Task CreateLobby(string pLobbyName, int pMaxPlayers, string pHostName = "", bool pIsPrivate = false)
         {
-            pHostName = pHostName != "" ? pHostName : $"Host";
-            
+            pHostName = pHostName != "" ? pHostName : $"Tsukishinen";
+
             var options = new CreateLobbyOptions
             {
                 IsPrivate = pIsPrivate,
@@ -84,9 +84,15 @@ namespace Network
                 {
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
                 },
-                Player = new Player (
+                Player = new Player(
                     id: AuthenticationService.Instance.PlayerId,
-                    profile: new PlayerProfile(pHostName)
+                    profile: new PlayerProfile(pHostName),
+                    data: new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            "IsReady", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "false")
+                        }
+                    }
                 )
             };
             
@@ -143,7 +149,7 @@ namespace Network
                 
                 var lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(pCode, options);
                 Debug.Log($"Joined lobby with code : {pCode}");
-                
+
                 JoinRelay(lobby.Data[KEY_RELAY].Value);
             }
             catch (LobbyServiceException e)
@@ -220,6 +226,11 @@ namespace Network
         public Player GetOwnPlayer()
         {
             return m_HostLobby.Players.Find(player => player.Id == AuthenticationService.Instance.PlayerId);
+        }
+
+        public Player GetPlayerById(string id)
+        {
+            return m_HostLobby.Players.Find(player => player.Id == id);
         }
     }
 }

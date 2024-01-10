@@ -13,7 +13,7 @@
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: flex-end;">
             <ui:Label text="0 / 8" name="Players" style="font-size: 30px;" />
-            <ui:Button text="Button" style="width: 25%; max-width: 25%; min-width: 25%; max-height: none;" />
+            <ui:Button text="Button" name="Ready" style="width: 25%; max-width: 25%; min-width: 25%; max-height: none;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

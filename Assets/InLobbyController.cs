@@ -1,8 +1,11 @@
 using Network;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
 
 public class InLobbyController : MonoBehaviour
 {
@@ -14,6 +17,17 @@ public class InLobbyController : MonoBehaviour
     private void Awake()
     {
         m_Root = m_Document.rootVisualElement;
+        m_Root.Q<Button>("Ready").clicked += async () =>
+        {
+            var player = ConnectionManager.Instance.GetOwnPlayer();
+            UpdatePlayerOptions options = new UpdatePlayerOptions();
+            if(player.Data.TryGetValue("IsReady", out var value))
+            {
+                value.Value = (!bool.Parse(value.Value)).ToString();
+                options.Data = player.Data;
+                await LobbyService.Instance.UpdatePlayerAsync(ConnectionManager.Instance.Lobby.Id, player.Id, options);
+            }
+        };
         SetEnable(false);
     }
 
@@ -44,6 +58,5 @@ public class InLobbyController : MonoBehaviour
     private void OnPlayerUpdated()
     {
         m_Root.Q<TextElement>("Players").text = m_Lobby.Players.Count + " / " + m_Lobby.MaxPlayers;
-        
     }
 }
