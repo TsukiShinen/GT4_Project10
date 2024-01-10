@@ -79,7 +79,7 @@ namespace Network
                 IsPrivate = pIsPrivate,
                 Data = new Dictionary<string, DataObject>
                 {
-                    { "GAMEMODE", new DataObject(DataObject.VisibilityOptions.Public, pGameMode.Name)},
+                    { "GAMEMODE", new DataObject(DataObject.VisibilityOptions.Public, pGameMode.Name, DataObject.IndexOptions.S1)},
                     { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, "0") }
                 },
                 Player = new Player (
