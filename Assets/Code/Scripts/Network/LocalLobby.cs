@@ -6,140 +6,135 @@ using UnityEngine;
 
 namespace Network
 {
-    
-    [Flags]
-    public enum LobbyState
-    {
-        Lobby = 1,
-        CountDown = 2,
-        InGame = 4
-    }
+	[Flags]
+	public enum LobbyState
+	{
+		Lobby = 1,
+		CountDown = 2,
+		InGame = 4
+	}
 
-    [Serializable]
-    public class LocalLobby
-    {
-        public Action<LocalPlayer> onUserJoined;
+	[Serializable]
+	public class LocalLobby
+	{
+		public CallbackValue<int> AvailableSlots = new();
 
-        public Action<int> onUserLeft;
+		public CallbackValue<string> HostID = new();
 
-        public Action<int> onUserReadyChange;
+		public CallbackValue<long> LastUpdated = new();
 
-        public CallbackValue<string> LobbyID = new CallbackValue<string>();
+		public CallbackValue<string> LobbyCode = new();
 
-        public CallbackValue<string> LobbyCode = new CallbackValue<string>();
+		public CallbackValue<string> LobbyID = new();
 
-        public CallbackValue<string> RelayCode = new CallbackValue<string>();
+		public CallbackValue<string> LobbyName = new();
 
-        public CallbackValue<ServerAddress> RelayServer = new CallbackValue<ServerAddress>();
+		public CallbackValue<LobbyState> LocalLobbyState = new();
 
-        public CallbackValue<string> LobbyName = new CallbackValue<string>();
+		public CallbackValue<bool> Locked = new();
+		private ServerAddress m_RelayServer;
 
-        public CallbackValue<string> HostID = new CallbackValue<string>();
+		public CallbackValue<int> MaxPlayerCount = new();
+		public Action<LocalPlayer> OnUserJoined;
 
-        public CallbackValue<LobbyState> LocalLobbyState = new CallbackValue<LobbyState>();
+		public Action<int> OnUserLeft;
 
-        public CallbackValue<bool> Locked = new CallbackValue<bool>();
+		public Action<int> OnUserReadyChange;
 
-        public CallbackValue<bool> Private = new CallbackValue<bool>();
+		public CallbackValue<bool> Private = new();
 
-        public CallbackValue<int> AvailableSlots = new CallbackValue<int>();
+		public CallbackValue<string> RelayCode = new();
 
-        public CallbackValue<int> MaxPlayerCount = new CallbackValue<int>();
+		public CallbackValue<ServerAddress> RelayServer = new();
 
-        public CallbackValue<long> LastUpdated = new CallbackValue<long>();
+		public LocalLobby()
+		{
+			LastUpdated.Value = DateTime.Now.ToFileTimeUtc();
+			HostID.OnChanged += OnHostChanged;
+		}
 
-        public List<LocalPlayer> Players => m_LocalPlayers;
-        public int PlayerCount => m_LocalPlayers.Count;
-        ServerAddress m_RelayServer;
+		public List<LocalPlayer> Players { get; } = new();
 
-        public List<LocalPlayer> LocalPlayers => m_LocalPlayers;
-        List<LocalPlayer> m_LocalPlayers = new ();
+		public int PlayerCount => Players.Count;
 
-        public void ResetLobby()
-        {
-            m_LocalPlayers.Clear();
+		public List<LocalPlayer> LocalPlayers => Players;
 
-            LobbyName.Value = "";
-            LobbyID.Value = "";
-            LobbyCode.Value = "";
-            Locked.Value = false;
-            Private.Value = false;
-            AvailableSlots.Value = 4;
-            MaxPlayerCount.Value = 4;
-            onUserJoined = null;
-            onUserLeft = null;
-        }
+		public void ResetLobby()
+		{
+			Players.Clear();
 
-        public LocalLobby()
-        {
-            LastUpdated.Value = DateTime.Now.ToFileTimeUtc();
-            HostID.onChanged += OnHostChanged;
-        }
+			LobbyName.Value = "";
+			LobbyID.Value = "";
+			LobbyCode.Value = "";
+			Locked.Value = false;
+			Private.Value = false;
+			AvailableSlots.Value = 4;
+			MaxPlayerCount.Value = 4;
+			OnUserJoined = null;
+			OnUserLeft = null;
+		}
 
-        ~LocalLobby()
-        {
-            HostID.onChanged -= OnHostChanged;
-        }
+		~LocalLobby()
+		{
+			HostID.OnChanged -= OnHostChanged;
+		}
 
-        public LocalPlayer GetLocalPlayer(int index)
-        {
-            return PlayerCount > index ? m_LocalPlayers[index] : null;
-        }
+		public LocalPlayer GetLocalPlayer(int index)
+		{
+			return PlayerCount > index ? Players[index] : null;
+		}
 
-        private void OnHostChanged(string newHostId)
-        {
-            foreach(var player in m_LocalPlayers)
-            {
-                player.IsHost.Value = player.ID.Value == newHostId;
-            }
-        }
-        
-        public void AddPlayer(int index, LocalPlayer user)
-        {
-            m_LocalPlayers.Insert(index, user);
-            user.UserStatus.onChanged += OnUserChangedStatus;
-            onUserJoined?.Invoke(user);
-            Debug.Log($"Added User: '{user.DisplayName.Value}' to slot {index + 1}/{MaxPlayerCount.Value}");
-        }
+		private void OnHostChanged(string newHostId)
+		{
+			foreach (var player in Players) player.IsHost.Value = player.ID.Value == newHostId;
+		}
 
-        public void RemovePlayer(int playerIndex)
-        {
-            m_LocalPlayers[playerIndex].UserStatus.onChanged -= OnUserChangedStatus;
-            m_LocalPlayers.RemoveAt(playerIndex);
-            onUserLeft?.Invoke(playerIndex);
-        }
+		public void AddPlayer(int index, LocalPlayer user)
+		{
+			Players.Insert(index, user);
+			user.UserStatus.OnChanged += OnUserChangedStatus;
+			OnUserJoined?.Invoke(user);
+			Debug.Log($"Added User: '{user.DisplayName.Value}' to slot {index + 1}/{MaxPlayerCount.Value}");
+		}
 
-        void OnUserChangedStatus(PlayerStatus status)
-        {
-            var readyCount = m_LocalPlayers.Count(player => player.UserStatus.Value == PlayerStatus.Ready);
+		public void RemovePlayer(int playerIndex)
+		{
+			Players[playerIndex].UserStatus.OnChanged -= OnUserChangedStatus;
+			Players.RemoveAt(playerIndex);
+			OnUserLeft?.Invoke(playerIndex);
+		}
 
-            onUserReadyChange?.Invoke(readyCount);
-        }
+		private void OnUserChangedStatus(PlayerStatus status)
+		{
+			var readyCount = Players.Count(player => player.UserStatus.Value == PlayerStatus.Ready);
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder("Lobby : ");
-            sb.AppendLine(LobbyName.Value);
-            sb.Append("ID: ");
-            sb.AppendLine(LobbyID.Value);
-            sb.Append("Code: ");
-            sb.AppendLine(LobbyCode.Value);
-            sb.Append("Locked: ");
-            sb.AppendLine(Locked.Value.ToString());
-            sb.Append("Private: ");
-            sb.AppendLine(Private.Value.ToString());
-            sb.Append("AvailableSlots: ");
-            sb.AppendLine(AvailableSlots.Value.ToString());
-            sb.Append("Max Players: ");
-            sb.AppendLine(MaxPlayerCount.Value.ToString());
-            sb.Append("LocalLobbyState: ");
-            sb.AppendLine(LocalLobbyState.Value.ToString());
-            sb.Append("Lobby LocalLobbyState Last Edit: ");
-            sb.AppendLine(new DateTime(LastUpdated.Value).ToString());
-            sb.Append("RelayCode: ");
-            sb.AppendLine(RelayCode.Value);
+			OnUserReadyChange?.Invoke(readyCount);
+		}
 
-            return sb.ToString();
-        }
-    }
+		public override string ToString()
+		{
+			var sb = new StringBuilder("Lobby : ");
+			sb.AppendLine(LobbyName.Value);
+			sb.Append("ID: ");
+			sb.AppendLine(LobbyID.Value);
+			sb.Append("Code: ");
+			sb.AppendLine(LobbyCode.Value);
+			sb.Append("Locked: ");
+			sb.AppendLine(Locked.Value.ToString());
+			sb.Append("Private: ");
+			sb.AppendLine(Private.Value.ToString());
+			sb.Append("AvailableSlots: ");
+			sb.AppendLine(AvailableSlots.Value.ToString());
+			sb.Append("Max Players: ");
+			sb.AppendLine(MaxPlayerCount.Value.ToString());
+			sb.Append("LocalLobbyState: ");
+			sb.AppendLine(LocalLobbyState.Value.ToString());
+			sb.Append("Lobby LocalLobbyState Last Edit: ");
+			sb.AppendLine(new DateTime(LastUpdated.Value).ToString());
+			sb.Append("RelayCode: ");
+			sb.AppendLine(RelayCode.Value);
+
+			return sb.ToString();
+		}
+	}
 }

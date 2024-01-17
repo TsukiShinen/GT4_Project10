@@ -2,47 +2,47 @@ using System;
 
 namespace Network
 {
-    [Flags]
-    public enum PlayerStatus
-    {
-        None = 0,
-        Connecting = 1,
-        Lobby = 2,
-        Ready = 4,
-        InGame = 8,
-        Menu = 16
-    }
-    
-    [Serializable]
-    public class LocalPlayer
-    {
-        public CallbackValue<bool> IsHost = new (false);
-        public CallbackValue<string> DisplayName = new ("");
-        public CallbackValue<PlayerStatus> UserStatus = new (PlayerStatus.None);
-        public CallbackValue<string> ID = new ("");
-        public CallbackValue<int> Index = new (0);
+	[Flags]
+	public enum PlayerStatus
+	{
+		None = 0,
+		Connecting = 1,
+		Lobby = 2,
+		Ready = 4,
+		InGame = 8,
+		Menu = 16
+	}
 
-        public DateTime LastUpdated;
+	[Serializable]
+	public class LocalPlayer
+	{
+		public CallbackValue<string> DisplayName = new("");
+		public CallbackValue<string> ID = new("");
+		public CallbackValue<int> Index = new(0);
+		public CallbackValue<bool> IsHost = new(false);
 
-        public LocalPlayer(string id, int index, bool isHost, string displayName = default,
-            PlayerStatus status = default)
-        {
-            ID.Value = id;
-            IsHost.Value = isHost;
-            Index.Value = index;
-            DisplayName.Value = displayName;
-            UserStatus.Value = status;
-        }
+		public DateTime LastUpdated;
+		public CallbackValue<PlayerStatus> UserStatus = new(PlayerStatus.None);
 
-        public void ResetState()
-        {
-            IsHost.Value = false;
-            UserStatus.Value = PlayerStatus.Menu;
-        }
+		public LocalPlayer(string id, int index, bool isHost, string displayName = default,
+			PlayerStatus status = default)
+		{
+			ID.Value = id;
+			IsHost.Value = isHost;
+			Index.Value = index;
+			DisplayName.Value = displayName;
+			UserStatus.Value = status;
+		}
 
-        public void SetStatuts(PlayerStatus pStatus)
-        {
-            UserStatus.Value = pStatus;
-        }
-    }
+		public void ResetState()
+		{
+			IsHost.Value = false;
+			UserStatus.Value = PlayerStatus.Menu;
+		}
+
+		public void SetStatus(PlayerStatus pStatus)
+		{
+			UserStatus.Value = pStatus;
+		}
+	}
 }

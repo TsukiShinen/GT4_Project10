@@ -30,12 +30,12 @@ public class InLobbyController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.LocalLobby.onUserJoined += OnPlayerUpdated;
+        GameManager.Instance.LocalLobby.OnUserJoined += OnPlayerUpdated;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.LocalLobby.onUserJoined -= OnPlayerUpdated;
+        GameManager.Instance.LocalLobby.OnUserJoined -= OnPlayerUpdated;
     }
 
     public void SetEnable(bool isActive)

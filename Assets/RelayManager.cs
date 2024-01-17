@@ -11,7 +11,7 @@ using UnityEngine;
 public class RelayManager : MonoBehaviour
 {
     private const string KEY_RELAY = "Relay";
-    static public async void CreateRelay(Lobby pLobby)
+    public static async void CreateRelay(Lobby pLobby)
     {
         try
         {
@@ -41,7 +41,7 @@ public class RelayManager : MonoBehaviour
         }
     }
 
-    static public async void JoinRelay(string pCode)
+    public static async void JoinRelay(string pCode)
     {
         try
         {
