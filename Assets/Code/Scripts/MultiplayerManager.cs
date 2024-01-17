@@ -4,16 +4,18 @@ using Network;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class MultiplayerManager : NetworkBehaviour
 {
-    [SerializeField] private GameObject m_PlayerPrefab;
 	public const int k_MaxPlayerAmount = 4;
 	private const string k_PlayerPref_PlayerName = "PlayerName";
+
+	public event EventHandler OnTryingToJoinGame;
+	public event EventHandler OnFailedToJoinGame;
 	
 	private NetworkList<PlayerData> m_PlayerDataNetworkList;
-	private Dictionary<ulong, GameObject> m_PlayerGameObjects = new Dictionary<ulong, GameObject>();
 	private string m_PlayerName;
 
     public string PlayerName
@@ -27,16 +29,6 @@ public class MultiplayerManager : NetworkBehaviour
 	}
 	
 	public static MultiplayerManager Instance { get; private set; }
-
-    public GameObject GetPlayerGameObject(ulong pId)
-    {
-        if (m_PlayerGameObjects.TryGetValue(pId, out GameObject playerGameObject))
-        {
-            return playerGameObject;
-        }
-
-        return null;
-    }
 
     private void Awake()
 	{
@@ -102,6 +94,20 @@ public class MultiplayerManager : NetworkBehaviour
 
 	private void Network_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest pConnectionApprovalRequest, NetworkManager.ConnectionApprovalResponse pConnectionApprovalResponse)
 	{
+		if (SceneManager.GetActiveScene().name != "Lobby")
+		{
+			pConnectionApprovalResponse.Approved = false;
+			pConnectionApprovalResponse.Reason = "Game has alreadyStarted";
+			return;
+		}
+
+		if (NetworkManager.Singleton.ConnectedClientsIds.Count >= k_MaxPlayerAmount)
+		{
+			pConnectionApprovalResponse.Approved = false;
+			pConnectionApprovalResponse.Reason = "Game is full";
+			return;
+		}
+		
 		pConnectionApprovalResponse.Approved = true;
 	}
 
@@ -119,8 +125,20 @@ public class MultiplayerManager : NetworkBehaviour
 
 	public void StartClient()
 	{
+		MessagePopUp.Instance.Open("Game", "Connecting to game ...");
+		OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+
+		NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_Client_OnClientConnectedCallback;
 		NetworkManager.Singleton.StartClient();
+		
+		MessagePopUp.Instance.Hide();
+	}
+
+	private void NetworkManager_OnClientDisconnectCallback(ulong obj)
+	{
+		MessagePopUp.Instance.Open("Disconnected from Game", NetworkManager.Singleton.DisconnectReason == "" ? "Failed to connect" : NetworkManager.Singleton.DisconnectReason, ("Close", MessagePopUp.Instance.Hide));
+		OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
 	}
 
 	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
@@ -158,13 +176,4 @@ public class MultiplayerManager : NetworkBehaviour
 		// TODO : GetPLayerDataIndexFromClientId
 		return 0;
 	}
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnPlayerServerRpc(ulong pClientId, ServerRpcParams pServerRpcParams = default)
-    {
-        var gameObject = Instantiate(m_PlayerPrefab);
-		gameObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(pClientId, false);
-
-		m_PlayerGameObjects.Add(pClientId, gameObject);
-    }
 }

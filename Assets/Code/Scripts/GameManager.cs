@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Network;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ public class GameManager : NetworkBehaviour
 		if (!IsServer)
 			return;
 
+		// TODO : destroy lobby
 		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 	}
 

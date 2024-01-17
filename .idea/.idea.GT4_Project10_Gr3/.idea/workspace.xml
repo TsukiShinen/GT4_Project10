@@ -9,14 +9,16 @@
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MenuLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MenuLobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/PVP Control.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/PVP Control.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Game.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Game.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Game/ShootServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Game/ShootServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/DynamicsManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
