@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Network;
 using ParrelSync;
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
 	public LocalPlayer LocalUser { get; private set; }
 
 	public LocalLobby LocalLobby { get; private set; }
+	public LocalLobbyList LobbyList { get; private set; }
 
 	public GameState LocalGameState { get; }
 	public LobbyManager LobbyManager { get; private set; }
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviour
 		LocalUser = new LocalPlayer("Tsukishinen", 0, false, "LocalPlayer");
 		LocalLobby = new LocalLobby { LocalLobbyState = { Value = LobbyState.Lobby } };
 		LobbyManager = new LobbyManager();
+		LobbyList = new LocalLobbyList();
 
 		await InitializeServices();
 		AuthenticatePlayer();
@@ -99,6 +103,26 @@ public class GameManager : MonoBehaviour
 			// SetGameState(GameState.JoinMenu);
 			// LogHandlerSettings.Instance.SpawnErrorPopup($"Error joining lobby : ({exception.ErrorCode}) {exception.Message}");
 		}
+	}
+
+	public async void QueryLobbies()
+	{
+		LobbyList.QueryState.Value = LobbyQueryState.Fetching;
+		var qr = await LobbyManager.RetrieveLobbyListAsync();
+		if (qr == null)
+		{
+			return;
+		}
+
+		SetCurrentLobbies(LobbyConverters.QueryToLocalList(qr));
+	}
+
+	private void SetCurrentLobbies(IEnumerable<LocalLobby> lobbies)
+	{
+		var newLobbyDict = lobbies.ToDictionary(lobby => lobby.LobbyID.Value);
+
+		LobbyList.CurrentLobbies = newLobbyDict;
+		LobbyList.QueryState.Value = LobbyQueryState.Fetched;
 	}
 
 	public void SetLocalUserName(string name)

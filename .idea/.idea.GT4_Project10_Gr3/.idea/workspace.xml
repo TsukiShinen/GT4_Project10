@@ -10,7 +10,9 @@
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/RelayManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/RelayManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbiesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/LobbiesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyConverters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyConverters.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +36,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/Models/QueryResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/SDK/UpdatePlayerOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.qos@1.2.0/Runtime/Runner/QosJob.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/LobbiesController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/RelayManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -120,7 +123,7 @@
       <workItem from="1704897453769" duration="4050000" />
       <workItem from="1705477147051" duration="1627000" />
       <workItem from="1705478787203" duration="460000" />
-      <workItem from="1705479314019" duration="634000" />
+      <workItem from="1705479314019" duration="2697000" />
     </task>
     <servers />
   </component>

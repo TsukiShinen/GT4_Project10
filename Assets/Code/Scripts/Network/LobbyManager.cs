@@ -362,6 +362,17 @@ namespace Network
 			CurrentLobby = await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, updateOptions);
 		}
 
+		public async Task<QueryResponse> RetrieveLobbyListAsync()
+		{
+			var queryOptions = new QueryLobbiesOptions
+			{
+				//Count = k_maxLobbiesToShow,
+				//Filters = filters
+			};
+
+			return await LobbyService.Instance.QueryLobbiesAsync(queryOptions);
+		}
+
 		public async Task DeleteLobbyAsync()
 		{
 			if (!InLobby())
