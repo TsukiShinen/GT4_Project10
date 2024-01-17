@@ -8,44 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/BillBoard.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/BillBoard.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/CallbackValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/CallbackValue.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/ClientNetworkTransform.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/ClientNetworkTransform.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/InLobbyController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/InLobbyController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj.DotSettings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbiesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/LobbiesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyController.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyConverters.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyConverters.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LobbyManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalLobby.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalLobby.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalLobbyList.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalLobbyList.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalPlayer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/LocalPlayer.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/ServerAddress.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/ServerAddress.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerData.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerInputBinding.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerInputBinding.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerLobbyUI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerLobbyUI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerMovement.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerMovement.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerSpawnManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerSpawnManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/RelayManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/RelayManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +42,9 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2aRCJTMz9ARaBt0TBtnunaN0Pnh" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />

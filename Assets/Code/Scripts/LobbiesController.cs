@@ -1,3 +1,4 @@
+using Network;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,7 +14,7 @@ public class LobbiesController : MonoBehaviour
 		m_Root = m_Document.rootVisualElement;
 		m_Root.Q<Button>("Add").clicked += async () =>
 		{
-			
+			LobbyManager.Instance.CreateLobby("LobbyName");
 		};
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>
