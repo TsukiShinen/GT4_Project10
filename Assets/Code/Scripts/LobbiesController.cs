@@ -17,7 +17,7 @@ public class LobbiesController : MonoBehaviour
 		m_Root.Q<Button>("Add").clicked += async () =>
 		{
 			m_Root.style.display = DisplayStyle.None;
-			await GameManager.Instance.CreateLobby("Test", false);
+			await GameManager.Instance.CreateLobby(false);
 			m_InLobbyController.SetEnable(true);
 		};
 

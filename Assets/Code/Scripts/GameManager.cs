@@ -63,12 +63,12 @@ public class GameManager : MonoBehaviour
 		LobbyManager.Dispose();
 	}
 
-	public async Task CreateLobby(string name, bool isPrivate, string password = null, int maxPlayers = 4)
+	public async Task CreateLobby(bool isPrivate, string password = null, int maxPlayers = 4)
 	{
 		try
 		{
 			var lobby = await LobbyManager.CreateLobbyAsync(
-				name,
+				$"{LocalUser.DisplayName.Value}'s Room",
 				maxPlayers,
 				isPrivate,
 				LocalUser,
