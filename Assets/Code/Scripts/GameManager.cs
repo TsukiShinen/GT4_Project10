@@ -95,12 +95,19 @@ public class GameManager : NetworkBehaviour
 
 	public void StartHost()
 	{
+		NetworkManager.Singleton.ConnectionApprovalCallback += Network_ConnectionApprovalCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
 		NetworkManager.Singleton.StartHost();
 	}
 
+	private void Network_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest pConnectionApprovalRequest, NetworkManager.ConnectionApprovalResponse pConnectionApprovalResponse)
+	{
+		pConnectionApprovalResponse.Approved = true;
+	}
+
 	private void Network_OnClientConnectedCallback(ulong pClientId)
 	{
+		Debug.Log("Network_OnClientConnectedCallback");
 		m_PlayerDataNetworkList.Add(new PlayerData
 		{
 			ClientId = pClientId,
@@ -118,6 +125,7 @@ public class GameManager : NetworkBehaviour
 
 	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
 	{
+		Debug.Log("Network_Client_OnClientConnectedCallback");
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
 	}

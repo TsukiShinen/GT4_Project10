@@ -3,7 +3,7 @@ using Network;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LobbiesController : MonoBehaviour
+public class MenuLobbyController : MonoBehaviour
 {
 	[SerializeField] private UIDocument m_Document;
 	[SerializeField] private VisualTreeAsset m_RoomElement;
