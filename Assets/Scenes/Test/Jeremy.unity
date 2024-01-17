@@ -437,50 +437,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Document: {fileID: 498170473}
   m_room: {fileID: 9197481963319205126, guid: b2ec46c2b37866a4fb7ddadda005596f, type: 3}
---- !u!1 &517403232
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 517403234}
-  - component: {fileID: 517403235}
-  m_Layer: 0
-  m_Name: ConnectionManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &517403234
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517403232}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &517403235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517403232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d8d588df2904de697c7c86460647125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &598422289
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,8 +506,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Document: {fileID: 669644515}
   m_RoomElement: {fileID: 0}
-  m_TempVariableGameMode: {fileID: 0}
-  m_InLobbyController: {fileID: 0}
 --- !u!114 &669644515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1178,50 +1132,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 598422290}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!1 &1887034741
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1887034743}
-  - component: {fileID: 1887034742}
-  m_Layer: 0
-  m_Name: RelayManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1887034742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887034741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7af84d93ccf3af24b8d5730e4274f297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1887034743
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887034741}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.655117, y: 3.8683724, z: 4.488223}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1900501108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1142,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1900501110}
   - component: {fileID: 1900501109}
-  - component: {fileID: 1900501111}
   m_Layer: 0
   m_Name: UIDocument (IN lobby)
   m_TagString: Untagged
@@ -1272,20 +1181,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1900501111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900501108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d6e490c52138f5409476ed06e66f700, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Document: {fileID: 1900501109}
-  m_LobbiesController: {fileID: 1927304623}
 --- !u!1 &1927304620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,9 +1246,6 @@ MonoBehaviour:
   m_Document: {fileID: 1927304621}
   m_RoomElement: {fileID: 9197481963319205126, guid: b2ec46c2b37866a4fb7ddadda005596f,
     type: 3}
-  m_TempVariableGameMode: {fileID: 11400000, guid: eadc6d373a1dd704ba6f832f77eb8c25,
-    type: 2}
-  m_InLobbyController: {fileID: 1900501111}
 --- !u!1 &2109873390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,6 +1472,4 @@ SceneRoots:
   - {fileID: 1900501110}
   - {fileID: 1927304622}
   - {fileID: 1116949265}
-  - {fileID: 517403234}
   - {fileID: 869017350}
-  - {fileID: 1887034743}
