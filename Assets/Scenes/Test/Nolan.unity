@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Info: {fileID: 11400000, guid: 3d37feb4ebec3834089f2c26f542a4be, type: 2}
-  m_LobbyScene: 3
+  m_LobbyScene: Jeremy 1
 --- !u!114 &76429331
 MonoBehaviour:
   m_ObjectHideFlags: 0
