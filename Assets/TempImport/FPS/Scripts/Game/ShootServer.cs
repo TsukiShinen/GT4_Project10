@@ -27,7 +27,7 @@ public class ShootServer : NetworkBehaviour
                 Quaternion.LookRotation(shotDirection));
             newProjectile.GetComponent<NetworkObject>().Spawn();
 
-            newProjectile.Shoot(GameManager.Instance.GetPlayerGameObject(pServerRRpcParams.Receive.SenderClientId).GetComponentInChildren<WeaponController>());
+            newProjectile.Shoot(MultiplayerManager.Instance.GetPlayerGameObject(pServerRRpcParams.Receive.SenderClientId).GetComponentInChildren<WeaponController>());
         }
     }
 

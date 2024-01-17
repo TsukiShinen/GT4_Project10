@@ -14,15 +14,15 @@ public class MenuLobbyController : MonoBehaviour
 	{
 		m_Root = m_Document.rootVisualElement;
 
-		m_Root.Q<TextField>("Pseudo").value = GameManager.Instance.PlayerName;
+		m_Root.Q<TextField>("Pseudo").value = MultiplayerManager.Instance.PlayerName;
 		m_Root.Q<TextField>("Pseudo").RegisterValueChangedCallback(e =>
 		{
-			GameManager.Instance.PlayerName = e.newValue;
+			MultiplayerManager.Instance.PlayerName = e.newValue;
 		});
 		
 		m_Root.Q<Button>("Add").clicked += async () =>
 		{
-			LobbyManager.Instance.CreateLobby($"{GameManager.Instance.PlayerName}'s Room");
+			LobbyManager.Instance.CreateLobby($"{MultiplayerManager.Instance.PlayerName}'s Room");
 		};
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>

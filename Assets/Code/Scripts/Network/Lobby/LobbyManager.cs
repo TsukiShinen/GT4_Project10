@@ -119,7 +119,7 @@ namespace Network
 		{
 			try
 			{
-				var allocation = await Relay.Instance.CreateAllocationAsync(GameManager.k_MaxPlayerAmount - 1);
+				var allocation = await Relay.Instance.CreateAllocationAsync(MultiplayerManager.k_MaxPlayerAmount - 1);
 
 				return allocation;
 			}
@@ -164,7 +164,7 @@ namespace Network
 			OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
 			try
 			{
-				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, GameManager.k_MaxPlayerAmount, new CreateLobbyOptions()
+				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, MultiplayerManager.k_MaxPlayerAmount, new CreateLobbyOptions()
 				{
 					IsPrivate = pIsPrivate,
 				});
@@ -185,7 +185,7 @@ namespace Network
 				});
 				NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 				
-				GameManager.Instance.StartHost();
+				MultiplayerManager.Instance.StartHost();
 				Debug.Log($"Host Started");
 				NetworkManager.Singleton.SceneManager.LoadScene(m_LobbyScene, LoadSceneMode.Single);
 				OnCreateLobbySucceed?.Invoke(this, EventArgs.Empty);
@@ -215,7 +215,7 @@ namespace Network
 				
 				NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
-				GameManager.Instance.StartClient();
+				MultiplayerManager.Instance.StartClient();
 				Debug.Log($"Client Started");
 				OnJoinLobbySucceed?.Invoke(this, EventArgs.Empty);
 			}
