@@ -13,8 +13,6 @@ namespace Network
 {
 	public class LobbyManager : MonoBehaviour
 	{
-		private const int k_MaxPlayerAmount = 4;
-
 		[SerializeField] private LobbyInfo m_Info;
 
 		private Lobby m_JoinedLobby;
@@ -73,12 +71,12 @@ namespace Network
 			LobbyService.Instance.SendHeartbeatPingAsync(m_JoinedLobby.Id);
 		}
 
-		public async  void CreateLobby(string pLobbyName, bool pIsPrivate = false)
+		public async void CreateLobby(string pLobbyName, bool pIsPrivate = false)
 		{
 			Debug.Log($"<color=green>=== Lobby Creation</color>");
 			try
 			{
-				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, k_MaxPlayerAmount, new CreateLobbyOptions()
+				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, GameManager.k_MaxPlayerAmount, new CreateLobbyOptions()
 				{
 					IsPrivate = pIsPrivate,
 				});
@@ -108,7 +106,6 @@ namespace Network
 				m_Info.Code = m_JoinedLobby.LobbyCode;
 					
 				GameManager.Instance.StartClient();
-				SceneManager.LoadSceneAsync("Lobby", LoadSceneMode.Additive);
 			}
 			catch (LobbyServiceException e)
 			{
