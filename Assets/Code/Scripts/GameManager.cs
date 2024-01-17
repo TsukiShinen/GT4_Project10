@@ -1,5 +1,9 @@
+using System;
+using Network;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : NetworkBehaviour
 {
@@ -36,6 +40,28 @@ public class GameManager : NetworkBehaviour
 		m_PlayerDataNetworkList = new NetworkList<PlayerData>();
 	}
 
+	private void Start()
+	{
+		LobbyManager.Instance.OnCreateLobbyStarted += Lobby_OnCreateLobbyStarted;
+		LobbyManager.Instance.OnCreateLobbySucceed += Lobby_OnCreateLobbySucceed;
+		LobbyManager.Instance.OnCreateLobbyFailed += Lobby_OnCreateLobbyFailed;
+	}
+
+	private void Lobby_OnCreateLobbyStarted(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Open("Game", "Creating Lobby ...");
+	}
+
+	private void Lobby_OnCreateLobbySucceed(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Hide();
+	}
+
+	private void Lobby_OnCreateLobbyFailed(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Open("Game", "Failed to create the lobby", ("Close", MessagePopUp.Instance.Hide));
+	}
+
 	public void StartHost()
 	{
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
@@ -49,6 +75,7 @@ public class GameManager : NetworkBehaviour
 			ClientId = pClientId,
 		});
 		SetPlayerNameServerRpc(m_PlayerName);
+		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
 	}
 
 	public void StartClient()
@@ -60,6 +87,7 @@ public class GameManager : NetworkBehaviour
 	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
 	{
 		SetPlayerNameServerRpc(m_PlayerName);
+		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
 	}
 
 	[ServerRpc(RequireOwnership = false)]
@@ -70,6 +98,17 @@ public class GameManager : NetworkBehaviour
 
 		playerData.PlayerName = pPlayerName;
 		Debug.Log($"[ServerRpc] Player at index {playerDataIndex} change name to {pPlayerName}");
+		
+		m_PlayerDataNetworkList[playerDataIndex] = playerData;
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	private void SetPlayerIdServerRpc(string pPlayerId, ServerRpcParams pServerRpcParams = default)
+	{
+		var playerDataIndex = GetPlayerDataIndexFromClientId(pServerRpcParams.Receive.SenderClientId);
+		var playerData = m_PlayerDataNetworkList[playerDataIndex];
+
+		playerData.PlayerId = pPlayerId;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 	}

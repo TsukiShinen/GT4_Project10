@@ -4,10 +4,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 namespace Network
 {
@@ -15,7 +13,12 @@ namespace Network
 	{
 		[SerializeField] private LobbyInfo m_Info;
 
+		public event EventHandler OnCreateLobbyStarted;
+		public event EventHandler OnCreateLobbySucceed;
+		public event EventHandler OnCreateLobbyFailed;
+
 		private Lobby m_JoinedLobby;
+		public Lobby Lobby => m_JoinedLobby;
 		private float m_HeartBeatTimer;
 
 		private bool IsLobbyHost =>
@@ -74,6 +77,7 @@ namespace Network
 		public async void CreateLobby(string pLobbyName, bool pIsPrivate = false)
 		{
 			Debug.Log($"<color=green>=== Lobby Creation</color>");
+			OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
 			try
 			{
 				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, GameManager.k_MaxPlayerAmount, new CreateLobbyOptions()
@@ -86,10 +90,12 @@ namespace Network
 				
 				GameManager.Instance.StartHost();
 				SceneManager.LoadSceneAsync("Lobby", LoadSceneMode.Additive);
+				OnCreateLobbySucceed?.Invoke(this, EventArgs.Empty);
 			}
 			catch (LobbyServiceException e)
 			{
 				Debug.LogException(e);
+				OnCreateLobbyFailed?.Invoke(this, EventArgs.Empty);
 			}
 			Debug.Log($"<color=green>==================</color>");
 		}
@@ -112,6 +118,53 @@ namespace Network
 				Debug.LogException(e);
 			}
 			Debug.Log($"<color=green>=================</color>");
+		}
+
+		public async void DeleteLobby()
+		{
+			if (m_JoinedLobby == null)
+				return;
+			
+			try
+			{
+				await LobbyService.Instance.DeleteLobbyAsync(m_JoinedLobby.Id);
+				m_JoinedLobby = null;
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
+
+		public async void LeaveLobby()
+		{
+			if (m_JoinedLobby == null)
+				return;
+			
+			try
+			{
+				await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, AuthenticationService.Instance.PlayerId);
+				m_JoinedLobby = null;
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+			}
+		}
+
+		public async void KickLobby(string pPlayerId)
+		{
+			if (!IsLobbyHost)
+				return;
+			
+			try
+			{
+				await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, pPlayerId);
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+			}
 		}
 	}
 }
