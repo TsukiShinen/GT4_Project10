@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode.Transports.UTP;
 using Unity.Netcode;
 using Unity.Networking.Transport.Relay;
@@ -10,8 +10,8 @@ using UnityEngine;
 
 public class RelayManager : MonoBehaviour
 {
-    private const string KEY_RELAY = "Relay";
-    public static async void CreateRelay(Lobby pLobby)
+    private const string k_KeyRelay = "Relay";
+    public static async Task CreateRelay(Lobby pLobby)
     {
         try
         {
@@ -29,7 +29,7 @@ public class RelayManager : MonoBehaviour
                 {
                     Data = new Dictionary<string, DataObject>
                         {
-                            { KEY_RELAY, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                            { k_KeyRelay, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
                         }
                 });
             }
@@ -41,10 +41,11 @@ public class RelayManager : MonoBehaviour
         }
     }
 
-    public static async void JoinRelay(string pCode)
+    public static async Task JoinRelay(string pCode)
     {
         try
         {
+            Debug.Log("Join : " + pCode + "!");
             var allocation = await RelayService.Instance.JoinAllocationAsync(pCode);
 
             var relayServerData = new RelayServerData(allocation, "dtls");
@@ -53,7 +54,7 @@ public class RelayManager : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
-            Debug.Log(e);
+            Debug.LogError(e);
         }
     }
 }

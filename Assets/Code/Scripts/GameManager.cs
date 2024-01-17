@@ -19,6 +19,8 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+	private const string k_KeyRelayCode = nameof(Network.LocalLobby.RelayCode);
+	
 	private static GameManager m_GameManagerInstance;
 
 	public Action<GameState> OnGameStateChanged;
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
 
 			LobbyConverters.RemoteToLocal(lobby, LocalLobby);
 			await CreateLobby();
-			RelayManager.CreateRelay(lobby);
+			await RelayManager.CreateRelay(lobby);
 		}
 		catch (LobbyServiceException exception)
 		{
@@ -89,7 +91,7 @@ public class GameManager : MonoBehaviour
 
 			LobbyConverters.RemoteToLocal(lobby, LocalLobby);
 			await JoinLobby();
-			RelayManager.JoinRelay(lobbyCode);
+			await RelayManager.JoinRelay(lobby.Data[k_KeyRelayCode].Value);
 		}
 		catch (LobbyServiceException exception)
 		{
