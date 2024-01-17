@@ -1,9 +1,11 @@
 using System;
+using ScriptableObjects;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Network
@@ -11,6 +13,8 @@ namespace Network
 	public class LobbyManager : MonoBehaviour
 	{
 		private const int k_MaxPlayerAmount = 4;
+
+		[SerializeField] private LobbyInfo m_Info;
 
 		private Lobby m_JoinedLobby;
 		
@@ -33,10 +37,8 @@ namespace Network
 		private static async void InitializeUnityAuthentication()
 		{
 			if (UnityServices.State == ServicesInitializationState.Initialized) return;
-			
-			var options = new InitializationOptions();
-			options.SetProfile(Random.Range(0, 10000).ToString());
-			
+			await UnityServices.InitializeAsync();
+
 #if UNITY_EDITOR
 			if (ParrelSync.ClonesManager.IsClone())
 			{
@@ -44,33 +46,52 @@ namespace Network
 				AuthenticationService.Instance.SwitchProfile($"Clone{customArgument}_Profile");
 			}
 #endif
-
-			await UnityServices.InitializeAsync(options);
-
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
 			Debug.Log($"<color=green>===== Player Connected =====</color>");
 		}
 
 		public async  void CreateLobby(string pLobbyName, bool pIsPrivate = false)
 		{
+			Debug.Log($"<color=green>=== Lobby Creation</color>");
 			try
 			{
-				Debug.Log($"<color=green>=== Lobby Creation</color>");
 				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, k_MaxPlayerAmount, new CreateLobbyOptions()
 				{
 					IsPrivate = pIsPrivate,
 				});
-				Debug.Log($"Created");
-				Debug.Log($"Code : {m_JoinedLobby.LobbyCode}");
+				m_Info.Name = m_JoinedLobby.Name;
+				m_Info.Code = m_JoinedLobby.LobbyCode;
+				Debug.Log($"Created {m_JoinedLobby.Name} / Code : {m_JoinedLobby.LobbyCode}");
 				
 				GameManager.Instance.StartHost();
-				// TODO : Load new Scene
-				Debug.Log($"<color=green>==================</color>");
+				SceneManager.LoadSceneAsync("Lobby", LoadSceneMode.Additive);
 			}
 			catch (LobbyServiceException e)
 			{
 				Debug.LogException(e);
 			}
+			Debug.Log($"<color=green>==================</color>");
+		}
+
+		public async void JoinWithCode(string pLobbyCode)
+		{
+			Debug.Log($"<color=green>=== Joining Lobby</color>");
+			try
+			{
+				m_JoinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(pLobbyCode);
+				Debug.Log($"Joined");
+				
+				m_Info.Name = m_JoinedLobby.Name;
+				m_Info.Code = m_JoinedLobby.LobbyCode;
+					
+				GameManager.Instance.StartClient();
+				SceneManager.LoadSceneAsync("Lobby", LoadSceneMode.Additive);
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+			}
+			Debug.Log($"<color=green>=================</color>");
 		}
 	}
 }

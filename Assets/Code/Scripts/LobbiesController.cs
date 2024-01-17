@@ -24,7 +24,7 @@ public class LobbiesController : MonoBehaviour
 
 		m_Root.Q<Button>("Join").clicked += async () =>
 		{
-			
+			LobbyManager.Instance.JoinWithCode(m_Root.Q<TextField>("JoinCode").value);
 		};
 	}
 

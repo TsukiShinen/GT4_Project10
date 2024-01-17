@@ -1,19 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; justify-content: space-between;">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 10%; max-height: 10%; min-height: 10%; flex-direction: row; justify-content: space-around; align-self: center; width: 100%; max-width: 100%; min-width: 100%;">
-            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: center; justify-content: center;">
-                <ui:Button text="Settings" name="Settings" style="width: 25%; -unity-text-align: upper-center;" />
+    <ui:VisualElement name="Header" style="flex-direction: row; justify-content: space-between;">
+        <ui:Button text="Quit" name="Quit" />
+        <ui:VisualElement name="LobbyInfo" style="flex-grow: 1; align-items: center;">
+            <ui:VisualElement name="LobbyName" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label text="Lobby Name :" name="Label" style="padding-top: 0; padding-bottom: 0;" />
+                <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0;">
+                    <Bindings>
+                        <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Name" />
+                    </Bindings>
+                </ui:Label>
             </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: center; justify-content: center; -unity-background-image-tint-color: rgba(0, 0, 0, 0); color: rgb(27, 27, 27);">
-                <ui:Button text="AAAAAA" name="Code" style="width: 100%; -unity-text-align: middle-center; background-color: rgba(188, 188, 188, 0); font-size: 50px; padding-left: 0; padding-right: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-bottom: 0; max-width: 60%; min-width: 60%; height: 100%; max-height: 100%; min-height: 100%; justify-content: flex-start; color: rgb(27, 27, 27); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
-            </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: flex-end; justify-content: center; padding-right: 40px;">
-                <ui:Button text="Quit" name="Quit" />
+            <ui:VisualElement name="LobbyCode" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label text="Lobby Code :" name="Label" style="padding-top: 0; padding-bottom: 0;" />
+                <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0;">
+                    <Bindings>
+                        <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Code" />
+                    </Bindings>
+                </ui:Label>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: flex-end;">
-            <ui:Label text="0 / 8" name="Players" style="font-size: 30px;" />
-            <ui:Button text="Button" name="Ready" style="width: 25%; max-width: 25%; min-width: 25%; max-height: none;" />
-        </ui:VisualElement>
+        <ui:Button text="Ready" name="Ready" />
     </ui:VisualElement>
 </ui:UXML>

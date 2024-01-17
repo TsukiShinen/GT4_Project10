@@ -20,4 +20,9 @@ public class GameManager : MonoBehaviour
 	{
 		// TODO : StartHost
 	}
+
+	public void StartClient()
+	{
+		// TODO : Start Client
+	}
 }
