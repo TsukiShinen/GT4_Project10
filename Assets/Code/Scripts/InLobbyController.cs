@@ -15,7 +15,6 @@ public class InLobbyController : MonoBehaviour
     [SerializeField] private UIDocument m_Document;
 
     private VisualElement m_Root;
-    private Lobby m_Lobby;
 
     private void Awake()
     {
@@ -24,6 +23,11 @@ public class InLobbyController : MonoBehaviour
         {
             var status = GameManager.Instance.LocalUser.UserStatus.Value == PlayerStatus.Ready ? PlayerStatus.Lobby : PlayerStatus.Ready;
             GameManager.Instance.SetLocalUserStatus(status);
+        };
+
+        m_Root.Q<Button>("Code").clicked += async () =>
+        {
+            GUIUtility.systemCopyBuffer = m_Root.Q<Button>("Code").text;
         };
         SetEnable(false);
     }
@@ -48,7 +52,7 @@ public class InLobbyController : MonoBehaviour
 
     private void Join()
     {
-        m_Root.Q<TextElement>("Code").text = GameManager.Instance.LocalLobby.LobbyCode.Value;
+        m_Root.Q<Button>("Code").text = GameManager.Instance.LocalLobby.LobbyCode.Value;
     }
 
     private void OnPlayerUpdated(LocalPlayer player)
