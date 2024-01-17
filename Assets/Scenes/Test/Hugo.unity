@@ -655,6 +655,9 @@ MonoBehaviour:
   m_Document: {fileID: 1910732018}
   m_RoomElement: {fileID: 9197481963319205126, guid: b2ec46c2b37866a4fb7ddadda005596f,
     type: 3}
+  m_TempVariableGameMode: {fileID: 11400000, guid: eadc6d373a1dd704ba6f832f77eb8c25,
+    type: 2}
+  m_InLobbyController: {fileID: 0}
 --- !u!114 &1910732018
 MonoBehaviour:
   m_ObjectHideFlags: 0

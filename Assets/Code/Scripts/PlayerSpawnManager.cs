@@ -55,6 +55,7 @@ public class PlayerSpawnManager : NetworkBehaviour
 
             if (localPlayerObject != null)
             {
+                Debug.Log(spawnPoint);
                 localPlayerObject.transform.position = spawnPoint;
             }
             else

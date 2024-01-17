@@ -11,11 +11,12 @@ namespace Unity.FPS.Game
     {
         public GameObject TargetPrefab;
 
+        [System.Obsolete]
         void Awake()
         {
 #if UNITY_EDITOR
             List<GameObject> allPrefabObjectsInScene = new List<GameObject>();
-            foreach (Transform t in GameObject.FindObjectsOfType<Transform>())
+            foreach (Transform t in FindObjectsOfType<Transform>())
             {
                 if (PrefabUtility.IsAnyPrefabInstanceRoot(t.gameObject))
                 {
