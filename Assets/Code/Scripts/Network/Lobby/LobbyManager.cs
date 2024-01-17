@@ -121,7 +121,7 @@ namespace Network
 				Debug.Log($"Created {m_JoinedLobby.Name} / Code : {m_JoinedLobby.LobbyCode}");
 				
 				GameManager.Instance.StartHost();
-				SceneManager.LoadSceneAsync("Lobby", LoadSceneMode.Additive);
+				SceneManager.LoadSceneAsync("Lobby");
 				OnCreateLobbySucceed?.Invoke(this, EventArgs.Empty);
 			}
 			catch (LobbyServiceException e)

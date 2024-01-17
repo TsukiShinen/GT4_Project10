@@ -22,11 +22,12 @@ public class LobbiesController : MonoBehaviour
 		
 		m_Root.Q<Button>("Add").clicked += async () =>
 		{
-			LobbyManager.Instance.CreateLobby("LobbyName");
+			LobbyManager.Instance.CreateLobby($"{GameManager.Instance.PlayerName}'s Room");
 		};
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>
 		{
+			Debug.Log("Refresh Lobby list");
 			LobbyManager.Instance.ListLobbies();
 		};
 

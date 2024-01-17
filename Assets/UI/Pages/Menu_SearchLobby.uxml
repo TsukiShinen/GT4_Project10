@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; position: relative; background-color: rgb(36, 36, 36);">
+        <ui:TextField placeholder-text="Pseudo" name="Pseudo" data-source="project://database/Assets/ScriptableObjects/CurrentPlayerData.asset?fileID=11400000&amp;guid=3d6edf16267f5cf48b1542c39b555278&amp;type=2#CurrentPlayerData" max-length="-1" style="width: 40%; max-width: 40%; min-width: 40%; margin-bottom: 32px;" />
+        <ui:VisualElement name="Lobbies" style="flex-direction: row; height: 80%; width: 80%;">
+            <ui:VisualElement name="Menu" style="flex-grow: 1; justify-content: space-between; min-width: 119px; width: 33%; height: 100%;">
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:Button text="Create Lobby" name="Add" />
+                    <ui:Button text="Refresh Lobbies" name="Refresh" />
+                </ui:VisualElement>
+                <ui:VisualElement>
+                    <ui:TextField placeholder-text="ABCDEF" name="JoinCode" max-length="6" />
+                    <ui:Button text="Join" name="Join" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:ListView item-template="project://database/Assets/UI/Pages/LobbyRoomTemplate.uxml?fileID=9197481963319205126&amp;guid=b2ec46c2b37866a4fb7ddadda005596f&amp;type=3#LobbyRoomTemplate" name="RoomsList" fixed-item-height="50" show-border="false" style="margin-left: 0; height: 100%; width: 66%; justify-content: flex-start; align-self: auto; margin-top: 0; background-color: rgb(96, 96, 96); padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; max-height: none; min-height: auto;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
