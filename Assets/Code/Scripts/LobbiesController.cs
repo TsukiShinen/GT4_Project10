@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Network;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -26,7 +27,35 @@ public class LobbiesController : MonoBehaviour
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>
 		{
-			
+			LobbyManager.Instance.ListLobbies();
+		};
+
+		LobbyManager.Instance.OnLobbyListChanged += (sender, args) =>
+		{
+			var listView = m_Root.Q<ListView>("RoomsList");
+			listView.Clear();
+
+			var items = new List<VisualElement>();
+			foreach (var lobby in args.LobbyList)
+			{
+				var lobbyView = m_RoomElement.CloneTree();
+				lobbyView.Q<TextElement>("Name").text = lobby.Name;
+				lobbyView.Q<TextElement>("PlayerCount").text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
+				lobbyView.AddManipulator(new Clickable(e =>
+				{
+					LobbyManager.Instance.JoinWithCode(lobby.LobbyCode);
+				}));
+				items.Add(lobbyView);
+			}
+
+			listView.makeItem = () => new VisualElement();
+			listView.bindItem = (element, i) =>
+			{
+				element.Clear();
+				element.Add(items[i]);
+			};
+			listView.itemsSource = items;
+			listView.Rebuild();
 		};
 
 		m_Root.Q<Button>("Join").clicked += async () =>

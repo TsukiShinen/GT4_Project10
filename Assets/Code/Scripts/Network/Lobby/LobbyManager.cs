@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ScriptableObjects;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -19,6 +20,11 @@ namespace Network
 		public event EventHandler OnJoinLobbyStarted;
 		public event EventHandler OnJoinLobbySucceed;
 		public event EventHandler OnJoinLobbyFailed;
+		public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+		public class OnLobbyListChangedEventArgs : EventArgs
+		{
+			public List<Lobby> LobbyList;
+		}
 
 		private Lobby m_JoinedLobby;
 		public Lobby Lobby => m_JoinedLobby;
@@ -75,6 +81,29 @@ namespace Network
 
 			m_HeartBeatTimer = 15;
 			LobbyService.Instance.SendHeartbeatPingAsync(m_JoinedLobby.Id);
+		}
+
+		public async void ListLobbies()
+		{
+			try
+			{
+				var options = new QueryLobbiesOptions
+				{
+					Filters = new List<QueryFilter>
+					{
+						new (QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GE)
+					}
+				};
+				var response = await LobbyService.Instance.QueryLobbiesAsync(options);
+				OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs
+				{
+					LobbyList = response.Results,
+				});
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+			}
 		}
 
 		public async void CreateLobby(string pLobbyName, bool pIsPrivate = false)
