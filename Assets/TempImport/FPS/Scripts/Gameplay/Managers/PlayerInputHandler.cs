@@ -21,8 +21,8 @@ namespace Unity.FPS.Gameplay
 
         [Tooltip("Used to flip the horizontal input axis")]
         public bool InvertXAxis = false;
-
-        [SerializeField] private Rigidbody m_rigidbody;
+        
+        //[SerializeField] private Rigidbody m_rigidbody;
         [SerializeField] private float m_speed;
 
         private Vector3 m_inputDirection;
@@ -37,16 +37,9 @@ namespace Unity.FPS.Gameplay
             DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(
                 m_PlayerCharacterController, this, gameObject);
             m_GameFlowManager = FindFirstObjectByType<GameFlowManager>();
-            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, PlayerInputHandler>(m_GameFlowManager, this);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        }
-
-        private void FixedUpdate()
-        {
-            if (!IsOwner) return;
-            m_rigidbody.velocity = m_inputDirection * m_speed;
         }
 
         void LateUpdate()

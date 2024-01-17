@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Codice.Client.BaseCommands;
+using log4net.DateFormatter;
+using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -50,7 +53,7 @@ namespace Unity.FPS.Game
         [Header("Shoot Parameters")] [Tooltip("The type of weapon wil affect how it shoots")]
         public WeaponShootType ShootType;
 
-        [Tooltip("The projectile prefab")] public ProjectileBase ProjectilePrefab;
+        [Tooltip("The projectile prefab")] public int ProjectilePrefabId;
 
         [Tooltip("Minimum duration between two shots")]
         public float DelayBetweenShots = 0.5f;
@@ -163,6 +166,9 @@ namespace Unity.FPS.Game
 
         private Queue<Rigidbody> m_PhysicalAmmoPool;
 
+        private bool m_IsOwner;
+        private ShootServer m_ShootServer;
+
         void Awake()
         {
             m_CurrentAmmo = MaxAmmo;
@@ -194,6 +200,16 @@ namespace Unity.FPS.Game
                     m_PhysicalAmmoPool.Enqueue(shell.GetComponent<Rigidbody>());
                 }
             }
+        }
+
+        public void SetOwner()
+        {
+            m_IsOwner = true;
+        }
+
+        public void SetShootServer(ShootServer pShootServer)
+        {
+            m_ShootServer = pShootServer;
         }
 
         public void AddCarriablePhysicalBullets(int count) => m_CarriedPhysicalBullets = Mathf.Max(m_CarriedPhysicalBullets + count, MaxAmmo);
@@ -439,18 +455,14 @@ namespace Unity.FPS.Game
 
         void HandleShoot()
         {
+            if (!m_IsOwner)
+                return;
+
             int bulletsPerShotFinal = ShootType == WeaponShootType.Charge
                 ? Mathf.CeilToInt(CurrentCharge * BulletsPerShot)
                 : BulletsPerShot;
 
-            // spawn all bullets with random direction
-            for (int i = 0; i < bulletsPerShotFinal; i++)
-            {
-                Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
-                ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
-                    Quaternion.LookRotation(shotDirection));
-                newProjectile.Shoot(this);
-            }
+            m_ShootServer.Shoot(bulletsPerShotFinal, GetShotDirectionWithinSpread(WeaponMuzzle), ProjectilePrefabId, WeaponMuzzle.position);
 
             // muzzle flash
             if (MuzzleFlashPrefab != null)

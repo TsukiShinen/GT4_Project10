@@ -17,13 +17,6 @@ namespace Unity.FPS.Game
         void Start()
         {
             m_ActorsManager = FindFirstObjectByType<ActorsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, Actor>(m_ActorsManager, this);
-
-            // Register as an actor
-            if (!m_ActorsManager.Actors.Contains(this))
-            {
-                m_ActorsManager.Actors.Add(this);
-            }
         }
 
         void OnDestroy()

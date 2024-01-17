@@ -1,8 +1,7 @@
+using ScriptableObjects;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NaughtyAttributes;
-using ScriptableObjects;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -22,7 +21,7 @@ namespace Network
 		private const string k_KeyRelayJoinCode = "RelayJoinCode";
 		
 		[SerializeField] private LobbyInfo m_Info;
-		[SerializeField, Scene] private int m_LobbyScene;
+		[SerializeField] private string m_LobbyScene;
 
 		public event EventHandler OnCreateLobbyStarted;
 		public event EventHandler OnCreateLobbySucceed;
@@ -188,7 +187,7 @@ namespace Network
 				
 				GameManager.Instance.StartHost();
 				Debug.Log($"Host Started");
-				SceneManager.LoadSceneAsync(m_LobbyScene);
+				NetworkManager.Singleton.SceneManager.LoadScene(m_LobbyScene, LoadSceneMode.Single);
 				OnCreateLobbySucceed?.Invoke(this, EventArgs.Empty);
 			}
 			catch (LobbyServiceException e)

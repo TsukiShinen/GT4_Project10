@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
@@ -74,7 +76,7 @@ namespace Unity.FPS.Gameplay
 
             m_ProjectileBase.OnShoot += OnShoot;
 
-            Destroy(gameObject, MaxLifeTime);
+            StartCoroutine(DestroyIn(MaxLifeTime));
         }
 
         new void OnShoot()
@@ -246,7 +248,7 @@ namespace Unity.FPS.Gameplay
                     Quaternion.LookRotation(normal));
                 if (ImpactVfxLifetime > 0)
                 {
-                    Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
+                    StartCoroutine(DestroyIn(ImpactVfxLifetime));
                 }
             }
 
@@ -257,7 +259,13 @@ namespace Unity.FPS.Gameplay
             }
 
             // Self Destruct
-            Destroy(this.gameObject);
+            StartCoroutine(DestroyIn(0));
+        }
+
+        private IEnumerator DestroyIn(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            GetComponent<NetworkObject>().Despawn();
         }
 
         void OnDrawGizmosSelected()

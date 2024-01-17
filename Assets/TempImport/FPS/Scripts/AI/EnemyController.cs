@@ -147,7 +147,7 @@ namespace Unity.FPS.AI
             // Find and initialize all weapons
             FindAndInitializeAllWeapons();
             var weapon = GetCurrentWeapon();
-            weapon.ShowWeapon(true);
+            //weapon.ShowWeapon(true);
 
             var detectionModules = GetComponentsInChildren<DetectionModule>();
             DebugUtility.HandleErrorIfNoComponentFound<DetectionModule, EnemyController>(detectionModules.Length, this,
@@ -400,7 +400,7 @@ namespace Unity.FPS.AI
             {
                 // orient weapon towards player
                 Vector3 weaponForward = (lookPosition - m_Weapons[i].WeaponRoot.transform.position).normalized;
-                m_Weapons[i].transform.forward = weaponForward;
+                //m_Weapons[i].transform.forward = weaponForward;
             }
         }
 
@@ -415,20 +415,21 @@ namespace Unity.FPS.AI
                 return false;
 
             // Shoot the weapon
-            bool didFire = GetCurrentWeapon().HandleShootInputs(false, true, false);
+            //bool didFire = GetCurrentWeapon().HandleShootInputs(false, true, false);
 
-            if (didFire && onAttack != null)
-            {
-                onAttack.Invoke();
+            //if (didFire && onAttack != null)
+            //{
+            //    onAttack.Invoke();
 
-                if (SwapToNextWeapon && m_Weapons.Length > 1)
-                {
-                    int nextWeaponIndex = (m_CurrentWeaponIndex + 1) % m_Weapons.Length;
-                    SetCurrentWeapon(nextWeaponIndex);
-                }
-            }
+            //    if (SwapToNextWeapon && m_Weapons.Length > 1)
+            //    {
+            //        int nextWeaponIndex = (m_CurrentWeaponIndex + 1) % m_Weapons.Length;
+            //        SetCurrentWeapon(nextWeaponIndex);
+            //    }
+            //}
 
-            return didFire;
+            //return didFire;
+            return false;
         }
 
         public bool TryDropItem()
@@ -461,14 +462,14 @@ namespace Unity.FPS.AI
         {
             FindAndInitializeAllWeapons();
             // Check if no weapon is currently selected
-            if (m_CurrentWeapon == null)
-            {
-                // Set the first weapon of the weapons list as the current weapon
-                SetCurrentWeapon(0);
-            }
+            //if (m_CurrentWeapon == null)
+            //{
+            //    // Set the first weapon of the weapons list as the current weapon
+            //    SetCurrentWeapon(0);
+            //}
 
-            DebugUtility.HandleErrorIfNullGetComponent<WeaponController, EnemyController>(m_CurrentWeapon, this,
-                gameObject);
+            //DebugUtility.HandleErrorIfNullGetComponent<WeaponController, EnemyController>(m_CurrentWeapon, this,
+            //    gameObject);
 
             return m_CurrentWeapon;
         }

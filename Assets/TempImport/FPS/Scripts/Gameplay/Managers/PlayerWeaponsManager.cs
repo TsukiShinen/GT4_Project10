@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerWeaponsManager : MonoBehaviour
+    public class PlayerWeaponsManager : NetworkBehaviour
     {
         public enum WeaponSwitchState
         {
@@ -15,6 +16,9 @@ namespace Unity.FPS.Gameplay
             PutDownPrevious,
             PutUpNew,
         }
+
+        [Tooltip("ShootServer")]
+        public ShootServer ShootServer;
 
         [Tooltip("List of weapon the player will start with")]
         public List<WeaponController> StartingWeapons = new List<WeaponController>();
@@ -174,6 +178,9 @@ namespace Unity.FPS.Gameplay
                 }
             }
 
+            if (WeaponCamera == null)
+                return;
+
             // Pointing at enemy handling
             IsPointingAtEnemy = false;
             if (activeWeapon)
@@ -283,6 +290,9 @@ namespace Unity.FPS.Gameplay
         // Updates weapon position and camera FoV for the aiming transition
         void UpdateWeaponAiming()
         {
+            if (WeaponCamera == null)
+                return;
+
             if (m_WeaponSwitchState == WeaponSwitchState.Up)
             {
                 WeaponController activeWeapon = GetActiveWeapon();
@@ -448,6 +458,12 @@ namespace Unity.FPS.Gameplay
                     weaponInstance.Owner = gameObject;
                     weaponInstance.SourcePrefab = weaponPrefab.gameObject;
                     weaponInstance.ShowWeapon(false);
+
+                    if (IsOwner)
+                    {
+                        weaponInstance.SetOwner();
+                        weaponInstance.SetShootServer(ShootServer);
+                    }
 
                     // Assign the first person layer to the weapon
                     int layerIndex =

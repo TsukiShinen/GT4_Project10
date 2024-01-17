@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Network;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -7,13 +8,15 @@ using Random = UnityEngine.Random;
 
 public class GameManager : NetworkBehaviour
 {
+    [SerializeField] private GameObject m_PlayerPrefab;
 	public const int k_MaxPlayerAmount = 4;
 	private const string k_PlayerPref_PlayerName = "PlayerName";
 	
 	private NetworkList<PlayerData> m_PlayerDataNetworkList;
+	private Dictionary<ulong, GameObject> m_PlayerGameObjects = new Dictionary<ulong, GameObject>();
 	private string m_PlayerName;
 
-	public string PlayerName
+    public string PlayerName
 	{
 		get => m_PlayerName;
 		set
@@ -25,7 +28,17 @@ public class GameManager : NetworkBehaviour
 	
 	public static GameManager Instance { get; private set; }
 
-	private void Awake()
+    public GameObject GetPlayerGameObject(ulong pId)
+    {
+        if (m_PlayerGameObjects.TryGetValue(pId, out GameObject playerGameObject))
+        {
+            return playerGameObject;
+        }
+
+        return null;
+    }
+
+    private void Awake()
 	{
 		if (Instance)
 		{
@@ -58,7 +71,7 @@ public class GameManager : NetworkBehaviour
 	private void Lobby_OnCreateLobbySucceed(object sender, EventArgs e)
 	{
 		MessagePopUp.Instance.Hide();
-	}
+    }
 
 	private void Lobby_OnCreateLobbyFailed(object sender, EventArgs e)
 	{
@@ -73,7 +86,7 @@ public class GameManager : NetworkBehaviour
 	private void Lobby_OnJoinLobbySucceed(object sender, EventArgs e)
 	{
 		MessagePopUp.Instance.Hide();
-	}
+    }
 
 	private void Lobby_OnJoinLobbyFailed(object sender, EventArgs e)
 	{
@@ -94,7 +107,8 @@ public class GameManager : NetworkBehaviour
 		});
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
-	}
+        SpawnPlayerServerRpc(pClientId);
+    }
 
 	public void StartClient()
 	{
@@ -136,4 +150,13 @@ public class GameManager : NetworkBehaviour
 		// TODO : GetPLayerDataIndexFromClientId
 		return 0;
 	}
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnPlayerServerRpc(ulong pClientId, ServerRpcParams pServerRpcParams = default)
+    {
+        var gameObject = Instantiate(m_PlayerPrefab);
+		gameObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(pClientId, false);
+
+		m_PlayerGameObjects.Add(pClientId, gameObject);
+    }
 }
