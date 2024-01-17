@@ -22,6 +22,7 @@ namespace Unity.FPS.Game
             EnemyAttack
         }
 
+        [System.Obsolete]
         public static void CreateSFX(AudioClip clip, Vector3 position, AudioGroups audioGroup, float spatialBlend,
             float rolloffDistanceMin = 1f)
         {
@@ -39,6 +40,7 @@ namespace Unity.FPS.Game
             timedSelfDestruct.LifeTime = clip.length;
         }
 
+        [System.Obsolete]
         public static AudioMixerGroup GetAudioGroup(AudioGroups group)
         {
             if (s_AudioManager == null)
@@ -53,6 +55,7 @@ namespace Unity.FPS.Game
             return null;
         }
 
+        [System.Obsolete]
         public static void SetMasterVolume(float value)
         {
             if (s_AudioManager == null)
@@ -65,6 +68,7 @@ namespace Unity.FPS.Game
             s_AudioManager.SetFloat("MasterVolume", valueInDb);
         }
 
+        [System.Obsolete]
         public static float GetMasterVolume()
         {
             if (s_AudioManager == null)

@@ -120,10 +120,10 @@ namespace Unity.FPS.AI
 
         void Start()
         {
-            m_EnemyManager = FindObjectOfType<EnemyManager>();
+            m_EnemyManager = FindFirstObjectByType<EnemyManager>();
             DebugUtility.HandleErrorIfNullFindObject<EnemyManager, EnemyController>(m_EnemyManager, this);
 
-            m_ActorsManager = FindObjectOfType<ActorsManager>();
+            m_ActorsManager = FindFirstObjectByType<ActorsManager>();
             DebugUtility.HandleErrorIfNullFindObject<ActorsManager, EnemyController>(m_ActorsManager, this);
 
             m_EnemyManager.RegisterEnemy(this);
@@ -137,7 +137,7 @@ namespace Unity.FPS.AI
             NavMeshAgent = GetComponent<NavMeshAgent>();
             m_SelfColliders = GetComponentsInChildren<Collider>();
 
-            m_GameFlowManager = FindObjectOfType<GameFlowManager>();
+            m_GameFlowManager = FindFirstObjectByType<GameFlowManager>();
             DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
 
             // Subscribe to damage & death actions

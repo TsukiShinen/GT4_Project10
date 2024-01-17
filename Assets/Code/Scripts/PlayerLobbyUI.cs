@@ -27,12 +27,12 @@ public class PlayerLobbyUI : MonoBehaviour
 
     private void OnEnable()
     {
-        m_Player.UserStatus.onChanged += OnLobbyChange;     
+        m_Player.UserStatus.OnChanged += OnLobbyChange;     
     }
 
     private void OnDisable()
     {
-        m_Player.UserStatus.onChanged -= OnLobbyChange;
+        m_Player.UserStatus.OnChanged -= OnLobbyChange;
     }
 
     private void OnLobbyChange(PlayerStatus statut)
