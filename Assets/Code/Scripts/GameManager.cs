@@ -159,13 +159,14 @@ public class GameManager : MonoBehaviour
 		SendLocalLobbyData();
 	}
 
-	private void OnPlayersReady(int readyCount)
+	private async void OnPlayersReady(int readyCount)
 	{
 		if (readyCount == LocalLobby.PlayerCount &&
 		    LocalLobby.LocalLobbyState.Value != LobbyState.CountDown)
 		{
 			LocalLobby.LocalLobbyState.Value = LobbyState.CountDown;
 			SendLocalLobbyData();
+			await UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("PVE");
 		}
 		else if (LocalLobby.LocalLobbyState.Value == LobbyState.CountDown)
 		{
