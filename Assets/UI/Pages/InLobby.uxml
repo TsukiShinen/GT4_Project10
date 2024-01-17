@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/InLobby.uss?fileID=7433441132597879392&amp;guid=0ab3b7727584b47478561f166f448d9f&amp;type=3#InLobby" />
     <ui:VisualElement style="flex-grow: 1; justify-content: space-between;">
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 10%; max-height: 10%; min-height: 10%; flex-direction: row; justify-content: space-around; align-self: center; width: 100%; max-width: 100%; min-width: 100%;">
             <ui:VisualElement style="flex-grow: 1; width: 33%; max-width: 33%; min-width: 33%; align-items: center; justify-content: center;">

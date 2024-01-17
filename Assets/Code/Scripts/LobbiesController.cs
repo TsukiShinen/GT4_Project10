@@ -71,4 +71,9 @@ public class LobbiesController : MonoBehaviour
 			m_InLobbyController.SetEnable(true);
 		};
 	}
+
+    public void SetEnable(bool isActive)
+    {
+        m_Root.style.display = isActive ? DisplayStyle.Flex : DisplayStyle.None;
+    }
 }

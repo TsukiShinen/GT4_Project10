@@ -13,6 +13,7 @@ using NUnit.Framework.Internal;
 public class InLobbyController : MonoBehaviour
 {
     [SerializeField] private UIDocument m_Document;
+    [SerializeField] private LobbiesController m_LobbiesController;
 
     private VisualElement m_Root;
 
@@ -28,6 +29,20 @@ public class InLobbyController : MonoBehaviour
         m_Root.Q<Button>("Code").clicked += async () =>
         {
             GUIUtility.systemCopyBuffer = m_Root.Q<Button>("Code").text;
+        };
+
+        m_Root.Q<Button>("Quit").clicked += async () =>
+        {
+            GameManager.Instance.LeaveLobby();
+            SetEnable(false);
+            m_LobbiesController.SetEnable(true);
+        };
+
+        //m_Root.Q<Button>("Settings").style.display = GameManager.Instance.LocalUser.IsHost.Value ? DisplayStyle.Flex : DisplayStyle.None;
+        m_Root.Q<VisualElement>("SettingsPanel").style.display = DisplayStyle.None;
+        m_Root.Q<Button>("Settings").clicked += () =>
+        {
+            m_Root.Q<Button>("SettingsPanel").style.display = DisplayStyle.Flex;
         };
         SetEnable(false);
     }

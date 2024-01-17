@@ -1285,6 +1285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Document: {fileID: 1900501109}
+  m_LobbiesController: {fileID: 1927304623}
 --- !u!1 &1927304620
 GameObject:
   m_ObjectHideFlags: 0
