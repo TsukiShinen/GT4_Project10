@@ -16,6 +16,9 @@ namespace Network
 		public event EventHandler OnCreateLobbyStarted;
 		public event EventHandler OnCreateLobbySucceed;
 		public event EventHandler OnCreateLobbyFailed;
+		public event EventHandler OnJoinLobbyStarted;
+		public event EventHandler OnJoinLobbySucceed;
+		public event EventHandler OnJoinLobbyFailed;
 
 		private Lobby m_JoinedLobby;
 		public Lobby Lobby => m_JoinedLobby;
@@ -103,6 +106,7 @@ namespace Network
 		public async void JoinWithCode(string pLobbyCode)
 		{
 			Debug.Log($"<color=green>=== Joining Lobby</color>");
+			OnJoinLobbyStarted?.Invoke(this, EventArgs.Empty);
 			try
 			{
 				m_JoinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(pLobbyCode);
@@ -112,10 +116,12 @@ namespace Network
 				m_Info.Code = m_JoinedLobby.LobbyCode;
 					
 				GameManager.Instance.StartClient();
+				OnJoinLobbySucceed?.Invoke(this, EventArgs.Empty);
 			}
 			catch (LobbyServiceException e)
 			{
 				Debug.LogException(e);
+				OnJoinLobbyFailed?.Invoke(this, EventArgs.Empty);
 			}
 			Debug.Log($"<color=green>=================</color>");
 		}

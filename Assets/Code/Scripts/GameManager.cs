@@ -45,6 +45,9 @@ public class GameManager : NetworkBehaviour
 		LobbyManager.Instance.OnCreateLobbyStarted += Lobby_OnCreateLobbyStarted;
 		LobbyManager.Instance.OnCreateLobbySucceed += Lobby_OnCreateLobbySucceed;
 		LobbyManager.Instance.OnCreateLobbyFailed += Lobby_OnCreateLobbyFailed;
+		LobbyManager.Instance.OnJoinLobbyStarted += Lobby_OnJoinLobbyStarted;
+		LobbyManager.Instance.OnJoinLobbySucceed += Lobby_OnJoinLobbySucceed;
+		LobbyManager.Instance.OnJoinLobbyFailed += Lobby_OnJoinLobbyFailed;
 	}
 
 	private void Lobby_OnCreateLobbyStarted(object sender, EventArgs e)
@@ -60,6 +63,21 @@ public class GameManager : NetworkBehaviour
 	private void Lobby_OnCreateLobbyFailed(object sender, EventArgs e)
 	{
 		MessagePopUp.Instance.Open("Game", "Failed to create the lobby", ("Close", MessagePopUp.Instance.Hide));
+	}
+
+	private void Lobby_OnJoinLobbyStarted(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Open("Game", "Joining Lobby ...");
+	}
+
+	private void Lobby_OnJoinLobbySucceed(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Hide();
+	}
+
+	private void Lobby_OnJoinLobbyFailed(object sender, EventArgs e)
+	{
+		MessagePopUp.Instance.Open("Game", "Failed to join the lobby", ("Close", MessagePopUp.Instance.Hide));
 	}
 
 	public void StartHost()
