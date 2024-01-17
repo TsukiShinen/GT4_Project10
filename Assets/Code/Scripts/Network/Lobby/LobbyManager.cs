@@ -4,6 +4,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -17,6 +18,10 @@ namespace Network
 		[SerializeField] private LobbyInfo m_Info;
 
 		private Lobby m_JoinedLobby;
+		private float m_HeartBeatTimer;
+
+		private bool IsLobbyHost =>
+			m_JoinedLobby != null && m_JoinedLobby.HostId == AuthenticationService.Instance.PlayerId;
 		
 		public static LobbyManager Instance { get; private set; }
 
@@ -48,6 +53,24 @@ namespace Network
 #endif
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
 			Debug.Log($"<color=green>===== Player Connected =====</color>");
+		}
+
+		private void Update()
+		{
+			HandleHeartBeat();
+		}
+
+		private void HandleHeartBeat()
+		{
+			if (!IsLobbyHost)
+				return;
+
+			m_HeartBeatTimer -= Time.deltaTime;
+			if (m_HeartBeatTimer > 0)
+				return;
+
+			m_HeartBeatTimer = 15;
+			LobbyService.Instance.SendHeartbeatPingAsync(m_JoinedLobby.Id);
 		}
 
 		public async  void CreateLobby(string pLobbyName, bool pIsPrivate = false)
