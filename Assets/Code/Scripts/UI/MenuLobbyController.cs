@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class MenuLobbyController : MonoBehaviour
 {
 	[SerializeField] private UIDocument m_Document;
+	[SerializeField] private CreateLobbyController m_CreateLobby;
 	[SerializeField] private VisualTreeAsset m_RoomElement;
 	
 	private VisualElement m_Root;
@@ -22,7 +23,7 @@ public class MenuLobbyController : MonoBehaviour
 		
 		m_Root.Q<Button>("Add").clicked += async () =>
 		{
-			LobbyManager.Instance.CreateLobby($"{MultiplayerManager.Instance.PlayerName}'s Room");
+			m_CreateLobby.Open();
 		};
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1aaccafc0074d70bfddceb04342507f, type: 3}
-  m_Name: GameModes
+  m_Script: {fileID: 11500000, guid: 98b0927083524c468bee1459736ba612, type: 3}
+  m_Name: PVP Control
   m_EditorClassIdentifier: 
-  m_GameModesConfig:
-  - {fileID: 11400000, guid: eadc6d373a1dd704ba6f832f77eb8c25, type: 2}
-  - {fileID: 11400000, guid: acae0676f0bc3464ba957aa05954b1a9, type: 2}
+  m_Name: PVP Control
+  m_MaxPlayer: 6
+  m_SceneName: PVP Control

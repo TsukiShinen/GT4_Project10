@@ -6,9 +6,12 @@ namespace ScriptableObjects.GameModes
 	public class GameModeConfig : ScriptableObject
 	{
 		[SerializeField] private string m_Name;
+		public string Name => m_Name;
 
 		[SerializeField] private int m_MaxPlayer;
-		public string Name => m_Name;
 		public int MaxPlayer => m_MaxPlayer;
+		
+		[SerializeField] private string m_SceneName;
+		public string SceneName => m_SceneName;
 	}
 }

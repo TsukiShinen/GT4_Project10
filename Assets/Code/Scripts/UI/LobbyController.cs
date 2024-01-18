@@ -5,7 +5,6 @@ namespace DefaultNamespace
 {
 	public class LobbyController : MonoBehaviour
 	{
-		
 		[SerializeField] private UIDocument m_Document;
 	
 		private VisualElement m_Root;

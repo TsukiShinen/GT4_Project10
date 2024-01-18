@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Name: PVE
   m_MaxPlayer: 2
+  m_SceneName: PVE
