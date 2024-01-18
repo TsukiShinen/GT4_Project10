@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Network;
+using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -9,9 +10,11 @@ using Random = UnityEngine.Random;
 
 public class MultiplayerManager : NetworkBehaviour
 {
-	public const int k_MaxPlayerAmount = 4;
 	private const string k_PlayerPref_PlayerName = "PlayerName";
 
+	public int MaxPlayerAmount = 4;
+	public GameModeConfig GameMode;
+	
 	public event EventHandler OnTryingToJoinGame;
 	public event EventHandler OnFailedToJoinGame;
 	
@@ -101,7 +104,7 @@ public class MultiplayerManager : NetworkBehaviour
 			return;
 		}
 
-		if (NetworkManager.Singleton.ConnectedClientsIds.Count >= k_MaxPlayerAmount)
+		if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MaxPlayerAmount)
 		{
 			pConnectionApprovalResponse.Approved = false;
 			pConnectionApprovalResponse.Reason = "Game is full";

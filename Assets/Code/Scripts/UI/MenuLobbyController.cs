@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Network;
+using ScriptableObjects.GameModes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +10,7 @@ public class MenuLobbyController : MonoBehaviour
 	[SerializeField] private UIDocument m_Document;
 	[SerializeField] private CreateLobbyController m_CreateLobby;
 	[SerializeField] private VisualTreeAsset m_RoomElement;
+	[SerializeField] private GameModes m_GameModes;
 	
 	private VisualElement m_Root;
 
@@ -42,6 +45,9 @@ public class MenuLobbyController : MonoBehaviour
 			{
 				var lobbyView = m_RoomElement.CloneTree();
 				lobbyView.Q<TextElement>("Name").text = lobby.Name;
+				lobbyView.Q<TextElement>("GameMode").text = lobby.Data.TryGetValue(LobbyManager.k_KeyGameModeIndex, out var value) 
+					? m_GameModes.GameModeConfigs[int.Parse(value.Value)].Name 
+					: "Unknown";
 				lobbyView.Q<TextElement>("PlayerCount").text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
 				lobbyView.AddManipulator(new Clickable(e =>
 				{

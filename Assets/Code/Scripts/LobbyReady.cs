@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Network;
+using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LobbyReady : NetworkBehaviour
 {
-	[SerializeField] private string m_GameScene;
-	
 	private Dictionary<ulong, bool> m_PlayerReadyDictionary;
 
 	public static LobbyReady Instance;
@@ -41,6 +40,6 @@ public class LobbyReady : NetworkBehaviour
 		if (!allClientReady)
 			return;
 
-		NetworkManager.Singleton.SceneManager.LoadScene(m_GameScene, LoadSceneMode.Single);
+		NetworkManager.Singleton.SceneManager.LoadScene(MultiplayerManager.Instance.GameMode.Name, LoadSceneMode.Single);
 	}
 }

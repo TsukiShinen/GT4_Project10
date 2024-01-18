@@ -2,6 +2,7 @@ using ScriptableObjects;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -19,10 +20,12 @@ namespace Network
 	public class LobbyManager : MonoBehaviour
 	{
 		private const string k_KeyRelayJoinCode = "RelayJoinCode";
+		public const string k_KeyGameModeIndex = "GameModeIndex";
 		
 		[SerializeField] private LobbyInfo m_Info;
 		[SerializeField] private string m_LobbyScene;
-
+		[SerializeField] private GameModes m_GameModes;
+		
 		public event EventHandler OnCreateLobbyStarted;
 		public event EventHandler OnCreateLobbySucceed;
 		public event EventHandler OnCreateLobbyFailed;
@@ -119,7 +122,7 @@ namespace Network
 		{
 			try
 			{
-				var allocation = await Relay.Instance.CreateAllocationAsync(MultiplayerManager.k_MaxPlayerAmount - 1);
+				var allocation = await Relay.Instance.CreateAllocationAsync(MultiplayerManager.Instance.MaxPlayerAmount - 1);
 
 				return allocation;
 			}
@@ -158,13 +161,16 @@ namespace Network
 			}
 		}
 		
-		public async void CreateLobby(string pLobbyName, bool pIsPrivate = false)
+		public async void CreateLobby(string pLobbyName, GameModeConfig pGameMode, int pMaxPlayers, bool pIsPrivate = false)
 		{
 			Debug.Log($"<color=green>=== Lobby Creation</color>");
 			OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
 			try
 			{
-				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, MultiplayerManager.k_MaxPlayerAmount, new CreateLobbyOptions()
+				MultiplayerManager.Instance.MaxPlayerAmount = pMaxPlayers;
+				MultiplayerManager.Instance.GameMode = pGameMode;
+				
+				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, new CreateLobbyOptions()
 				{
 					IsPrivate = pIsPrivate,
 				});
@@ -180,6 +186,7 @@ namespace Network
 				{
 					Data = new Dictionary<string, DataObject>
 					{
+						{ k_KeyGameModeIndex, new DataObject(DataObject.VisibilityOptions.Public, m_GameModes.GameModeConfigs.IndexOf(pGameMode).ToString()) },
 						{ k_KeyRelayJoinCode, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode)}
 					}
 				});

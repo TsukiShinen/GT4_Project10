@@ -9,16 +9,16 @@
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ScriptableObjects/GameModes/GameModeConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ScriptableObjects/GameModes/GameModeConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MenuLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MenuLobbyController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MessagePopUp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MessagePopUp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MessagePopUp.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MessagePopUp.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbySpawner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbySpawner.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/CreateLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/CreateLobbyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Base.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Base.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/GameModes/GameModes.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/GameModes/GameModes.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/GameModes/PVE.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/GameModes/PVE.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +29,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Code/Scripts/LobbiesController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Plugins/InputForUI/InputSystemProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Editor/NetworkObjectEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Connection/NetworkConnectionManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -46,8 +45,8 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/SDK/UpdatePlayerOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.qos@1.2.0/Runtime/Runner/QosJob.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/GameManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/LobbiesController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/UI/MenuLobbyController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.services.authentication@3.0.0/Runtime/AuthenticationService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -138,7 +137,7 @@
       <workItem from="1705477147051" duration="1627000" />
       <workItem from="1705478787203" duration="460000" />
       <workItem from="1705479314019" duration="3436000" />
-      <workItem from="1705610388280" duration="1531000" />
+      <workItem from="1705610388280" duration="4196000" />
     </task>
     <servers />
   </component>

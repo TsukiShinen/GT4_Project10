@@ -40,7 +40,7 @@ public class CreateLobbyController : MonoBehaviour
 
 		Root.Q<Button>("Create").clicked += () =>
 		{
-			LobbyManager.Instance.CreateLobby(m_Name.value, m_IsPrivate.value);
+			LobbyManager.Instance.CreateLobby(m_Name.value, m_GameModes.GameModeConfigs.Find(g => g.Name == m_GameMode.value),m_MaxPlayer.value , m_IsPrivate.value);
 		};
 	}
 

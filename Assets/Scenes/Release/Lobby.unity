@@ -4750,7 +4750,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1622147676}
   - component: {fileID: 1622147677}
-  - component: {fileID: 1622147678}
   - component: {fileID: 1622147675}
   m_Layer: 0
   m_Name: LobbyManagers
@@ -4771,7 +4770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015846f5253149ce9897acf2adf2e9aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GameScene: PVP Control
+  m_GameModes: {fileID: 0}
 --- !u!4 &1622147676
 Transform:
   m_ObjectHideFlags: 0
@@ -4807,20 +4806,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1622147678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1622147674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51be768a831e489692ff11a8438d73d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlayerPrefab: {fileID: 8362810639786188022, guid: bd5c9ed06aded044ca89812658e46d99,
-    type: 3}
 --- !u!1001 &1625607683
 PrefabInstance:
   m_ObjectHideFlags: 0
