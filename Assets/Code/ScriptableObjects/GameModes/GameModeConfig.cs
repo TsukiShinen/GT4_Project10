@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace ScriptableObjects.GameModes
@@ -11,7 +12,7 @@ namespace ScriptableObjects.GameModes
 		[SerializeField] private int m_MaxPlayer;
 		public int MaxPlayer => m_MaxPlayer;
 		
-		[SerializeField] private string m_SceneName;
+		[SerializeField, Scene] private string m_SceneName;
 		public string SceneName => m_SceneName;
 	}
 }
