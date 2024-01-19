@@ -8,17 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbySpawner.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbySpawner.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/CreateLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/CreateLobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Base.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Base.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +129,7 @@
       <workItem from="1705478787203" duration="460000" />
       <workItem from="1705479314019" duration="3436000" />
       <workItem from="1705610388280" duration="4196000" />
+      <workItem from="1705695978452" duration="340000" />
     </task>
     <servers />
   </component>
