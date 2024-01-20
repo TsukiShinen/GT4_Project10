@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: PVP Control
   m_EditorClassIdentifier: 
   m_Name: PVP Control
-  m_MaxPlayer: 6
+  m_MaxPlayer: 3
+  m_HasTeams: 1
   m_SceneName: PVP Control

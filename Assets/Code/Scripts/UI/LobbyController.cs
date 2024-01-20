@@ -13,16 +13,12 @@ public class LobbyController : NetworkBehaviour
     [SerializeField] private VisualTreeAsset m_Player;
 
     private VisualElement m_Root;
-    private ListView m_Team1ListView;
-
-    private List<VisualElement> m_Elements;
-    private Dictionary<ulong, VisualElement> m_Dict;
+    private List<VisualElement> m_Elements1;
+    private List<VisualElement> m_Elements2;
 
     private void Start()
     {
         m_Root = m_Document.rootVisualElement;
-        m_Elements = new List<VisualElement>();
-        m_Dict = new Dictionary<ulong, VisualElement>();
 
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += OnPlayerDataNetworkListChanged;
 
@@ -39,21 +35,71 @@ public class LobbyController : NetworkBehaviour
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         };
 
-        m_Team1ListView = m_Root.Q<ListView>("PlayerList1");
 
-        for (int i = 0; i < 5; i++)
-            AddPlayerElement();
+        InitPlayerList();
+        UpdatePlayers();
+    }
 
-        m_Team1ListView.makeItem = () => new VisualElement();
-        m_Team1ListView.bindItem = (element, i) =>
+    private void InitPlayerList()
+    {
+        if (MultiplayerManager.Instance.GameModeConfig.HasTeams)
+            InitPlayerListWithTeam();
+        else
+            InitPlayerListWithoutTeam();
+    }
+
+    private void InitPlayerListWithTeam()
+    {
+        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
+        m_Elements2 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
+        
+        _ = SetupList("PlayerList1", m_Elements1);
+        _ = SetupList("PlayerList2", m_Elements2);
+    }
+
+    private void InitPlayerListWithoutTeam()
+    {
+        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
+        
+        _ = SetupList("PlayerList1", m_Elements1);
+        m_Root.Q("Team1").Q<TextElement>("TeamName").text = "Players";
+        m_Root.Q("Team2").style.display = DisplayStyle.None;
+    }
+
+    private ListView SetupList(string pName, List<VisualElement> pRefList)
+    {
+        var view = m_Root.Q<ListView>(pName);
+        view.makeItem = () => new VisualElement();
+        view.bindItem = (element, i) =>
         {
             element.Clear();
-            element.Add(m_Elements[i]);
+            element.Add(pRefList[i]);
         };
-        m_Team1ListView.itemsSource = m_Elements;
-        m_Team1ListView.Rebuild();
-        
-        UpdatePlayers();
+        view.itemsSource = pRefList;
+        view.Rebuild();
+        return view;
+    }
+
+    private void ClearPlayerList(List<VisualElement> pList)
+    {
+        foreach (var item in pList)
+        {
+            item.Q<Button>("Join").style.display = MultiplayerManager.Instance.GameModeConfig.HasTeams ? DisplayStyle.Flex : DisplayStyle.None;
+            item.Q<TextElement>("Name").text = "";
+        }
+    }
+
+    private List<VisualElement> SetupListElement(int pNbrElements)
+    {
+        var list = new List<VisualElement>();
+        for (var i = 0; i < MultiplayerManager.Instance.GameModeConfig.MaxPlayer; i++)
+        {
+            var element = m_Player.CloneTree();
+            element.Q<Button>("Join").style.display = DisplayStyle.Flex;
+            list.Add(element);
+        }
+
+        return list;
     }
 
     private void OnPlayerDataNetworkListChanged(object sender, EventArgs e)
@@ -63,28 +109,46 @@ public class LobbyController : NetworkBehaviour
 
     private void UpdatePlayers()
     {
-        for (var i = 0; i < 5; i++)
+        if (MultiplayerManager.Instance.GameModeConfig.HasTeams)
+            UpdatePlayersWithTeam();
+        else
+            UpdatePlayersWithoutTeam();
+    }
+
+    private void UpdatePlayersWithTeam()
+    {
+        ClearPlayerList(m_Elements1);
+        ClearPlayerList(m_Elements2);
+        
+        for (var i = 0; i < MultiplayerManager.Instance.MaxPlayerAmount; i++)
         {
             Debug.Log(MultiplayerManager.Instance.IsPlayerIndexConnected(i));
+
+            if (!MultiplayerManager.Instance.IsPlayerIndexConnected(i)) continue;
+
+            var player = MultiplayerManager.Instance.GetPlayerDataByIndex(i);
+            var list = player.IsTeamOne ? m_Elements1 : m_Elements2;
+            var element = list.First(e => e.Q<Button>("Join").style.display == DisplayStyle.Flex);
             
-            var element = m_Elements[i];
-            if (MultiplayerManager.Instance.IsPlayerIndexConnected(i))
-            {
-                element.Q<Button>("Join").style.display = DisplayStyle.None;
-                element.Q<TextElement>("Name").text = MultiplayerManager.Instance.GetPlayerDataByIndex(i).PlayerName.ToString();
-            }
-            else
-            {
-                element.Q<Button>("Join").style.display = DisplayStyle.Flex;
-                element.Q<TextElement>("Name").text = "";
-            }
+            element.Q<Button>("Join").style.display = DisplayStyle.None;
+            element.Q<TextElement>("Name").text = player.PlayerName.ToString();
         }
     }
 
-    private void AddPlayerElement()
+    private void UpdatePlayersWithoutTeam()
     {
-        var element = m_Player.CloneTree();
-        element.Q<Button>("Join").style.display = DisplayStyle.Flex;
-        m_Elements.Add(element);
+        ClearPlayerList(m_Elements1);
+        
+        for (var i = 0; i < MultiplayerManager.Instance.MaxPlayerAmount; i++)
+        {
+            Debug.Log(MultiplayerManager.Instance.IsPlayerIndexConnected(i));
+
+            if (!MultiplayerManager.Instance.IsPlayerIndexConnected(i)) continue;
+
+            var player = MultiplayerManager.Instance.GetPlayerDataByIndex(i);
+            
+            m_Elements1[i].Q<Button>("Join").style.display = DisplayStyle.None;
+            m_Elements1[i].Q<TextElement>("Name").text = player.PlayerName.ToString();
+        }
     }
 }

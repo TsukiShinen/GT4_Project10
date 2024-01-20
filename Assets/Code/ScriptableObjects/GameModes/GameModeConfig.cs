@@ -11,6 +11,9 @@ namespace ScriptableObjects.GameModes
 
 		[SerializeField] private int m_MaxPlayer;
 		public int MaxPlayer => m_MaxPlayer;
+
+		[SerializeField] private bool m_HasTeams;
+		public bool HasTeams => m_HasTeams;
 		
 		[SerializeField, Scene] private string m_SceneName;
 		public string SceneName => m_SceneName;

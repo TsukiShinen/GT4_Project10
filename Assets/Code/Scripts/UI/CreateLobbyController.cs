@@ -16,7 +16,6 @@ public class CreateLobbyController : MonoBehaviour
 	private TextField m_Name;
 	private Toggle m_IsPrivate;
 	private DropdownField m_GameMode;
-	private IntegerField m_MaxPlayer;
 
 	private void Awake()
 	{
@@ -35,12 +34,10 @@ public class CreateLobbyController : MonoBehaviour
 		m_GameMode = Root.Q<DropdownField>("GameMode");
 		m_GameMode.choices = m_GameModes.GameModeConfigs.Select(g => g.Name).ToList();
 		m_GameMode.value = m_GameModes.GameModeConfigs[0].Name;
-		
-		m_MaxPlayer = Root.Q<IntegerField>("MaxPlayers");
 
 		Root.Q<Button>("Create").clicked += () =>
 		{
-			LobbyManager.Instance.CreateLobby(m_Name.value, m_GameModes.GameModeConfigs.Find(g => g.Name == m_GameMode.value),m_MaxPlayer.value , m_IsPrivate.value);
+			LobbyManager.Instance.CreateLobby(m_Name.value, m_GameModes.GameModeConfigs.Find(g => g.Name == m_GameMode.value) , m_IsPrivate.value);
 		};
 	}
 

@@ -8,7 +8,6 @@
             </ui:VisualElement>
             <ui:VisualElement name="GameParams" style="flex-grow: 1; margin-top: 16px; margin-bottom: 16px; width: 250px;">
                 <ui:DropdownField name="GameMode" style="color: rgb(255, 255, 255);" />
-                <ui:IntegerField label="Max Player PerTeam" value="4" name="MaxPlayers" style="color: rgb(255, 255, 255);" />
             </ui:VisualElement>
             <ui:Button text="Create" name="Create" style="margin-top: 16px; width: 150px;" />
             <ui:Button name="Quit" style="background-image: url(&apos;project://database/Assets/TempImport/FPS/Art/Textures/UI/CloseBtn_Icon.png?fileID=2800000&amp;guid=2883dea87a05ddc4489db71bdbf6a412&amp;type=3#CloseBtn_Icon&apos;); background-color: rgba(188, 188, 188, 0); width: 32px; height: 32px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 16px; right: 16px;" />

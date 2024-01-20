@@ -22,6 +22,9 @@ public class MultiplayerManager : NetworkBehaviour
 	private NetworkList<PlayerData> m_PlayerDataNetworkList;
 	private string m_PlayerName;
 
+	// TODO : Better alterning teams
+	static bool IsTeamOne = true;
+	
     public string PlayerName
 	{
 		get => m_PlayerName;
@@ -136,7 +139,9 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList.Add(new PlayerData
 		{
 			ClientId = pClientId,
+			IsTeamOne = IsTeamOne
 		});
+		IsTeamOne = !IsTeamOne;
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }

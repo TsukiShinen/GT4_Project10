@@ -161,16 +161,17 @@ namespace Network
 			}
 		}
 		
-		public async void CreateLobby(string pLobbyName, GameModeConfig pGameMode, int pMaxPlayers, bool pIsPrivate = false)
+		public async void CreateLobby(string pLobbyName, GameModeConfig pGameMode, bool pIsPrivate = false)
 		{
 			Debug.Log($"<color=green>=== Lobby Creation</color>");
 			OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
 			try
 			{
-				MultiplayerManager.Instance.MaxPlayerAmount = pMaxPlayers;
+				MultiplayerManager.Instance.MaxPlayerAmount =
+					pGameMode.HasTeams ? pGameMode.MaxPlayer * 2 : pGameMode.MaxPlayer;
 				MultiplayerManager.Instance.GameModeConfig = pGameMode;
 				
-				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, new CreateLobbyOptions()
+				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, MultiplayerManager.Instance.MaxPlayerAmount, new CreateLobbyOptions()
 				{
 					IsPrivate = pIsPrivate,
 				});
@@ -216,6 +217,9 @@ namespace Network
 				
 				m_Info.Name = m_JoinedLobby.Name;
 				m_Info.Code = m_JoinedLobby.LobbyCode;
+				MultiplayerManager.Instance.GameModeConfig = m_GameModes.GameModeConfigs[int.Parse(m_JoinedLobby.Data[k_KeyGameModeIndex].Value)];
+				MultiplayerManager.Instance.MaxPlayerAmount =
+					MultiplayerManager.Instance.GameModeConfig.HasTeams ? MultiplayerManager.Instance.GameModeConfig.MaxPlayer * 2 : MultiplayerManager.Instance.GameModeConfig.MaxPlayer;
 				
 				var allocation = await JoinRelay(m_JoinedLobby.Data[k_KeyRelayJoinCode].Value);
 				Debug.Log($"Joined Relay");
@@ -245,6 +249,9 @@ namespace Network
 				
 				m_Info.Name = m_JoinedLobby.Name;
 				m_Info.Code = m_JoinedLobby.LobbyCode;
+				MultiplayerManager.Instance.GameModeConfig = m_GameModes.GameModeConfigs[int.Parse(m_JoinedLobby.Data[k_KeyGameModeIndex].Value)];
+				MultiplayerManager.Instance.MaxPlayerAmount =
+					MultiplayerManager.Instance.GameModeConfig.HasTeams ? MultiplayerManager.Instance.GameModeConfig.MaxPlayer * 2 : MultiplayerManager.Instance.GameModeConfig.MaxPlayer;
 				
 				var allocation = await JoinRelay(m_JoinedLobby.Data[k_KeyRelayJoinCode].Value);
 				Debug.Log($"Joined Relay");
