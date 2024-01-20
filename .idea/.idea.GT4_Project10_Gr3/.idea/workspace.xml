@@ -8,8 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test/Nolan.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/UI/Pages/PlayerListElement.uxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/UI/Pages/PlayerListElement.uxml.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/LobbyReady.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/MenuLobbyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Lobby.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Lobby.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/Lobby.uxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game.csproj.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Game.csproj.DotSettings" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,11 +30,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///CustomNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///LobbyController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///LobbyController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///MultiplayerManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Plugins/InputForUI/InputSystemProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Editor/NetworkObjectEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Connection/NetworkConnectionManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Messaging/NetworkMessageManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Transports/UTP/UnityTransport.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Tests/Runtime/ClientOnlyConnectionTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/Http/ResponseHandler.cs" root0="SKIP_HIGHLIGHTING" />
@@ -39,6 +59,13 @@
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/UI/MenuLobbyController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.services.authentication@3.0.0/Runtime/AuthenticationService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/SDK/WrappedLobbyService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -130,6 +157,9 @@
       <workItem from="1705479314019" duration="3436000" />
       <workItem from="1705610388280" duration="4196000" />
       <workItem from="1705695978452" duration="340000" />
+      <workItem from="1705739535189" duration="2440000" />
+      <workItem from="1705744756852" duration="115000" />
+      <workItem from="1705744878612" duration="6567000" />
     </task>
     <servers />
   </component>

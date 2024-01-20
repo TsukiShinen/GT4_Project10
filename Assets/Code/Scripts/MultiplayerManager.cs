@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Network;
 using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MultiplayerManager : NetworkBehaviour
@@ -13,10 +13,11 @@ public class MultiplayerManager : NetworkBehaviour
 	private const string k_PlayerPref_PlayerName = "PlayerName";
 
 	public int MaxPlayerAmount = 4;
-	public GameModeConfig GameMode;
+	[FormerlySerializedAs("GameMode")] public GameModeConfig GameModeConfig;
 	
 	public event EventHandler OnTryingToJoinGame;
 	public event EventHandler OnFailedToJoinGame;
+	public event EventHandler OnPlayerDataNetworkListChanged;
 	
 	private NetworkList<PlayerData> m_PlayerDataNetworkList;
 	private string m_PlayerName;
@@ -46,9 +47,20 @@ public class MultiplayerManager : NetworkBehaviour
 			
 		m_PlayerName = PlayerPrefs.GetString(k_PlayerPref_PlayerName, "Client" + Random.Range(100, 1000));
 		m_PlayerDataNetworkList = new NetworkList<PlayerData>();
+		m_PlayerDataNetworkList.OnListChanged += PlayerDataNetwork_OnListChanged;
+	}
+
+	private void PlayerDataNetwork_OnListChanged(NetworkListEvent<PlayerData> pChangeEvent)
+	{
+		OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
 	}
 
 	private void Start()
+	{
+		SetLobbyManagerCallbacks();
+	}
+
+	private void SetLobbyManagerCallbacks()
 	{
 		LobbyManager.Instance.OnCreateLobbyStarted += Lobby_OnCreateLobbyStarted;
 		LobbyManager.Instance.OnCreateLobbySucceed += Lobby_OnCreateLobbySucceed;
@@ -90,9 +102,14 @@ public class MultiplayerManager : NetworkBehaviour
 
 	public void StartHost()
 	{
+		SetNetworkManagerCallbacks();
+		NetworkManager.Singleton.StartHost();
+	}
+
+	private void SetNetworkManagerCallbacks()
+	{
 		NetworkManager.Singleton.ConnectionApprovalCallback += Network_ConnectionApprovalCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
-		NetworkManager.Singleton.StartHost();
 	}
 
 	private void Network_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest pConnectionApprovalRequest, NetworkManager.ConnectionApprovalResponse pConnectionApprovalResponse)
@@ -116,14 +133,12 @@ public class MultiplayerManager : NetworkBehaviour
 
 	private void Network_OnClientConnectedCallback(ulong pClientId)
 	{
-		Debug.Log("Network_OnClientConnectedCallback");
 		m_PlayerDataNetworkList.Add(new PlayerData
 		{
 			ClientId = pClientId,
 		});
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
-        //SpawnPlayerServerRpc(pClientId);
     }
 
 	public void StartClient()
@@ -131,30 +146,34 @@ public class MultiplayerManager : NetworkBehaviour
 		MessagePopUp.Instance.Open("Game", "Connecting to game ...");
 		OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
 
-		NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
-		NetworkManager.Singleton.OnClientConnectedCallback += Network_Client_OnClientConnectedCallback;
+		SetNetworkClientCallbacks();
 		NetworkManager.Singleton.StartClient();
 		
 		MessagePopUp.Instance.Hide();
 	}
 
-	private void NetworkManager_OnClientDisconnectCallback(ulong obj)
+	private void SetNetworkClientCallbacks()
+	{
+		NetworkManager.Singleton.OnClientConnectedCallback += Network_Client_OnClientConnectedCallback;
+		NetworkManager.Singleton.OnClientDisconnectCallback += Network_Client_OnClientDisconnectCallback;
+	}
+
+	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
+	{
+		SetPlayerNameServerRpc(m_PlayerName);
+		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+	}
+
+	private void Network_Client_OnClientDisconnectCallback(ulong pClientId)
 	{
 		MessagePopUp.Instance.Open("Disconnected from Game", NetworkManager.Singleton.DisconnectReason == "" ? "Failed to connect" : NetworkManager.Singleton.DisconnectReason, ("Close", MessagePopUp.Instance.Hide));
 		OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
 	}
 
-	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
-	{
-		Debug.Log("Network_Client_OnClientConnectedCallback");
-		SetPlayerNameServerRpc(m_PlayerName);
-		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
-	}
-
 	[ServerRpc(RequireOwnership = false)]
 	private void SetPlayerNameServerRpc(string pPlayerName, ServerRpcParams pServerRpcParams = default)
 	{
-		var playerDataIndex = GetPlayerDataIndexFromClientId(pServerRpcParams.Receive.SenderClientId);
+		var playerDataIndex = FindPlayerDataIndex(pServerRpcParams.Receive.SenderClientId);
 		var playerData = m_PlayerDataNetworkList[playerDataIndex];
 
 		playerData.PlayerName = pPlayerName;
@@ -166,7 +185,7 @@ public class MultiplayerManager : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	private void SetPlayerIdServerRpc(string pPlayerId, ServerRpcParams pServerRpcParams = default)
 	{
-		var playerDataIndex = GetPlayerDataIndexFromClientId(pServerRpcParams.Receive.SenderClientId);
+		var playerDataIndex = FindPlayerDataIndex(pServerRpcParams.Receive.SenderClientId);
 		var playerData = m_PlayerDataNetworkList[playerDataIndex];
 
 		playerData.PlayerId = pPlayerId;
@@ -174,9 +193,25 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 	}
 
-	private int GetPlayerDataIndexFromClientId(ulong pClientId)
+	public bool IsPlayerIndexConnected(int pIndex)
 	{
-		// TODO : GetPLayerDataIndexFromClientId
-		return 0;
+		return pIndex < m_PlayerDataNetworkList.Count;
+	}
+
+	public PlayerData GetPlayerDataByIndex(int pIndex)
+	{
+		return m_PlayerDataNetworkList[pIndex];
+	}
+
+	public int FindPlayerDataIndex(ulong pClientId)
+	{
+		for (var index = 0; index < m_PlayerDataNetworkList.Count; index++)
+		{
+			if (m_PlayerDataNetworkList[index].ClientId == pClientId)
+			{
+				return index;
+			}
+		}
+		return -1; // Return -1 if no player data with the given client id is found
 	}
 }

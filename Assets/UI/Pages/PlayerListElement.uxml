@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Player" style="flex-grow: 1; width: 100%; flex-direction: row; height: 50px; max-height: 50px; min-height: 50px; flex-shrink: 1; justify-content: space-between; flex-wrap: nowrap; flex-basis: initial; align-self: auto; align-items: center; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; -unity-text-outline-color: rgba(0, 0, 0, 0); background-color: rgb(10, 10, 10); -unity-background-image-tint-color: rgba(0, 0, 0, 0); margin-bottom: 0; margin-right: 0; margin-top: 0; margin-left: 0;">
+        <ui:Label text="Name" name="Name" style="font-size: 20px; -unity-text-align: middle-center; color: rgb(255, 255, 255); padding-top: 0; padding-right: 16px; padding-bottom: 0; padding-left: 16px; -unity-font-style: normal;" />
+        <ui:Button text="Join" name="Join" style="display: flex; width: 75px;" />
+    </ui:VisualElement>
+</ui:UXML>

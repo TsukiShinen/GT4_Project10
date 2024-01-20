@@ -1,24 +1,37 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Header" style="flex-direction: row; justify-content: space-between;">
-        <ui:Button text="Quit" name="Quit" style="margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; width: 100px; height: 32px;" />
-        <ui:VisualElement name="LobbyInfo" style="flex-grow: 1; align-items: center; padding-top: 16px;">
-            <ui:VisualElement name="LobbyName" style="flex-grow: 1; flex-direction: row;">
-                <ui:Label text="Lobby Name :" name="Label" style="padding-top: 0; padding-bottom: 0; font-size: 24px;" />
-                <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0; font-size: 24px;">
-                    <Bindings>
-                        <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Name" />
-                    </Bindings>
-                </ui:Label>
+    <ui:VisualElement name="Lobby" style="flex-grow: 1; align-items: center; justify-content: center; position: relative; background-color: rgb(36, 36, 36);">
+        <ui:VisualElement name="LobbyName" style="flex-grow: 1; flex-direction: row; max-height: 25px;">
+            <ui:Label text="Lobby Name :" name="Label" style="padding-top: 0; padding-bottom: 0; font-size: 18px; color: rgb(255, 255, 255);" />
+            <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0; font-size: 18px; color: rgb(255, 255, 255);">
+                <Bindings>
+                    <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Name" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:VisualElement name="LobbyCode" style="flex-grow: 1; flex-direction: row; max-height: 25px;">
+            <ui:Label text="Lobby Code :" name="Label" style="padding-top: 0; padding-bottom: 0; font-size: 18px; color: rgb(255, 255, 255);" />
+            <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0; font-size: 18px; color: rgb(255, 255, 255);">
+                <Bindings>
+                    <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Code" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:VisualElement name="Lobbies" style="flex-direction: column; height: auto; width: 80%; margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; max-width: 800px; max-height: 500px; align-items: center; justify-content: center;">
+            <ui:VisualElement name="PlayerList" style="flex-grow: 0; min-width: auto; min-height: auto; width: 100%; flex-direction: row; background-color: rgb(96, 96, 96);">
+                <ui:VisualElement name="Team1" style="flex-grow: 1; min-height: auto; min-width: auto; width: auto;">
+                    <ui:Label text="Team 1" name="TeamName" style="margin-left: 16px; margin-top: 16px; margin-bottom: 16px; margin-right: 16px; -unity-text-align: middle-center;" />
+                    <ui:ListView item-template="project://database/Assets/UI/Pages/PlayerListElement.uxml?fileID=9197481963319205126&amp;guid=cc9e5b144461f644a9a5c657bf7f05be&amp;type=3#PlayerListElement" name="PlayerList1" fixed-item-height="50" show-border="false" style="margin-left: 0; height: 400px; width: 100%; justify-content: flex-start; align-self: auto; margin-top: 0; background-color: rgb(96, 96, 96); padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; max-height: none; min-height: auto; flex-grow: 0;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Team2" style="flex-grow: 0; min-height: auto; min-width: auto; width: 50%; display: flex;">
+                    <ui:Label text="Team 2" name="TeamName" style="margin-left: 16px; margin-top: 16px; margin-right: 16px; margin-bottom: 16px; -unity-text-align: middle-center;" />
+                    <ui:ListView item-template="project://database/Assets/UI/Pages/LobbyRoomTemplate.uxml?fileID=9197481963319205126&amp;guid=b2ec46c2b37866a4fb7ddadda005596f&amp;type=3#LobbyRoomTemplate" name="PlayerList2" fixed-item-height="50" show-border="false" style="margin-left: 0; height: 400px; width: 100%; justify-content: flex-start; align-self: auto; margin-top: 0; background-color: rgb(96, 96, 96); padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; max-height: none; min-height: auto; flex-grow: 0;" />
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="LobbyCode" style="flex-grow: 1; flex-direction: row;">
-                <ui:Label text="Lobby Code :" name="Label" style="padding-top: 0; padding-bottom: 0; font-size: 24px;" />
-                <ui:Label text="LobbyName" name="Value" data-source="project://database/Assets/ScriptableObjects/CurrentLobbyInfo.asset?fileID=11400000&amp;guid=3d37feb4ebec3834089f2c26f542a4be&amp;type=2#CurrentLobbyInfo" style="padding-top: 0; font-size: 24px;">
-                    <Bindings>
-                        <ui:DataBinding property="text" binding-mode="ToTarget" data-source-path="m_Code" />
-                    </Bindings>
-                </ui:Label>
+            <ui:VisualElement name="Menu" style="flex-grow: 0; justify-content: space-between; min-width: 119px; width: 100%; height: auto; flex-direction: row; margin-top: 16px;">
+                <ui:Button text="Settings" name="Settigns" />
+                <ui:Button text="Start" name="Start" style="width: 200px;" />
+                <ui:Button text="Quit" name="Quit" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Button text="Ready" name="Ready" style="margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; width: 100px; height: 32px;" />
     </ui:VisualElement>
 </ui:UXML>

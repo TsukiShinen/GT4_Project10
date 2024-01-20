@@ -168,7 +168,7 @@ namespace Network
 			try
 			{
 				MultiplayerManager.Instance.MaxPlayerAmount = pMaxPlayers;
-				MultiplayerManager.Instance.GameMode = pGameMode;
+				MultiplayerManager.Instance.GameModeConfig = pGameMode;
 				
 				m_JoinedLobby = await LobbyService.Instance.CreateLobbyAsync(pLobbyName, pMaxPlayers, new CreateLobbyOptions()
 				{
@@ -212,6 +212,35 @@ namespace Network
 			try
 			{
 				m_JoinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(pLobbyCode);
+				Debug.Log($"Joined");
+				
+				m_Info.Name = m_JoinedLobby.Name;
+				m_Info.Code = m_JoinedLobby.LobbyCode;
+				
+				var allocation = await JoinRelay(m_JoinedLobby.Data[k_KeyRelayJoinCode].Value);
+				Debug.Log($"Joined Relay");
+				
+				NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
+
+				MultiplayerManager.Instance.StartClient();
+				Debug.Log($"Client Started");
+				OnJoinLobbySucceed?.Invoke(this, EventArgs.Empty);
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogException(e);
+				OnJoinLobbyFailed?.Invoke(this, EventArgs.Empty);
+			}
+			Debug.Log($"<color=green>=================</color>");
+		}
+
+		public async void JoinWithId(string pLobbyId)
+		{
+			Debug.Log($"<color=green>=== Joining Lobby</color>");
+			OnJoinLobbyStarted?.Invoke(this, EventArgs.Empty);
+			try
+			{
+				m_JoinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(pLobbyId);
 				Debug.Log($"Joined");
 				
 				m_Info.Name = m_JoinedLobby.Name;

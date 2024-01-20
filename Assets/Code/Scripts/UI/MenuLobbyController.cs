@@ -51,7 +51,7 @@ public class MenuLobbyController : MonoBehaviour
 				lobbyView.Q<TextElement>("PlayerCount").text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
 				lobbyView.AddManipulator(new Clickable(e =>
 				{
-					LobbyManager.Instance.JoinWithCode(lobby.LobbyCode);
+					LobbyManager.Instance.JoinWithId(lobby.Id);
 				}));
 				items.Add(lobbyView);
 			}
