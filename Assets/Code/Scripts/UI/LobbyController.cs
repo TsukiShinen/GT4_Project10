@@ -27,13 +27,19 @@ public class LobbyController : NetworkBehaviour
             LobbyManager.Instance.LeaveLobby();
         };
 
-        m_Root.Q<Button>("Start").clicked += () =>
+        if (IsServer)
         {
-            if (!IsServer) return;
-
-            var sceneName = MultiplayerManager.Instance.GameModeConfig.SceneName;
-            NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-        };
+            m_Root.Q<Button>("Start").clicked += () =>
+            {
+                if (!IsServer) return;
+                var sceneName = MultiplayerManager.Instance.GameModeConfig.SceneName;
+                NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            };
+        }
+        else
+        {
+            m_Root.Q<Button>("Start").style.display = DisplayStyle.None;
+        }
 
 
         InitPlayerList();
