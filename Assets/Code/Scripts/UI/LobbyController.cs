@@ -50,8 +50,8 @@ public class LobbyController : NetworkBehaviour
 
     private void InitPlayerListWithTeam()
     {
-        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
-        m_Elements2 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
+        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer, true);
+        m_Elements2 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer, false);
         
         _ = SetupList("PlayerList1", m_Elements1);
         _ = SetupList("PlayerList2", m_Elements2);
@@ -59,7 +59,7 @@ public class LobbyController : NetworkBehaviour
 
     private void InitPlayerListWithoutTeam()
     {
-        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer);
+        m_Elements1 = SetupListElement(MultiplayerManager.Instance.GameModeConfig.MaxPlayer, true);
         
         _ = SetupList("PlayerList1", m_Elements1);
         m_Root.Q("Team1").Q<TextElement>("TeamName").text = "Players";
@@ -89,13 +89,16 @@ public class LobbyController : NetworkBehaviour
         }
     }
 
-    private List<VisualElement> SetupListElement(int pNbrElements)
+    private List<VisualElement> SetupListElement(int pNbrElements, bool pIsTeamOne)
     {
         var list = new List<VisualElement>();
         for (var i = 0; i < MultiplayerManager.Instance.GameModeConfig.MaxPlayer; i++)
         {
             var element = m_Player.CloneTree();
-            element.Q<Button>("Join").style.display = DisplayStyle.Flex;
+            element.Q<Button>("Join").clicked += () =>
+            {
+                MultiplayerManager.Instance.SetPlayerTeamServerRpc(pIsTeamOne);
+            };
             list.Add(element);
         }
 

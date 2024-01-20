@@ -182,7 +182,17 @@ public class MultiplayerManager : NetworkBehaviour
 		var playerData = m_PlayerDataNetworkList[playerDataIndex];
 
 		playerData.PlayerName = pPlayerName;
-		Debug.Log($"[ServerRpc] Player at index {playerDataIndex} change name to {pPlayerName}");
+		
+		m_PlayerDataNetworkList[playerDataIndex] = playerData;
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	public void SetPlayerTeamServerRpc(bool pIsTeamOne, ServerRpcParams pServerRpcParams = default)
+	{
+		var playerDataIndex = FindPlayerDataIndex(pServerRpcParams.Receive.SenderClientId);
+		var playerData = m_PlayerDataNetworkList[playerDataIndex];
+
+		playerData.IsTeamOne = pIsTeamOne;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 	}
