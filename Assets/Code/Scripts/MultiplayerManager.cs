@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using Network;
+using PlasticPipe.PlasticProtocol.Messages;
 using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -109,7 +111,8 @@ public class MultiplayerManager : NetworkBehaviour
 		NetworkManager.Singleton.StartHost();
 	}
 
-	private void SetNetworkManagerCallbacks()
+
+    private void SetNetworkManagerCallbacks()
 	{
 		NetworkManager.Singleton.ConnectionApprovalCallback += Network_ConnectionApprovalCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
@@ -139,7 +142,9 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList.Add(new PlayerData
 		{
 			ClientId = pClientId,
-			IsTeamOne = IsTeamOne
+			IsTeamOne = IsTeamOne,
+			PlayerMaxHealth = 100,
+			PlayerHealth = 100
 		});
 		IsTeamOne = !IsTeamOne;
 		SetPlayerNameServerRpc(m_PlayerName);
@@ -184,7 +189,10 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.PlayerName = pPlayerName;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-	}
+
+		if(GameManager.Instance != null)
+			GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+    }
 
 	[ServerRpc(RequireOwnership = false)]
 	public void SetPlayerTeamServerRpc(bool pIsTeamOne, ServerRpcParams pServerRpcParams = default)
@@ -195,7 +203,10 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.IsTeamOne = pIsTeamOne;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-	}
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+    }
 
 	[ServerRpc(RequireOwnership = false)]
 	private void SetPlayerIdServerRpc(string pPlayerId, ServerRpcParams pServerRpcParams = default)
@@ -206,9 +217,35 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.PlayerId = pPlayerId;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-	}
 
-	public bool IsPlayerIndexConnected(int pIndex)
+        if (GameManager.Instance != null)
+            GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+    }
+
+    public void PlayerHit(float pDamage, GameObject pGo)
+    {
+        var playerData = GameManager.Instance.FindPlayerData(pGo);
+		var index = FindPlayerDataIndexByPlayerData(playerData);
+        playerData.PlayerHealth -= pDamage;
+
+        m_PlayerDataNetworkList[index] = playerData;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.SetPlayerData(index, playerData);
+
+        if (playerData.PlayerHealth <= 0)
+        {
+            GameManager.Instance.RespawnPlayer(playerData);
+            playerData.PlayerHealth = playerData.PlayerMaxHealth;
+
+            m_PlayerDataNetworkList[index] = playerData;
+
+            if (GameManager.Instance != null)
+                GameManager.Instance.SetPlayerData(index, playerData);
+        }
+    }
+
+    public bool IsPlayerIndexConnected(int pIndex)
 	{
 		return pIndex < m_PlayerDataNetworkList.Count;
 	}
@@ -229,4 +266,16 @@ public class MultiplayerManager : NetworkBehaviour
 		}
 		return -1; // Return -1 if no player data with the given client id is found
 	}
+
+    public int FindPlayerDataIndexByPlayerData(PlayerData pPlayerData)
+    {
+        for (var index = 0; index < m_PlayerDataNetworkList.Count; index++)
+        {
+            if (m_PlayerDataNetworkList[index].Equals(pPlayerData))
+            {
+                return index;
+            }
+        }
+        return -1; // Return -1 if no player data with the given client id is found
+    }
 }

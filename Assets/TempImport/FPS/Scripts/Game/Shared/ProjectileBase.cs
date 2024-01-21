@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Unity.FPS.Game
 {
-    public abstract class ProjectileBase : MonoBehaviour
+    public abstract class ProjectileBase : NetworkBehaviour
     {
         public GameObject Owner { get; private set; }
         public Vector3 InitialPosition { get; private set; }
@@ -13,13 +14,11 @@ namespace Unity.FPS.Game
 
         public UnityAction OnShoot;
 
-        public void Shoot(WeaponController controller)
+        public void Shoot(GameObject owner)
         {
-            Owner = controller.Owner;
+            Owner = owner;
             InitialPosition = transform.position;
             InitialDirection = transform.forward;
-            InheritedMuzzleVelocity = controller.MuzzleWorldVelocity;
-            InitialCharge = controller.CurrentCharge;
 
             OnShoot?.Invoke();
         }

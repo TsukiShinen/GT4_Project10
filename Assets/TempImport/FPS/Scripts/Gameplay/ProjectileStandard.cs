@@ -112,12 +112,15 @@ namespace Unity.FPS.Gameplay
                     m_HasTrajectoryOverride = false;
                 }
 
-                if (Physics.Raycast(playerWeaponsManager.WeaponCamera.transform.position, cameraToMuzzle.normalized,
-                    out RaycastHit hit, cameraToMuzzle.magnitude, HittableLayers, k_TriggerInteraction))
+                if (IsHost)
                 {
-                    if (IsHitValid(hit))
+                    if (Physics.Raycast(playerWeaponsManager.WeaponCamera.transform.position, cameraToMuzzle.normalized,
+                        out RaycastHit hit, cameraToMuzzle.magnitude, HittableLayers, k_TriggerInteraction))
                     {
-                        OnHit(hit.point, hit.normal, hit.collider);
+                        if (IsHitValid(hit))
+                        {
+                            OnHit(hit.point, hit.normal, hit.collider);
+                        }
                     }
                 }
             }
@@ -163,6 +166,7 @@ namespace Unity.FPS.Gameplay
                 m_Velocity += Vector3.down * GravityDownAcceleration * Time.deltaTime;
             }
 
+            if(IsHost)
             // Hit detection
             {
                 RaycastHit closestHit = new RaycastHit();
@@ -208,7 +212,7 @@ namespace Unity.FPS.Gameplay
             }
 
             // ignore hits with triggers that don't have a Damageable component
-            if (hit.collider.isTrigger && hit.collider.GetComponent<Damageable>() == null)
+            if (hit.collider.isTrigger && hit.collider.GetComponent<PlayerHealth>() == null)
             {
                 return false;
             }
@@ -234,10 +238,10 @@ namespace Unity.FPS.Gameplay
             else
             {
                 // point damage
-                Damageable damageable = collider.GetComponent<Damageable>();
+                PlayerHealth damageable = collider.GetComponentInParent<PlayerHealth>();
                 if (damageable)
                 {
-                    damageable.InflictDamage(Damage, false, m_ProjectileBase.Owner);
+                    damageable.InflictDamage(Damage);
                 }
             }
 
@@ -246,6 +250,7 @@ namespace Unity.FPS.Gameplay
             {
                 GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset),
                     Quaternion.LookRotation(normal));
+                impactVfxInstance.GetComponent<NetworkObject>().Spawn();
                 if (ImpactVfxLifetime > 0)
                 {
                     StartCoroutine(DestroyIn(ImpactVfxLifetime));
@@ -265,6 +270,12 @@ namespace Unity.FPS.Gameplay
         private IEnumerator DestroyIn(float seconds)
         {
             yield return new WaitForSeconds(seconds);
+            DestroyServerRpc();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void DestroyServerRpc()
+        {
             GetComponent<NetworkObject>().Despawn();
         }
 

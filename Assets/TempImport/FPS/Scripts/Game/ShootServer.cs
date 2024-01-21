@@ -16,7 +16,7 @@ public class ShootServer : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void ShootServerRpc(int pBulletsPerShotFinal, Vector3 pShotDirection, int pProjectileid, Vector3 pWeaponMuzzlePosition, ServerRpcParams pServerRRpcParams = default)
+    public void ShootServerRpc(int pBulletsPerShotFinal, Vector3 pShotDirection, int pProjectileid, Vector3 pWeaponMuzzlePosition, ServerRpcParams pServerRpcParams = default)
     {
 
         // spawn all bullets with random direction
@@ -27,7 +27,10 @@ public class ShootServer : NetworkBehaviour
                 Quaternion.LookRotation(shotDirection));
             newProjectile.GetComponent<NetworkObject>().Spawn();
 
-            //newProjectile.Shoot(MultiplayerManager.Instance.GetPlayerGameObject(pServerRRpcParams.Receive.SenderClientId).GetComponentInChildren<WeaponController>());
+            var index = MultiplayerManager.Instance.FindPlayerDataIndex(pServerRpcParams.Receive.SenderClientId);
+            var playerData = MultiplayerManager.Instance.GetPlayerDataByIndex(index);
+            var gameobject = GameManager.Instance.FindPlayerGameObject(playerData);
+            newProjectile.Shoot(gameobject);
         }
     }
 
