@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: GameModes
   m_EditorClassIdentifier: 
   m_GameModesConfig:
-  - {fileID: 11400000, guid: acae0676f0bc3464ba957aa05954b1a9, type: 2}
   - {fileID: 11400000, guid: eadc6d373a1dd704ba6f832f77eb8c25, type: 2}
+  - {fileID: 11400000, guid: 88cc98ad6dad40349ae487bca65a6bc4, type: 2}
+  - {fileID: 11400000, guid: 86207bbdd0d7e174c8a90dbdb3042297, type: 2}
+  - {fileID: 11400000, guid: acae0676f0bc3464ba957aa05954b1a9, type: 2}

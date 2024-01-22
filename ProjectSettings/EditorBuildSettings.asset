@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Release/Lobby.unity
     guid: c79dc75f604ec7741903fac67e9cd3ab
   - enabled: 1
-    path: Assets/Scenes/Release/PVP Control.unity
+    path: Assets/Scenes/Release/Control.unity
     guid: d9f44cb0f830b484bb044f61a7a310b2
   - enabled: 0
     path: Assets/Scenes/Test/Jeremy.unity
@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test/Jeremy 1.unity
     guid: fea9ca98ac771004faa25d1fde84276a
+  - enabled: 1
+    path: Assets/Scenes/Release/Team Deathmatch.unity
+    guid: cb72a8d6e67c7d34c8ea864e4c0d6a20
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

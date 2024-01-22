@@ -32,12 +32,12 @@ public class CreateLobbyController : MonoBehaviour
 		m_IsPrivate = Root.Q<Toggle>("IsPrivate");
 		
 		m_GameMode = Root.Q<DropdownField>("GameMode");
-		m_GameMode.choices = m_GameModes.GameModeConfigs.Select(g => g.Name).ToList();
-		m_GameMode.value = m_GameModes.GameModeConfigs[0].Name;
+		m_GameMode.choices = m_GameModes.GameModeConfigs.Select(g => g.ModeName).ToList();
+		m_GameMode.value = m_GameModes.GameModeConfigs[0].ModeName;
 
 		Root.Q<Button>("Create").clicked += () =>
 		{
-			LobbyManager.Instance.CreateLobby(m_Name.value, m_GameModes.GameModeConfigs.Find(g => g.Name == m_GameMode.value) , m_IsPrivate.value);
+			LobbyManager.Instance.CreateLobby(m_Name.value, m_GameModes.GameModeConfigs.Find(g => g.ModeName == m_GameMode.value) , m_IsPrivate.value);
 		};
 	}
 

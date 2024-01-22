@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxPlayerAmount: 4
-  GameMode: {fileID: 0}
+  GameModeConfig: {fileID: 0}
 --- !u!114 &2010059088
 MonoBehaviour:
   m_ObjectHideFlags: 0

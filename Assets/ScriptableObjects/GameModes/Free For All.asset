@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98b0927083524c468bee1459736ba612, type: 3}
-  m_Name: PVP Control
+  m_Name: Free For All
   m_EditorClassIdentifier: 
-  m_Name: PVP Control
-  m_MaxPlayer: 3
-  m_HasTeams: 1
-  m_SceneName: PVP Control
+  m_ModeName: Free For All
+  m_MaxPlayer: 10
+  m_HasTeams: 0
+  m_SceneName: Base
