@@ -188,6 +188,8 @@ public class DeathmatchManager : GameManager
 
     private void StartNextRound()
     {
+        //TO DO : Figer les joueurs restants, afficher message de fin de round,
+        //Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
         m_CurrentRound++;
         if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
         {
@@ -196,7 +198,6 @@ public class DeathmatchManager : GameManager
         }
         else
             StartCoroutine(ShowEndRoundMessage());
-        //TO DO : Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
     }
 
     private IEnumerator ShowEndRoundMessage()
