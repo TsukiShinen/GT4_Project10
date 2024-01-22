@@ -4,27 +4,39 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DeathmatchManager : GameManager
 {
     private BoxCollider m_SpawnTeam1;
     private BoxCollider m_SpawnTeam2;
 
+    private int m_ScoreToWin = 3;
+    private int m_ScoreTeam1;
+    private int m_ScoreTeam2;
+
+    private int m_MaxRounds = 5;
+    private int m_CurrentRound = 1;
+
     protected override void Awake()
     {
-        Debug.Log("Awake");
         base.Awake();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        CheckTeamStatus();
     }
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log("Spawn");
         base.OnNetworkSpawn();
     }
 
     protected override void DetermineSpawnType()
     {
-        Debug.Log("SpawnType");
         GameObject[] spawnZones = GameObject.FindGameObjectsWithTag("ZoneSpawn");
         m_SpawnTeam1 = spawnZones[0]?.GetComponent<BoxCollider>();
         m_SpawnTeam2 = spawnZones[1]?.GetComponent<BoxCollider>();
@@ -58,7 +70,6 @@ public class DeathmatchManager : GameManager
 
     private Vector3 GetRandomPointInSpawnZone(BoxCollider spawn)
     {
-        Debug.Log("RandomPoint");
         if (spawn != null)
         {
             const int maxAttempts = 10;
@@ -117,9 +128,7 @@ public class DeathmatchManager : GameManager
     public override void RespawnPlayer(PlayerData pPlayerData)
     {
         if (m_PlayersGameObjects.TryGetValue(pPlayerData, out GameObject player))
-        {
             player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2));
-        }
 
         base.RespawnPlayer(pPlayerData);
     }
@@ -137,5 +146,68 @@ public class DeathmatchManager : GameManager
     public override GameObject FindPlayerGameObject(PlayerData pPlayerDatas)
     {
         return base.FindPlayerGameObject(pPlayerDatas);
+    }
+
+    private void CheckTeamStatus()
+    {
+        int livingPlayersTeam1 = CountLivingPlayers(true);
+        int livingPlayersTeam2 = CountLivingPlayers(false);
+
+        if (livingPlayersTeam1 > 0 && livingPlayersTeam2 == 0)
+        {
+            m_ScoreTeam1++;
+            StartNextRound();
+        }
+        else if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
+        {
+            m_ScoreTeam2++;
+            StartNextRound();
+        }
+
+    }
+
+    private int CountLivingPlayers(bool isTeamOne)
+    {
+        int count = 0;
+        foreach (var playerData in m_PlayersGameObjects.Keys)
+        {
+            if (playerData.IsTeamOne == isTeamOne && IsPlayerAlive(playerData))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private bool IsPlayerAlive(PlayerData playerData)
+    {
+        if (playerData.PlayerHealth <= 0)
+            return false;
+        return true;
+    }
+
+    private void StartNextRound()
+    {
+        m_CurrentRound++;
+        if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
+        {
+            EndGame();
+            return;
+        }
+        else
+            StartCoroutine(ShowEndRoundMessage());
+        //TO DO : Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
+    }
+
+    private IEnumerator ShowEndRoundMessage()
+    {
+        //TO DO : Afficher message à la fin du round pendant quelques second avant de reset, respawn ect : Round Win ou Loose 
+        //                                                                                                   1 - 0 ou 0 - 1
+        yield return null;
+    }
+
+    private void EndGame()
+    {
+        //TO DO : Ecran de fin (score, leaderboard?) puis retour au lobby après un certain temps
     }
 }

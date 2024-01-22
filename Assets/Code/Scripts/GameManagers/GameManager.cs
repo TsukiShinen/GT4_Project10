@@ -37,6 +37,11 @@ public class GameManager : NetworkBehaviour
 		Instance = this;
 	}
 
+    protected virtual void Update()
+    {
+
+    }
+
     public override void OnNetworkSpawn()
 	{
 		if (!IsServer)
