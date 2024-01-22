@@ -1,20 +1,23 @@
 ﻿using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.XR;
 
 namespace Unity.FPS.Gameplay
 {
-    [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
+    [RequireComponent(typeof(CapsuleCollider), typeof(PlayerInputHandler), typeof(AudioSource))]
     public class PlayerCharacterController : MonoBehaviour
     {
-        [Header("References")] [Tooltip("Reference to the main camera used for the player")]
+        [Header("References")]
+        [Tooltip("Reference to the main camera used for the player")]
         public Camera PlayerCamera;
         public Transform WeaponParentSocket;
 
         [Tooltip("Audio source for footsteps, jump, etc...")]
         public AudioSource AudioSource;
 
-        [Header("General")] [Tooltip("Force applied downward when in the air")]
+        [Header("General")]
+        [Tooltip("Force applied downward when in the air")]
         public float GravityDownForce = 20f;
 
         [Tooltip("Physic layers checked to consider the player grounded")]
@@ -23,11 +26,11 @@ namespace Unity.FPS.Gameplay
         [Tooltip("distance from the bottom of the character controller capsule to test for grounded")]
         public float GroundCheckDistance = 0.05f;
 
-        [Header("Movement")] [Tooltip("Max movement speed when grounded (when not sprinting)")]
+        [Header("Movement")]
+        [Tooltip("Max movement speed when grounded (when not sprinting)")]
         public float MaxSpeedOnGround = 10f;
 
-        [Tooltip(
-            "Sharpness for the movement when grounded, a low value will make the player accelerate and decelerate slowly, a high value will do the opposite")]
+        [Tooltip("Sharpness for the movement when grounded, a low value will make the player accelerate and decelerate slowly, a high value will do the opposite")]
         public float MovementSharpnessOnGround = 15;
 
         [Tooltip("Max movement speed when crouching")] [Range(0, 1)]
@@ -45,6 +48,9 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Height at which the player dies instantly when falling off the map")]
         public float KillHeight = -50f;
 
+        [Tooltip("Max slope angle the character can walk on")]
+        public float SlopeLimit = 45f;
+
         [Header("Rotation")] [Tooltip("Rotation speed for moving the camera")]
         public float RotationSpeed = 200f;
 
@@ -58,10 +64,10 @@ namespace Unity.FPS.Gameplay
         public float CameraHeightRatio = 0.9f;
 
         [Tooltip("Height of character when standing")]
-        public float CapsuleHeightStanding = 1.8f;
+        public float CapsuleHeightStanding = 2f;
 
         [Tooltip("Height of character when crouching")]
-        public float CapsuleHeightCrouching = 0.9f;
+        public float CapsuleHeightCrouching = 1f;
 
         [Tooltip("Speed of crouching transitions")]
         public float CrouchingSharpness = 10f;
@@ -120,7 +126,8 @@ namespace Unity.FPS.Gameplay
 
         Health m_Health;
         PlayerInputHandler m_InputHandler;
-        CharacterController m_Controller;
+        CapsuleCollider m_CapsuleCollider;
+        Rigidbody m_Rigidbody;
         PlayerWeaponsManager m_WeaponsManager;
         Actor m_Actor;
         Vector3 m_GroundNormal;
@@ -144,8 +151,12 @@ namespace Unity.FPS.Gameplay
         void Start()
         {
             // fetch components on the same gameObject
-            m_Controller = GetComponent<CharacterController>();
-            DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller,
+            m_CapsuleCollider = GetComponent<CapsuleCollider>();
+            DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_CapsuleCollider,
+                this, gameObject);
+            
+            m_Rigidbody = GetComponent<Rigidbody>();
+            DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Rigidbody,
                 this, gameObject);
 
             m_InputHandler = GetComponent<PlayerInputHandler>();
@@ -161,8 +172,6 @@ namespace Unity.FPS.Gameplay
 
             m_Actor = GetComponent<Actor>();
             DebugUtility.HandleErrorIfNullGetComponent<Actor, PlayerCharacterController>(m_Actor, this, gameObject);
-
-            m_Controller.enableOverlapRecovery = true;
 
             m_Health.OnDie += OnDie;
 
@@ -230,19 +239,18 @@ namespace Unity.FPS.Gameplay
         void GroundCheck()
         {
             // Make sure that the ground check distance while already in air is very small, to prevent suddenly snapping to ground
-            float chosenGroundCheckDistance =
-                IsGrounded ? (m_Controller.skinWidth + GroundCheckDistance) : k_GroundCheckDistanceInAir;
+            float chosenGroundCheckDistance = IsGrounded ? (m_Rigidbody.velocity.magnitude * Time.deltaTime + GroundCheckDistance) : k_GroundCheckDistanceInAir;
 
             // reset values before the ground check
             IsGrounded = false;
             m_GroundNormal = Vector3.up;
 
-            // only try to detect ground if it's been a short amount of time since last jump; otherwise we may snap to the ground instantly after we try jumping
+            // only try to detect ground if it's been a short amount of time since last jump; otherwise we may snap to the ground instantly after trying to jump
             if (Time.time >= m_LastTimeJumped + k_JumpGroundingPreventionTime)
             {
                 // if we're grounded, collect info about the ground normal with a downward capsule cast representing our character capsule
-                if (Physics.CapsuleCast(GetCapsuleBottomHemisphere(), GetCapsuleTopHemisphere(m_Controller.height),
-                    m_Controller.radius, Vector3.down, out RaycastHit hit, chosenGroundCheckDistance, GroundCheckLayers,
+                if (Physics.CapsuleCast(GetCapsuleBottomHemisphere(), GetCapsuleTopHemisphere(m_CapsuleCollider.height),
+                    m_CapsuleCollider.radius, Vector3.down, out RaycastHit hit, chosenGroundCheckDistance, GroundCheckLayers,
                     QueryTriggerInteraction.Ignore))
                 {
                     // storing the upward direction for the surface found
@@ -250,20 +258,31 @@ namespace Unity.FPS.Gameplay
 
                     // Only consider this a valid ground hit if the ground normal goes in the same direction as the character up
                     // and if the slope angle is lower than the character controller's limit
-                    if (Vector3.Dot(hit.normal, transform.up) > 0f &&
-                        IsNormalUnderSlopeLimit(m_GroundNormal))
+                    if (Vector3.Dot(hit.normal, transform.up) > 0f && IsNormalUnderSlopeLimit(m_GroundNormal))
                     {
                         IsGrounded = true;
 
                         // handle snapping to the ground
-                        if (hit.distance > m_Controller.skinWidth)
-                        {
-                            m_Controller.Move(Vector3.down * hit.distance);
-                        }
+                        m_Rigidbody.MovePosition(transform.position - Vector3.up * (hit.distance - m_CapsuleCollider.radius));
+                    }
+                }
+                else
+                {
+                    // If the capsule cast doesn't hit anything, perform a raycast to check if the character is close to the ground
+                    RaycastHit rayHit;
+                    if (Physics.Raycast(transform.position, Vector3.down, out rayHit, k_GroundCheckDistanceInAir, GroundCheckLayers, QueryTriggerInteraction.Ignore))
+                    {
+                        IsGrounded = true;
+                        m_GroundNormal = rayHit.normal;
+
+                        // adjust the character's position to be exactly on the ground
+                        m_Rigidbody.MovePosition(rayHit.point);
                     }
                 }
             }
         }
+
+
 
         void HandleCharacterMovement()
         {
@@ -284,7 +303,7 @@ namespace Unity.FPS.Gameplay
                 m_CameraVerticalAngle = Mathf.Clamp(m_CameraVerticalAngle, -89f, 89f);
 
                 // apply the vertical angle as a local rotation to the camera transform along its right axis (makes it pivot up and down)
-                if(PlayerCamera != null)
+                if (PlayerCamera != null)
                     PlayerCamera.transform.localEulerAngles = new Vector3(m_CameraVerticalAngle, 0, 0);
                 WeaponParentSocket.localEulerAngles = new Vector3(m_CameraVerticalAngle, 0, 0);
             }
@@ -305,18 +324,6 @@ namespace Unity.FPS.Gameplay
                 // handle grounded movement
                 if (IsGrounded)
                 {
-                    // calculate the desired velocity from inputs, max speed, and current slope
-                    Vector3 targetVelocity = worldspaceMoveInput * MaxSpeedOnGround * speedModifier;
-                    // reduce speed if crouching by crouch speed ratio
-                    if (IsCrouching)
-                        targetVelocity *= MaxSpeedCrouchedRatio;
-                    targetVelocity = GetDirectionReorientedOnSlope(targetVelocity.normalized, m_GroundNormal) *
-                                     targetVelocity.magnitude;
-
-                    // smoothly interpolate between our current velocity and the target velocity based on acceleration speed
-                    CharacterVelocity = Vector3.Lerp(CharacterVelocity, targetVelocity,
-                        MovementSharpnessOnGround * Time.deltaTime);
-
                     // jumping
                     if (IsGrounded && m_InputHandler.GetJumpInputDown())
                     {
@@ -324,10 +331,10 @@ namespace Unity.FPS.Gameplay
                         if (SetCrouchingState(false, false))
                         {
                             // start by canceling out the vertical component of our velocity
-                            CharacterVelocity = new Vector3(CharacterVelocity.x, 0f, CharacterVelocity.z);
+                            m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, 0f, m_Rigidbody.velocity.z);
 
-                            // then, add the jumpSpeed value upwards
-                            CharacterVelocity += Vector3.up * JumpForce;
+                            // then, add the jumpForce value upwards
+                            m_Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
 
                             // play sound
                             AudioSource.PlayOneShot(JumpSfx);
@@ -342,6 +349,19 @@ namespace Unity.FPS.Gameplay
                         }
                     }
 
+                    // calculate the desired velocity from inputs, max speed, and current slope
+                    Vector3 targetVelocity = worldspaceMoveInput * MaxSpeedOnGround * speedModifier;
+                    // reduce speed if crouching by crouch speed ratio
+                    if (IsCrouching)
+                        targetVelocity *= MaxSpeedCrouchedRatio;
+                    targetVelocity = GetDirectionReorientedOnSlope(targetVelocity.normalized, m_GroundNormal) *
+                                     targetVelocity.magnitude;
+
+                    // smoothly interpolate between our current velocity and the target velocity based on acceleration speed
+                    //m_Rigidbody.velocity = Vector3.Lerp(m_Rigidbody.velocity, targetVelocity, MovementSharpnessOnGround * Time.deltaTime);
+                    m_Rigidbody.velocity = targetVelocity;
+
+
                     // footsteps sound
                     float chosenFootstepSfxFrequency =
                         (isSprinting ? FootstepSfxFrequencyWhileSprinting : FootstepSfxFrequency);
@@ -352,59 +372,41 @@ namespace Unity.FPS.Gameplay
                     }
 
                     // keep track of distance traveled for footsteps sound
-                    m_FootstepDistanceCounter += CharacterVelocity.magnitude * Time.deltaTime;
+                    m_FootstepDistanceCounter += m_Rigidbody.velocity.magnitude * Time.deltaTime;
                 }
                 // handle air movement
                 else
                 {
                     // add air acceleration
-                    CharacterVelocity += worldspaceMoveInput * AccelerationSpeedInAir * Time.deltaTime;
+                    m_Rigidbody.AddForce(worldspaceMoveInput * AccelerationSpeedInAir * Time.deltaTime);
 
                     // limit air speed to a maximum, but only horizontally
-                    float verticalVelocity = CharacterVelocity.y;
-                    Vector3 horizontalVelocity = Vector3.ProjectOnPlane(CharacterVelocity, Vector3.up);
+                    Vector3 horizontalVelocity = new Vector3(m_Rigidbody.velocity.x, 0f, m_Rigidbody.velocity.z);
                     horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, MaxSpeedInAir * speedModifier);
-                    CharacterVelocity = horizontalVelocity + (Vector3.up * verticalVelocity);
+                    m_Rigidbody.velocity = new Vector3(horizontalVelocity.x, m_Rigidbody.velocity.y, horizontalVelocity.z);
 
                     // apply the gravity to the velocity
-                    CharacterVelocity += Vector3.down * GravityDownForce * Time.deltaTime;
+                    m_Rigidbody.AddForce(Vector3.down * GravityDownForce * Time.deltaTime);
                 }
-            }
-
-            // apply the final calculated velocity value as a character movement
-            Vector3 capsuleBottomBeforeMove = GetCapsuleBottomHemisphere();
-            Vector3 capsuleTopBeforeMove = GetCapsuleTopHemisphere(m_Controller.height);
-            m_Controller.Move(CharacterVelocity * Time.deltaTime);
-
-            // detect obstructions to adjust velocity accordingly
-            m_LatestImpactSpeed = Vector3.zero;
-            if (Physics.CapsuleCast(capsuleBottomBeforeMove, capsuleTopBeforeMove, m_Controller.radius,
-                CharacterVelocity.normalized, out RaycastHit hit, CharacterVelocity.magnitude * Time.deltaTime, -1,
-                QueryTriggerInteraction.Ignore))
-            {
-                // We remember the last impact speed because the fall damage logic might need it
-                m_LatestImpactSpeed = CharacterVelocity;
-
-                CharacterVelocity = Vector3.ProjectOnPlane(CharacterVelocity, hit.normal);
             }
         }
 
         // Returns true if the slope angle represented by the given normal is under the slope angle limit of the character controller
         bool IsNormalUnderSlopeLimit(Vector3 normal)
         {
-            return Vector3.Angle(transform.up, normal) <= m_Controller.slopeLimit;
+            return Vector3.Angle(transform.up, normal) <= SlopeLimit;
         }
 
         // Gets the center point of the bottom hemisphere of the character controller capsule    
         Vector3 GetCapsuleBottomHemisphere()
         {
-            return transform.position + (transform.up * m_Controller.radius);
+            return m_Rigidbody.position + (transform.up * m_CapsuleCollider.radius);
         }
 
         // Gets the center point of the top hemisphere of the character controller capsule    
         Vector3 GetCapsuleTopHemisphere(float atHeight)
         {
-            return transform.position + (transform.up * (atHeight - m_Controller.radius));
+            return m_Rigidbody.position + (transform.up * (atHeight - m_CapsuleCollider.radius));
         }
 
         // Gets a reoriented direction that is tangent to a given slope
@@ -419,21 +421,22 @@ namespace Unity.FPS.Gameplay
             // Update height instantly
             if (force)
             {
-                m_Controller.height = m_TargetCharacterHeight;
-                m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
+                Debug.Log("UPDATE CHARACTER HEIGHT");
+                m_CapsuleCollider.height = m_TargetCharacterHeight;
+                m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;
                 PlayerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * CameraHeightRatio;
-                m_Actor.AimPoint.transform.localPosition = m_Controller.center;
+                m_Actor.AimPoint.transform.localPosition = m_CapsuleCollider.center;
             }
             // Update smooth height
-            else if (m_Controller.height != m_TargetCharacterHeight)
+            else if (m_CapsuleCollider.height != m_TargetCharacterHeight)
             {
+                Debug.Log("UPDATE CHARACTER HEIGHT 2");
                 // resize the capsule and adjust camera position
-                m_Controller.height = Mathf.Lerp(m_Controller.height, m_TargetCharacterHeight,
-                    CrouchingSharpness * Time.deltaTime);
-                m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
+                m_CapsuleCollider.height = Mathf.Lerp(m_CapsuleCollider.height, m_TargetCharacterHeight, CrouchingSharpness * Time.deltaTime);
+                m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;
                 PlayerCamera.transform.localPosition = Vector3.Lerp(PlayerCamera.transform.localPosition,
                     Vector3.up * m_TargetCharacterHeight * CameraHeightRatio, CrouchingSharpness * Time.deltaTime);
-                m_Actor.AimPoint.transform.localPosition = m_Controller.center;
+                m_Actor.AimPoint.transform.localPosition = m_CapsuleCollider.center;
             }
         }
 
@@ -450,16 +453,24 @@ namespace Unity.FPS.Gameplay
                 // Detect obstructions
                 if (!ignoreObstructions)
                 {
+                    // Calculate the height difference
+                    float heightDifference = CapsuleHeightStanding - CapsuleHeightCrouching;
+
+                    // Cast a capsule to check for obstructions
                     Collider[] standingOverlaps = Physics.OverlapCapsule(
                         GetCapsuleBottomHemisphere(),
                         GetCapsuleTopHemisphere(CapsuleHeightStanding),
-                        m_Controller.radius,
+                        m_CapsuleCollider.radius,
                         -1,
                         QueryTriggerInteraction.Ignore);
+
                     foreach (Collider c in standingOverlaps)
                     {
-                        if (c != m_Controller)
+                        // Ignore the capsule collider itself
+                        if (c != m_CapsuleCollider)
                         {
+                            // If there is an obstruction, reduce the height to avoid it
+                            m_TargetCharacterHeight -= heightDifference;
                             return false;
                         }
                     }
@@ -476,5 +487,6 @@ namespace Unity.FPS.Gameplay
             IsCrouching = crouched;
             return true;
         }
+
     }
 }
