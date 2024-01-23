@@ -5,7 +5,6 @@ using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 public enum SpawnType
 {

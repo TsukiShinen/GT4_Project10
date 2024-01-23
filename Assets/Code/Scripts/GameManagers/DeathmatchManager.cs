@@ -5,6 +5,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Unity.FPS.Gameplay;
+
+public enum GameState
+{
+    Playing,
+    RoundStart,
+    RoundEnd
+}
 
 public class DeathmatchManager : GameManager
 {
@@ -18,6 +26,8 @@ public class DeathmatchManager : GameManager
     private int m_MaxRounds = 5;
     private int m_CurrentRound = 1;
 
+    private GameState m_GameState = GameState.Playing;
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,7 +37,18 @@ public class DeathmatchManager : GameManager
     {
         base.Update();
 
-        CheckTeamStatus();
+        switch (m_GameState)
+        {
+            case GameState.Playing:
+                CheckTeamStatus();
+                break;
+            case GameState.RoundEnd:
+                // Attendez que la coroutine ShowEndRoundMessage termine son exécution.
+                break;
+            case GameState.RoundStart:
+                // Attendez que la coroutine StartNextRound termine son exécution.
+                break;
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -155,15 +176,20 @@ public class DeathmatchManager : GameManager
 
         if (livingPlayersTeam1 > 0 && livingPlayersTeam2 == 0)
         {
+            Debug.Log("Team 1 Win Round");
             m_ScoreTeam1++;
-            StartNextRound();
+            StartCoroutine(ManageRoundEnd());
+            return;
         }
         else if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
         {
+            Debug.Log("Team 2 Win Round");
             m_ScoreTeam2++;
-            StartNextRound();
+            StartCoroutine(ManageRoundEnd());
+            return;
         }
 
+        return;
     }
 
     private int CountLivingPlayers(bool isTeamOne)
@@ -186,7 +212,36 @@ public class DeathmatchManager : GameManager
         return true;
     }
 
-    private void StartNextRound()
+    private IEnumerator ManageRoundEnd()
+    {
+        m_GameState = GameState.RoundEnd;
+
+        DisablePlayerMovementScripts();
+
+        // Afficher le message de fin de round pendant 3 secondes
+        yield return new WaitForSeconds(3f);
+
+        ShowEndRoundMessage();
+
+        StartCoroutine(StartNextRound());
+    }
+
+    private IEnumerator StartNextRound()
+    {
+        m_GameState = GameState.RoundStart;
+
+        RespawnPlayers();
+
+        ShowStartRoundTimer();
+
+        yield return new WaitForSeconds(3f);
+
+        EnablePlayerMovementScripts();
+
+        m_GameState = GameState.Playing;
+    }
+
+    /*private void StartNextRound()
     {
         //TO DO : Figer les joueurs restants, afficher message de fin de round,
         //Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
@@ -198,17 +253,65 @@ public class DeathmatchManager : GameManager
         }
         else
             StartCoroutine(ShowEndRoundMessage());
+    }*/
+
+    private void RespawnPlayers()
+    {
+        foreach (var playerData in m_PlayersGameObjects.Keys)
+        {
+            RespawnPlayer(playerData);
+        }
+
+        return;
+    }
+
+    private void ShowStartRoundTimer()
+    {
+        //TO DO : Timer affiché à l'écran de chaque joueur de 3 secondes avec un cercle autour qui se rétracte
+
+        return;
     }
 
     private IEnumerator ShowEndRoundMessage()
     {
+        DisablePlayerMovementScripts();
         //TO DO : Afficher message à la fin du round pendant quelques second avant de reset, respawn ect : Round Win ou Loose 
         //                                                                                                   1 - 0 ou 0 - 1
-        yield return null;
+
+        yield return new WaitForSeconds(3f); //3s ou 5s
+
+        if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
+            EndGame();
+        else
+            StartNextRound();
     }
 
     private void EndGame()
     {
         //TO DO : Ecran de fin (score, leaderboard?) puis retour au lobby après un certain temps
+    }
+
+    private void EnablePlayerMovementScripts()
+    {
+        foreach (var playerObject in m_PlayersGameObjects.Values)
+        {
+            var movementScript = playerObject.GetComponent<PlayerCharacterController>();
+            if (movementScript != null)
+                movementScript.enabled = true;
+        }
+
+        return;
+    }
+
+    private void DisablePlayerMovementScripts()
+    {
+        foreach (var playerObject in m_PlayersGameObjects.Values)
+        {
+            var movementScript = playerObject.GetComponent<PlayerCharacterController>();
+            if (movementScript != null)
+                movementScript.enabled = false;
+        }
+
+        return;
     }
 }
