@@ -30,7 +30,7 @@ public class ShootServer : NetworkBehaviour
             var index = MultiplayerManager.Instance.FindPlayerDataIndex(pServerRpcParams.Receive.SenderClientId);
             var playerData = MultiplayerManager.Instance.GetPlayerDataByIndex(index);
             var gameobject = GameManager.Instance.FindPlayerGameObject(playerData);
-            newProjectile.Shoot(gameobject);
+            newProjectile.Shoot(gameobject, pServerRpcParams.Receive.SenderClientId);
         }
     }
 

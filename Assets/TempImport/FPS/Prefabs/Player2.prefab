@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4281677000
+  GlobalObjectIdHash: 3071459431
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -776,6 +776,7 @@ MonoBehaviour:
   - {fileID: 4375087919634122987}
   - {fileID: 194844226235900912}
   - {fileID: 6995826961656888996}
+  - {fileID: 8155467264151537930}
   m_GameObjectsOwner: []
 --- !u!114 &4021369236839795509
 MonoBehaviour:

@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; width: 100%; max-width: 100%; min-width: 100%; height: 100%; max-height: 100%; min-height: 100%; flex-direction: column; justify-content: center;">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 10%; max-height: 10%; min-height: 10%; justify-content: center;">
+            <ui:VisualElement style="flex-grow: 1; width: 10%; max-width: 10%; min-width: 10%; height: 100%; max-height: 100%; min-height: 100%; background-color: rgb(255, 48, 0);">
+                <ui:Label text="0" name="Team1" style="-unity-text-align: middle-center; justify-content: flex-start; width: 100%; max-width: 100%; min-width: 100%; height: 100%; max-height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 40px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; width: 10%; max-width: 10%; min-width: 10%; height: 100%; max-height: 100%; min-height: 100%; background-color: rgb(0, 73, 255);">
+                <ui:Label text="Label" name="Team2" style="-unity-text-align: middle-center; justify-content: flex-start; width: 100%; max-width: 100%; min-width: 100%; height: 100%; max-height: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 40px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="EndRound" style="flex-grow: 1;">
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.62); margin-left: 12%; margin-right: 12%; margin-top: 3%; margin-bottom: 3%;">
+                <ui:Label text="Label" style="align-items: auto; -unity-text-align: upper-center; color: rgb(58, 255, 0); font-size: 50px; height: 10%; max-height: 10%; min-height: 10%;" />
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; height: 10%; max-height: 10%; min-height: 10%;">
+                    <ui:Label text="Nom" style="width: 33%; max-width: 33%; min-width: 33%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; color: rgb(255, 255, 255); font-size: 30px;" />
+                    <ui:Label text="Kill" name="Label" style="width: 33%; max-width: 33%; min-width: 33%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; color: rgb(255, 255, 255); font-size: 30px;" />
+                    <ui:Label text="Death" style="width: 33%; max-width: 33%; min-width: 33%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; color: rgb(255, 255, 255); font-size: 30px;" />
+                </ui:VisualElement>
+                <ui:ListView name="ScoreContainer" item-template="project://database/Assets/UI/Pages/ScoreRow.uxml?fileID=9197481963319205126&amp;guid=c30759e76ec7f9941ad3f22a80357443&amp;type=3#ScoreRow" virtualization-method="DynamicHeight" selection-type="None" fixed-item-height="50" style="height: 80%; max-height: 80%; min-height: 80%; width: 100%; max-width: 100%; min-width: 100%; align-self: auto;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

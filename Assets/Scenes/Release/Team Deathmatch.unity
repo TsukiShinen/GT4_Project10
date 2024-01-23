@@ -386,6 +386,11 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 7.660589
       objectReference: {fileID: 0}
+    - target: {fileID: 3795129743526377669, guid: 1d0a5305bc438974ab65db9ced677a2b,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4713558992404970753, guid: 1d0a5305bc438974ab65db9ced677a2b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1571,6 +1576,7 @@ GameObject:
   - component: {fileID: 699133952}
   - component: {fileID: 699133953}
   - component: {fileID: 699133954}
+  - component: {fileID: 699133955}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1627,6 +1633,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerPrefab: {fileID: 1624529858613326793, guid: 4c994aa033244a040a37b8ccb800cdc8,
     type: 3}
+  m_Document: {fileID: 699133955}
+  m_ScoreElement: {fileID: 9197481963319205126, guid: c30759e76ec7f9941ad3f22a80357443,
+    type: 3}
+--- !u!114 &699133955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699133951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 60a2bc671c1158843aa6aa96eadc9c4a, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 3167e632e0bc9de43a44f3647a242589,
+    type: 3}
+  m_SortingOrder: 0
 --- !u!4 &759815506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2141676431450117668, guid: cd17687759887a0438ee021e51abc9d9,
@@ -5521,6 +5547,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.z
       value: 7.606143
+      objectReference: {fileID: 0}
+    - target: {fileID: 3795129743526377669, guid: 1d0a5305bc438974ab65db9ced677a2b,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4713558992404970753, guid: 1d0a5305bc438974ab65db9ced677a2b,
         type: 3}

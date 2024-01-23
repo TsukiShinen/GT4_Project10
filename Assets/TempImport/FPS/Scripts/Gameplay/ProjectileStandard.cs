@@ -241,7 +241,7 @@ namespace Unity.FPS.Gameplay
                 PlayerHealth damageable = collider.GetComponentInParent<PlayerHealth>();
                 if (damageable)
                 {
-                    damageable.InflictDamage(Damage);
+                    damageable.InflictDamage(Damage, OwnerId);
                 }
             }
 

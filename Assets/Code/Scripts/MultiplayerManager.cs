@@ -221,7 +221,7 @@ public class MultiplayerManager : NetworkBehaviour
             GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
     }
 
-    public void PlayerHit(float pDamage, GameObject pGo)
+    public void PlayerHit(float pDamage, GameObject pGo, ulong pOwnerId)
     {
         var playerData = GameManager.Instance.FindPlayerData(pGo);
 		var index = FindPlayerDataIndexByPlayerData(playerData);
@@ -236,11 +236,19 @@ public class MultiplayerManager : NetworkBehaviour
         {
             GameManager.Instance.RespawnPlayer(playerData);
             playerData.PlayerHealth = playerData.PlayerMaxHealth;
-
+			playerData.PlayerDeaths += 1;
             m_PlayerDataNetworkList[index] = playerData;
 
             if (GameManager.Instance != null)
                 GameManager.Instance.SetPlayerData(index, playerData);
+
+            var indexKiller = FindPlayerDataIndex(pOwnerId);
+            var playerDataKiller = GetPlayerDataByIndex(indexKiller);
+			playerDataKiller.PlayerKills += 1;
+            m_PlayerDataNetworkList[indexKiller] = playerDataKiller;
+
+            if (GameManager.Instance != null)
+                GameManager.Instance.SetPlayerData(indexKiller, playerDataKiller);
         }
     }
 

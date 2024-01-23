@@ -6,6 +6,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unity.FPS.Gameplay;
+using UnityEngine.UIElements;
+using Unity.Services.Lobbies.Models;
+using Network;
+using ScriptableObjects.GameModes;
+using static UnityEngine.Rendering.GPUSort;
 
 public enum GameState
 {
@@ -16,6 +21,9 @@ public enum GameState
 
 public class DeathmatchManager : GameManager
 {
+    [SerializeField] private UIDocument m_Document;
+    [SerializeField] private VisualTreeAsset m_ScoreElement;
+
     private BoxCollider m_SpawnTeam1;
     private BoxCollider m_SpawnTeam2;
 
@@ -26,24 +34,32 @@ public class DeathmatchManager : GameManager
     private int m_MaxRounds = 5;
     private int m_CurrentRound = 1;
 
+    private VisualElement m_Root;
+
     private GameState m_GameState = GameState.Playing;
 
     protected override void Awake()
     {
         base.Awake();
+
+        m_Root = m_Document.rootVisualElement;
     }
 
     protected override void Update()
     {
         base.Update();
-
         switch (m_GameState)
         {
             case GameState.Playing:
                 CheckTeamStatus();
+                //m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
+                m_Root.Q<TextElement>("Team1").text = "test";
+                m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.ToString();
+                SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundEnd:
                 // Attendez que la coroutine ShowEndRoundMessage termine son exécution.
+                SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundStart:
                 // Attendez que la coroutine StartNextRound termine son exécution.
@@ -313,5 +329,40 @@ public class DeathmatchManager : GameManager
         }
 
         return;
+    }
+
+    private void SetVisibleScoreBoard(bool pIsActive)
+    {
+        if (pIsActive)
+        {
+            m_Root.Q<VisualElement>("EndRound").style.display = DisplayStyle.Flex;
+            m_Root.Q<VisualElement>("ScoreContainer");
+
+            var listView = m_Root.Q<ListView>("ScoreContainer");
+            listView.Clear();
+            var items = new List<VisualElement>();
+
+            foreach (var playerData in m_PlayersGameObjects.Keys)
+            {
+                var scoreRow = m_ScoreElement.CloneTree();
+                scoreRow.Q<TextElement>("Name").text = playerData.PlayerName.ToString();
+                scoreRow.Q<TextElement>("Kills").text = playerData.PlayerKills.ToString();
+                scoreRow.Q<TextElement>("Deaths").text = playerData.PlayerDeaths.ToString();
+                items.Add(scoreRow);
+            }
+
+            listView.makeItem = () => new VisualElement();
+            listView.bindItem = (element, i) =>
+            {
+                element.Clear();
+                element.Add(items[i]);
+            };
+            listView.itemsSource = items;
+            listView.Rebuild();
+        }
+        else
+        {
+            m_Root.Q<TextElement>("EndRound").style.display = DisplayStyle.None;
+        }
     }
 }

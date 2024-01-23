@@ -19,9 +19,9 @@ public class PlayerHealth : NetworkBehaviour
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += OnPlayerDataNetworkListChanged;
     }
 
-    public void InflictDamage(float pDamage)
+    public void InflictDamage(float pDamage, ulong pOwnerId)
     {
-        MultiplayerManager.Instance.PlayerHit(pDamage, gameObject);
+        MultiplayerManager.Instance.PlayerHit(pDamage, gameObject, pOwnerId);
     }
 
     private void OnPlayerDataNetworkListChanged(object sender, EventArgs e)

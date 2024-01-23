@@ -11,12 +11,14 @@ namespace Unity.FPS.Game
         public Vector3 InitialDirection { get; private set; }
         public Vector3 InheritedMuzzleVelocity { get; private set; }
         public float InitialCharge { get; private set; }
+        public ulong OwnerId { get; private set; }
 
         public UnityAction OnShoot;
 
-        public void Shoot(GameObject owner)
+        public void Shoot(GameObject owner, ulong ownerId)
         {
             Owner = owner;
+            OwnerId = ownerId;
             InitialPosition = transform.position;
             InitialDirection = transform.forward;
 

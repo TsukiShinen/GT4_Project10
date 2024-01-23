@@ -10,6 +10,8 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 	public FixedString64Bytes PlayerId;
 	public float PlayerHealth;
 	public float PlayerMaxHealth;
+	public int PlayerKills;
+	public int PlayerDeaths;
 
 	public bool Equals(PlayerData other)
 	{
@@ -18,7 +20,9 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 			   IsTeamOne == other.IsTeamOne &&
 			   PlayerId == other.PlayerId &&
 			   PlayerHealth == other.PlayerHealth &&
-               PlayerMaxHealth == other.PlayerMaxHealth;
+               PlayerMaxHealth == other.PlayerMaxHealth &&
+               PlayerKills == other.PlayerKills &&
+               PlayerDeaths == other.PlayerDeaths;
     }
 
 	public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -29,5 +33,7 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 		serializer.SerializeValue(ref PlayerId);
 		serializer.SerializeValue(ref PlayerHealth);
 		serializer.SerializeValue(ref PlayerMaxHealth);
+		serializer.SerializeValue(ref PlayerKills);
+		serializer.SerializeValue(ref PlayerDeaths);
 	}
 }

@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; width: 100%; max-width: 100%; min-width: 100%; height: 100%; max-height: 100%; min-height: 100%; flex-direction: row; justify-content: center;">
+        <ui:Label text="Label" name="Name" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 33%; max-width: 33%; min-width: 33%; -unity-text-align: middle-center; font-size: 30px;" />
+        <ui:Label text="Label" name="Kills" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 33%; max-width: 33%; min-width: 33%; -unity-text-align: middle-center; font-size: 30px;" />
+        <ui:Label text="Label" name="Deaths" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 33%; max-width: 33%; min-width: 33%; -unity-text-align: middle-center; font-size: 30px;" />
+    </ui:VisualElement>
+</ui:UXML>
