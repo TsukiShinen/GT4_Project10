@@ -52,19 +52,18 @@ public class DeathmatchManager : GameManager
         {
             case GameState.Playing:
                 CheckTeamStatus();
-                //m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
-                m_Root.Q<TextElement>("Team1").text = "test";
+                m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
                 m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.ToString();
-                SetVisibleScoreBoard(true);
+                
                 break;
             case GameState.RoundEnd:
-                // Attendez que la coroutine ShowEndRoundMessage termine son exécution.
                 SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundStart:
                 // Attendez que la coroutine StartNextRound termine son exécution.
                 break;
         }
+        SetVisibleScoreBoard(true);
     }
 
     public override void OnNetworkSpawn()
@@ -342,7 +341,7 @@ public class DeathmatchManager : GameManager
             listView.Clear();
             var items = new List<VisualElement>();
 
-            foreach (var playerData in m_PlayersGameObjects.Keys)
+            foreach (var playerData in MultiplayerManager.Instance.GetPlayerDatas())
             {
                 var scoreRow = m_ScoreElement.CloneTree();
                 scoreRow.Q<TextElement>("Name").text = playerData.PlayerName.ToString();

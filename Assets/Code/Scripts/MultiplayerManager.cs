@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Network;
+using NUnit.Framework;
 using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -284,5 +286,10 @@ public class MultiplayerManager : NetworkBehaviour
             }
         }
         return -1; // Return -1 if no player data with the given client id is found
+    }
+
+    public NetworkList<PlayerData> GetPlayerDatas()
+    {
+		return m_PlayerDataNetworkList;
     }
 }
