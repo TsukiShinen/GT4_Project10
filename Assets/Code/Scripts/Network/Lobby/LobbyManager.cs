@@ -58,6 +58,11 @@ namespace Network
 			InitializeUnityAuthentication();
 		}
 
+		private void OnDestroy()
+		{
+			LeaveLobby();
+		}
+
 		private static async void InitializeUnityAuthentication()
 		{
 			if (UnityServices.State == ServicesInitializationState.Initialized) return;
