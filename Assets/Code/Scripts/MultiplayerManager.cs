@@ -104,7 +104,8 @@ public class MultiplayerManager : NetworkBehaviour
 		NetworkManager.Singleton.ConnectionApprovalCallback += Network_ConnectionApprovalCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
 		NetworkManager.Singleton.OnClientDisconnectCallback += Network_OnClientDisconnectCallback;
-	}
+
+    }
 
 	private void Network_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest pConnectionApprovalRequest, NetworkManager.ConnectionApprovalResponse pConnectionApprovalResponse)
 	{
@@ -150,16 +151,16 @@ public class MultiplayerManager : NetworkBehaviour
 		OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
 
 		SetNetworkClientCallbacks();
-		NetworkManager.Singleton.StartClient();
-	}
+        NetworkManager.Singleton.StartClient();
+    }
 
 	private void SetNetworkClientCallbacks()
 	{
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_Client_OnClientConnectedCallback;
 		NetworkManager.Singleton.OnClientDisconnectCallback += Network_Client_OnClientDisconnectCallback;
-	}
+    }
 
-	private void Network_Client_OnClientConnectedCallback(ulong pClientId)
+    private void Network_Client_OnClientConnectedCallback(ulong pClientId)
 	{
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
@@ -168,7 +169,13 @@ public class MultiplayerManager : NetworkBehaviour
 	private void Network_Client_OnClientDisconnectCallback(ulong pClientId)
 	{
 		MessagePopUp.Instance.Open("Disconnected from Game", NetworkManager.Singleton.DisconnectReason == "" ? "Failed to connect" : NetworkManager.Singleton.DisconnectReason, ("Close", MessagePopUp.Instance.Hide));
-		OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
+        
+		NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+        SceneManager.LoadScene("Base", LoadSceneMode.Single);
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+        OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
 	}
 
 	[ServerRpc(RequireOwnership = false)]

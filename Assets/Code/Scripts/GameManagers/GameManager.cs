@@ -1,3 +1,4 @@
+using Network;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -35,6 +36,11 @@ public class GameManager : NetworkBehaviour
 
 		Instance = this;
 	}
+
+    private void Start()
+    {
+        LobbyManager.Instance.SetLobbyNull();
+    }
 
     protected virtual void Update()
     {

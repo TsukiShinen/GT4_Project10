@@ -232,7 +232,7 @@ namespace Network
 				MultiplayerManager.Instance.StartClient();
 				Debug.Log($"Client Started");
 				OnJoinLobbySucceed?.Invoke(this, EventArgs.Empty);
-			}
+            }
 			catch (LobbyServiceException e)
 			{
 				Debug.LogException(e);
@@ -296,7 +296,7 @@ namespace Network
 			
 			try
 			{
-				await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, AuthenticationService.Instance.PlayerId);
 				m_JoinedLobby = null;
 			}
 			catch (LobbyServiceException e)
@@ -319,5 +319,10 @@ namespace Network
 				Debug.LogException(e);
 			}
 		}
+
+		public void SetLobbyNull()
+		{
+			m_JoinedLobby = null;
+        }
 	}
 }
