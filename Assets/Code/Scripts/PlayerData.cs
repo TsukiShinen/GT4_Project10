@@ -13,6 +13,8 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 	public int PlayerKills;
 	public int PlayerDeaths;
 
+	public bool IsAlive => PlayerHealth > 0;
+
 	public bool Equals(PlayerData other)
 	{
 		return ClientId == other.ClientId &&

@@ -25,7 +25,7 @@ public class GameManager : NetworkBehaviour
 
 	[SerializeField] protected Transform m_PlayerPrefab;
 
-	protected Dictionary<PlayerData, GameObject> m_PlayersGameObjects = new Dictionary<PlayerData, GameObject>();
+	protected Dictionary<ulong, GameObject> m_PlayersGameObjects = new ();
 
     protected SpawnType m_SpawnType = SpawnType.Null;
 
@@ -65,36 +65,36 @@ public class GameManager : NetworkBehaviour
     {
     }
 
-    public virtual void RespawnPlayer(PlayerData pPlayerData)
+    public virtual void RespawnPlayer(ulong pCliendId)
 	{
 	}
 
-    public void SetPlayerData(int pIndex, PlayerData pNewPlayerData)
+    public void SetPlayerData(int pIndex, ulong pClientId)
     {
 		var gameObject = m_PlayersGameObjects.ElementAt(pIndex).Value;
 		m_PlayersGameObjects.Remove(m_PlayersGameObjects.ElementAt(pIndex).Key);
-		m_PlayersGameObjects.Add(pNewPlayerData, gameObject);
+		m_PlayersGameObjects.Add(pClientId, gameObject);
     }
 
     public PlayerData FindPlayerData(GameObject pPlayerGameObject)
     {
         foreach(var player in m_PlayersGameObjects)
 			if (pPlayerGameObject == player.Value)
-				return player.Key;
+				return MultiplayerManager.Instance.FindPlayerData(player.Key);
 
 		return default;
     }
 
-    public GameObject FindPlayerGameObject(PlayerData pPlayerData)
+    public GameObject FindPlayerGameObject(ulong pClientId)
     {
-	    return m_PlayersGameObjects.GetValueOrDefault(pPlayerData);
+	    return m_PlayersGameObjects.GetValueOrDefault(pClientId);
     }
 
     [ServerRpc]
     public void SetCamera_ServerRpc(ulong pClientId, ulong pTargetId)
     {
 	    Debug.Log("SetCamera_ServerRpc");
-	    m_PlayersGameObjects[MultiplayerManager.Instance.FindPlayerData(pTargetId)].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
+	    m_PlayersGameObjects[pTargetId].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
 	    {
 		    Send = new ClientRpcSendParams
 		    {
@@ -107,6 +107,6 @@ public class GameManager : NetworkBehaviour
     public void SetGameObject_ServerRpc(ulong pClientId, bool pIsActive)
     {
         Debug.Log("SetGameObject_ServerRpc");
-        m_PlayersGameObjects[MultiplayerManager.Instance.FindPlayerData(pClientId)].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
+        m_PlayersGameObjects[pClientId].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
     }
 }

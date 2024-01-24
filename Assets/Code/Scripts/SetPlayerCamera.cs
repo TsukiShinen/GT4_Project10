@@ -7,7 +7,6 @@ public class SetPlayerCamera : NetworkBehaviour
 	[ClientRpc]
 	public void Set_ClientRpc(ClientRpcParams pParam)
 	{
-		Debug.Log("Set_ClientRpc");
 		if (Camera.main)
 		{
 			Camera.main.transform.SetParent(transform, false);

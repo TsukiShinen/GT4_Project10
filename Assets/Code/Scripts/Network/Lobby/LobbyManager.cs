@@ -72,8 +72,8 @@ namespace Network
 			if (ParrelSync.ClonesManager.IsClone())
 			{
 				var customArgument = ParrelSync.ClonesManager.GetArgument();
-                AuthenticationService.Instance.SwitchProfile($"Clone{customArgument}Profile{UnityEngine.Random.Range(0, 100000)}");
-            }
+				AuthenticationService.Instance.SwitchProfile($"Clone{customArgument}_Profile");
+			}
 #endif
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
 			Debug.Log($"<color=green>===== Player Connected =====</color>");
@@ -232,7 +232,7 @@ namespace Network
 				MultiplayerManager.Instance.StartClient();
 				Debug.Log($"Client Started");
 				OnJoinLobbySucceed?.Invoke(this, EventArgs.Empty);
-            }
+			}
 			catch (LobbyServiceException e)
 			{
 				Debug.LogException(e);
@@ -296,7 +296,7 @@ namespace Network
 			
 			try
 			{
-                await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, AuthenticationService.Instance.PlayerId);
+				await LobbyService.Instance.RemovePlayerAsync(m_JoinedLobby.Id, AuthenticationService.Instance.PlayerId);
 				m_JoinedLobby = null;
 			}
 			catch (LobbyServiceException e)
@@ -323,6 +323,6 @@ namespace Network
 		public void SetLobbyNull()
 		{
 			m_JoinedLobby = null;
-        }
+		}
 	}
 }

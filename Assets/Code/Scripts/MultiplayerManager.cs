@@ -190,7 +190,7 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 
 		if(GameManager.Instance != null)
-			GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+			GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
 	[ServerRpc(RequireOwnership = false)]
@@ -204,7 +204,7 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 
         if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+            GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
 	[ServerRpc(RequireOwnership = false)]
@@ -218,7 +218,7 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
 
         if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(playerDataIndex, playerData);
+            GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
     public void PlayerHit(float pDamage, GameObject pGo, ulong pOwnerId)
@@ -230,13 +230,13 @@ public class MultiplayerManager : NetworkBehaviour
         m_PlayerDataNetworkList[index] = playerData;
 
         if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(index, playerData);
+            GameManager.Instance.SetPlayerData(index, playerData.ClientId);
 
         if (playerData.PlayerHealth <= 0)
         {
 			if(GameModeConfig.CanRespawn)
 			{
-				GameManager.Instance.RespawnPlayer(playerData);
+				GameManager.Instance.RespawnPlayer(playerData.ClientId);
 				playerData.PlayerHealth = playerData.PlayerMaxHealth;
             }
 			else
@@ -258,7 +258,7 @@ public class MultiplayerManager : NetworkBehaviour
             m_PlayerDataNetworkList[index] = playerData;
 
             if (GameManager.Instance != null)
-                GameManager.Instance.SetPlayerData(index, playerData);
+                GameManager.Instance.SetPlayerData(index, playerData.ClientId);
 
             var indexKiller = FindPlayerDataIndex(pOwnerId);
             var playerDataKiller = GetPlayerDataByIndex(indexKiller);
@@ -266,7 +266,7 @@ public class MultiplayerManager : NetworkBehaviour
             m_PlayerDataNetworkList[indexKiller] = playerDataKiller;
 
             if (GameManager.Instance != null)
-                GameManager.Instance.SetPlayerData(indexKiller, playerDataKiller);
+                GameManager.Instance.SetPlayerData(indexKiller, playerDataKiller.ClientId);
         }
     }
 

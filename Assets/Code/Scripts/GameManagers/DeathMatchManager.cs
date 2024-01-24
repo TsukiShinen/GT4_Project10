@@ -86,9 +86,7 @@ public class DeathMatchManager : GameManager
         DetermineSpawnType();
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            var playerData =
-                MultiplayerManager.Instance.GetPlayerDataByIndex(
-                    MultiplayerManager.Instance.FindPlayerDataIndex(clientId));
+            var playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
 
             var player = Instantiate(m_PlayerPrefab);
 
@@ -100,7 +98,7 @@ public class DeathMatchManager : GameManager
 
             player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId, true);
 
-            m_PlayersGameObjects.Add(playerData, player.gameObject);
+            m_PlayersGameObjects.Add(clientId, player.gameObject);
         }
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
     }
@@ -162,17 +160,25 @@ public class DeathMatchManager : GameManager
     }
 
 
-    public override void RespawnPlayer(PlayerData pPlayerData)
+    public override void RespawnPlayer(ulong pClientId)
     {
         Debug.Log("Respawn");
-        if (m_PlayersGameObjects.TryGetValue(pPlayerData, out GameObject player))
+        if (m_PlayersGameObjects.TryGetValue(pClientId, out GameObject player))
         {
+            SetGameObject_ServerRpc(pClientId, true);
+            SetCamera_ServerRpc(pClientId, pClientId);
+            
+            var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
+            
             Vector3 position = pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
             Quaternion direction = pPlayerData.IsTeamOne ? m_SpawnTeam1.transform.rotation : m_SpawnTeam2.transform.rotation;
             player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, direction);
+
+            pPlayerData.PlayerHealth = pPlayerData.PlayerMaxHealth;
+            MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(pClientId)] = pPlayerData;
         }
 
-        base.RespawnPlayer(pPlayerData);
+        base.RespawnPlayer(pClientId);
     }
 
     private void CheckTeamStatus()
@@ -180,6 +186,7 @@ public class DeathMatchManager : GameManager
         Debug.Log("Check");
         int livingPlayersTeam1 = CountLivingPlayers(true);
         int livingPlayersTeam2 = CountLivingPlayers(false);
+        Debug.Log($"Team one Alive : {livingPlayersTeam1} / Team two Alive : {livingPlayersTeam2}");
 
         if (livingPlayersTeam1 > 0 && livingPlayersTeam2 == 0)
         {
@@ -188,35 +195,27 @@ public class DeathMatchManager : GameManager
             StartCoroutine(ManageRoundEnd());
             return;
         }
-        else if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
+        if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
         {
             Debug.Log("Team 2 Win Round");
             m_ScoreTeam2++;
             StartCoroutine(ManageRoundEnd());
             return;
         }
-
-        return;
     }
 
     private int CountLivingPlayers(bool isTeamOne)
     {
         int count = 0;
-        foreach (var playerData in m_PlayersGameObjects.Keys)
+        foreach (var clientId in m_PlayersGameObjects.Keys)
         {
-            if (playerData.IsTeamOne == isTeamOne && IsPlayerAlive(playerData))
+            var playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
+            if (playerData.IsTeamOne == isTeamOne && playerData.IsAlive)
             {
                 count++;
             }
         }
         return count;
-    }
-
-    private bool IsPlayerAlive(PlayerData playerData)
-    {
-        if (playerData.PlayerHealth <= 0)
-            return false;
-        return true;
     }
 
     private IEnumerator ManageRoundEnd()
@@ -232,7 +231,7 @@ public class DeathMatchManager : GameManager
         yield return null;
     }
 
-    private IEnumerator StartNextRound()
+    private IEnumerator  StartNextRound()
     {
         Debug.Log("Manage Next Round");
 
@@ -252,9 +251,9 @@ public class DeathMatchManager : GameManager
 
     private void RespawnPlayers()
     {
-        foreach (var playerData in m_PlayersGameObjects.Keys)
+        foreach (var clientId in m_PlayersGameObjects.Keys)
         {
-            RespawnPlayer(playerData);
+            RespawnPlayer(clientId);
         }
 
         return;
