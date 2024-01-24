@@ -285,6 +285,15 @@ public class MultiplayerManager : NetworkBehaviour
         return -1; // Return -1 if no player data with the given client id is found
     }
 
+    public PlayerData FindPlayerData(ulong pClientId)
+    {
+	    foreach(var player in m_PlayerDataNetworkList)
+		    if (pClientId == player.ClientId)
+			    return player;
+
+	    return default;
+    }
+
     public NetworkList<PlayerData> GetPlayerDatas()
     {
 		return m_PlayerDataNetworkList;

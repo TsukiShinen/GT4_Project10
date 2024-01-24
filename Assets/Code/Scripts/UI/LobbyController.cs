@@ -18,7 +18,6 @@ public class LobbyController : NetworkBehaviour
 
     private void Awake()
     {
-        Debug.Log("Test");
         MessagePopUp.Instance.Hide();
     }
 

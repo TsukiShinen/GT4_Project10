@@ -2,6 +2,7 @@ using Network;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -48,11 +49,9 @@ public class GameManager : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn()
-	{
-		if (!IsServer)
-			return;
-
-		// TODO : destroy lobby
+    {
+	    if (!IsServer)
+		    return;
 		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 	}
 
@@ -60,42 +59,14 @@ public class GameManager : NetworkBehaviour
 	{
 		if(m_SpawnType == SpawnType.Null)
             Debug.LogError("No spawn zone or spawn points defined.");
-
-        Debug.Log(m_SpawnType);
-
     }
 
     protected virtual void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode, List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
     {
-        //var countTeam1 = 0;
-        //var countTeam2 = 0;
-        //foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        //{
-        //var playerData =
-        //MultiplayerManager.Instance.GetPlayerDataByIndex(
-        //MultiplayerManager.Instance.FindPlayerDataIndex(clientId));
-        //var player = Instantiate(m_PlayerPrefab);
-        //if (m_SpawnsTeam1 != null)
-        //{
-        //if (MultiplayerManager.Instance.GameModeConfig.HasTeams)
-        //player.transform.position = playerData.IsTeamOne ? m_SpawnsTeam1[countTeam1++].position : m_SpawnsTeam2[countTeam2++].position;
-        //else
-        //player.transform.position = m_SpawnsTeam1[countTeam1++].position;
-        //}
-        //player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId, true);
-        //m_PlayersGameObjects.Add(playerData, player.gameObject);
-        //  }
     }
 
     public virtual void RespawnPlayer(PlayerData pPlayerData)
 	{
-		//if(m_PlayersGameObjects.TryGetValue(pPlayerData, out GameObject player))
-		//{
-            //if (MultiplayerManager.Instance.GameModeConfig.HasTeams)
-                //player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(pPlayerData.IsTeamOne ? m_SpawnsTeam1[0].position : m_SpawnsTeam2[0].position);
-			//else
-                //player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(m_SpawnsTeam1[0].position);
-        //}
 	}
 
     public void SetPlayerData(int pIndex, PlayerData pNewPlayerData)
@@ -119,4 +90,16 @@ public class GameManager : NetworkBehaviour
 	    return m_PlayersGameObjects.GetValueOrDefault(pPlayerData);
     }
 
+    [ServerRpc]
+    public void SetCamera_ServerRpc(ulong pClientId, ulong pTargetId)
+    {
+	    Debug.Log("SetCamera_ServerRpc");
+	    m_PlayersGameObjects[MultiplayerManager.Instance.FindPlayerData(pTargetId)].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
+	    {
+		    Send = new ClientRpcSendParams
+		    {
+			    TargetClientIds = new List<ulong> { pClientId }
+		    }
+	    });
+    }
 }

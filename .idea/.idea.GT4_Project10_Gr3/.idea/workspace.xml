@@ -9,9 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/MessagePopUp.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/MessagePopUp.uxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Gameplay/PlayerCharacterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Gameplay/PlayerCharacterController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,11 +25,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///GameManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Plugins/InputForUI/InputSystemProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Editor/NetworkObjectEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Connection/NetworkConnectionManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Messaging/Messages/RpcMessages.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Messaging/NetworkMessageManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Transports/UTP/UnityTransport.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Tests/Runtime/ClientOnlyConnectionTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -150,7 +163,7 @@
       <workItem from="1705739535189" duration="2440000" />
       <workItem from="1705744756852" duration="115000" />
       <workItem from="1705744878612" duration="6567000" />
-      <workItem from="1706081224470" duration="9588000" />
+      <workItem from="1706081224470" duration="15601000" />
     </task>
     <servers />
   </component>
