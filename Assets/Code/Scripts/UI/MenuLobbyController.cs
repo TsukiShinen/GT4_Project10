@@ -45,9 +45,10 @@ public class MenuLobbyController : MonoBehaviour
 			{
 				var lobbyView = m_RoomElement.CloneTree();
 				lobbyView.Q<TextElement>("Name").text = lobby.Name;
-				lobbyView.Q<TextElement>("GameMode").text = lobby.Data.TryGetValue(LobbyManager.k_KeyGameModeIndex, out var value) 
-					? m_GameModes.GameModeConfigs[int.Parse(value.Value)].ModeName
-					: "Unknown";
+				if (lobby.Data.TryGetValue(LobbyManager.k_KeyGameModeIndex, out var value) && int.Parse(value.Value) < m_GameModes.GameModeConfigs.Count)
+					lobbyView.Q<TextElement>("GameMode").text = m_GameModes.GameModeConfigs[int.Parse(value.Value)].ModeName;
+				else
+					continue;
 				lobbyView.Q<TextElement>("PlayerCount").text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
 				lobbyView.AddManipulator(new Clickable(e =>
 				{

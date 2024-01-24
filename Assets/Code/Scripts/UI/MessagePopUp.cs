@@ -30,7 +30,7 @@ public class MessagePopUp : MonoBehaviour
 		m_Root.Q<TextElement>("Title").text = pTitle;
 		m_Root.Q<TextElement>("Message").text = pMessage;
 		
-		var buttonsElement = m_Root.Q<TextElement>("Message");
+		var buttonsElement = m_Root.Q<VisualElement>("Buttons");
 		buttonsElement.Clear();
 		foreach (var button in pButtons)
 		{

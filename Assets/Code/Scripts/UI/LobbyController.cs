@@ -25,6 +25,9 @@ public class LobbyController : NetworkBehaviour
         m_Root.Q<Button>("Quit").clicked += () =>
         {
             LobbyManager.Instance.LeaveLobby();
+            NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
+            SceneManager.LoadScene("Base", LoadSceneMode.Single);
         };
 
         if (IsServer)
@@ -33,6 +36,7 @@ public class LobbyController : NetworkBehaviour
             {
                 if (!IsServer) return;
                 var sceneName = MultiplayerManager.Instance.GameModeConfig.SceneName;
+                LobbyManager.Instance.DeleteLobby();
                 NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             };
         }

@@ -8,12 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathmatchManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathmatchManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/UI/LobbyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +38,8 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.services.qos@1.2.0/Runtime/Runner/QosJob.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Assets/Code/Scripts/UI/MenuLobbyController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/SceneManagement/NetworkSceneManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.services.authentication@3.0.0/Runtime/AuthenticationService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../GT4_Project10_Gr3_clone_0/Library/PackageCache/com.unity.services.lobby@1.1.2/Runtime/SDK/WrappedLobbyService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -150,7 +147,7 @@
       <workItem from="1705739535189" duration="2440000" />
       <workItem from="1705744756852" duration="115000" />
       <workItem from="1705744878612" duration="6567000" />
-      <workItem from="1706081224470" duration="2432000" />
+      <workItem from="1706081224470" duration="8791000" />
     </task>
     <servers />
   </component>
