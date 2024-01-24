@@ -38,8 +38,9 @@ public class PlayerHealth : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RespawnPlayerClientRpc(Vector3 position)
+    public void RespawnPlayerClientRpc(Vector3 position, Quaternion direction)
     {
         transform.position = position;
+        transform.rotation = direction;
     }
 }

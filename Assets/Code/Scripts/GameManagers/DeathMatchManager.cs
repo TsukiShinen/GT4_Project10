@@ -93,9 +93,13 @@ public class DeathMatchManager : GameManager
             var player = Instantiate(m_PlayerPrefab);
 
             if (m_SpawnTeam1 != null && m_SpawnTeam2 != null)
-                    player.transform.position = playerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
+            {
+                player.transform.position = playerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
+                player.transform.rotation = playerData.IsTeamOne ? m_SpawnTeam1.transform.rotation : m_SpawnTeam2.transform.rotation;
+            }
 
             player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId, true);
+
             m_PlayersGameObjects.Add(playerData, player.gameObject);
         }
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
@@ -161,7 +165,12 @@ public class DeathMatchManager : GameManager
     public override void RespawnPlayer(PlayerData pPlayerData)
     {
         if (m_PlayersGameObjects.TryGetValue(pPlayerData, out GameObject player))
-            player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2));
+        {
+            Vector3 position = pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
+            Quaternion direction = pPlayerData.IsTeamOne ? m_SpawnTeam1.transform.rotation : m_SpawnTeam2.transform.rotation;
+            player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, direction);
+        }
+
 
         base.RespawnPlayer(pPlayerData);
     }
