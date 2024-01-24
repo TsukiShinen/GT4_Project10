@@ -16,6 +16,12 @@ public class LobbyController : NetworkBehaviour
     private List<VisualElement> m_Elements1;
     private List<VisualElement> m_Elements2;
 
+    private void Awake()
+    {
+        Debug.Log("Test");
+        MessagePopUp.Instance.Hide();
+    }
+
     private void Start()
     {
         m_Root = m_Document.rootVisualElement;

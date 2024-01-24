@@ -66,10 +66,8 @@ public class MultiplayerManager : NetworkBehaviour
 	private void SetLobbyManagerCallbacks()
 	{
 		LobbyManager.Instance.OnCreateLobbyStarted += Lobby_OnCreateLobbyStarted;
-		LobbyManager.Instance.OnCreateLobbySucceed += Lobby_OnCreateLobbySucceed;
 		LobbyManager.Instance.OnCreateLobbyFailed += Lobby_OnCreateLobbyFailed;
 		LobbyManager.Instance.OnJoinLobbyStarted += Lobby_OnJoinLobbyStarted;
-		LobbyManager.Instance.OnJoinLobbySucceed += Lobby_OnJoinLobbySucceed;
 		LobbyManager.Instance.OnJoinLobbyFailed += Lobby_OnJoinLobbyFailed;
 	}
 
@@ -77,11 +75,6 @@ public class MultiplayerManager : NetworkBehaviour
 	{
 		MessagePopUp.Instance.Open("Game", "Creating Lobby ...");
 	}
-
-	private void Lobby_OnCreateLobbySucceed(object sender, EventArgs e)
-	{
-		MessagePopUp.Instance.Hide();
-    }
 
 	private void Lobby_OnCreateLobbyFailed(object sender, EventArgs e)
 	{
@@ -93,11 +86,6 @@ public class MultiplayerManager : NetworkBehaviour
 		MessagePopUp.Instance.Open("Game", "Joining Lobby ...");
 	}
 
-	private void Lobby_OnJoinLobbySucceed(object sender, EventArgs e)
-	{
-		MessagePopUp.Instance.Hide();
-    }
-
 	private void Lobby_OnJoinLobbyFailed(object sender, EventArgs e)
 	{
 		MessagePopUp.Instance.Open("Game", "Failed to join the lobby", ("Close", MessagePopUp.Instance.Hide));
@@ -105,6 +93,7 @@ public class MultiplayerManager : NetworkBehaviour
 
 	public void StartHost()
 	{
+		MessagePopUp.Instance.Open("Game", "Creating game ...");
 		SetNetworkManagerCallbacks();
 		NetworkManager.Singleton.StartHost();
 	}
@@ -162,8 +151,6 @@ public class MultiplayerManager : NetworkBehaviour
 
 		SetNetworkClientCallbacks();
 		NetworkManager.Singleton.StartClient();
-		
-		MessagePopUp.Instance.Hide();
 	}
 
 	private void SetNetworkClientCallbacks()
