@@ -35,7 +35,6 @@ namespace GameManagers
 			var (position, rotation) = GetSpawnPoint(playerData);
 			player.transform.position = position;
 			player.transform.rotation = rotation;
-			Debug.Log($"Spawn owner : {pClientId}");
 			player.GetComponent<NetworkObject>().SpawnWithOwnership(pClientId, true);
 			
 			return player;

@@ -1,4 +1,5 @@
 ﻿using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.XR;
@@ -6,7 +7,7 @@ using UnityEngine.InputSystem.XR;
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(CapsuleCollider), typeof(PlayerInputHandler), typeof(AudioSource))]
-    public class PlayerCharacterController : MonoBehaviour
+    public class PlayerCharacterController : NetworkBehaviour
     {
         [Header("References")]
         [Tooltip("Reference to the main camera used for the player")]
@@ -180,6 +181,12 @@ namespace Unity.FPS.Gameplay
             UpdateCharacterHeight(true);
         }
 
+        [ClientRpc]
+        public void SetActive_ClientRpc(bool pIsActive)
+        {
+            enabled = pIsActive;
+        }
+        
         void Update()
         {
             // check for Y kill

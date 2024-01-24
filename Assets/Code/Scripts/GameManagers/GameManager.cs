@@ -60,20 +60,14 @@ public abstract class GameManager : NetworkBehaviour
 
     protected virtual void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode, List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
     {
+	    // TODO : Really needed?
     }
 
-    protected void RespawnPlayers()
+    protected void Server_RespawnPlayers()
     {
 	    foreach (var clientId in m_PlayersGameObjects.Keys)
 		    if (m_PlayersGameObjects.TryGetValue(clientId, out var playerGameObject)) 
 				m_SpawnManager.RespawnPlayer(playerGameObject, clientId);
-    }
-
-    public void SetPlayerData(int pIndex, ulong pClientId)
-    {
-		var gameObject = m_PlayersGameObjects.ElementAt(pIndex).Value;
-		m_PlayersGameObjects.Remove(m_PlayersGameObjects.ElementAt(pIndex).Key);
-		m_PlayersGameObjects.Add(pClientId, gameObject);
     }
 
     public PlayerData FindPlayerData(Transform pPlayerGameObject)
@@ -85,7 +79,7 @@ public abstract class GameManager : NetworkBehaviour
 		return default;
     }
 
-    public Transform FindPlayerGameObject(ulong pClientId)
+    public Transform FindPlayer(ulong pClientId)
     {
 	    return m_PlayersGameObjects.GetValueOrDefault(pClientId);
     }
@@ -93,7 +87,6 @@ public abstract class GameManager : NetworkBehaviour
     [ServerRpc]
     public void SetCamera_ServerRpc(ulong pClientId, ulong pTargetId)
     {
-	    Debug.Log("SetCamera_ServerRpc");
 	    m_PlayersGameObjects[pTargetId].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
 	    {
 		    Send = new ClientRpcSendParams
@@ -106,7 +99,6 @@ public abstract class GameManager : NetworkBehaviour
     [ServerRpc]
     public void SetGameObject_ServerRpc(ulong pClientId, bool pIsActive)
     {
-        Debug.Log("SetGameObject_ServerRpc");
         m_PlayersGameObjects[pClientId].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
     }
 }

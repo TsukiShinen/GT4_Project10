@@ -188,9 +188,6 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.PlayerName = pPlayerName;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-
-		if(GameManager.Instance != null)
-			GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
 	[ServerRpc(RequireOwnership = false)]
@@ -202,9 +199,6 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.IsTeamOne = pIsTeamOne;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
 	[ServerRpc(RequireOwnership = false)]
@@ -216,9 +210,6 @@ public class MultiplayerManager : NetworkBehaviour
 		playerData.PlayerId = pPlayerId;
 		
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
     public void PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
@@ -228,9 +219,6 @@ public class MultiplayerManager : NetworkBehaviour
         playerData.PlayerHealth -= pDamage;
 
         m_PlayerDataNetworkList[index] = playerData;
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.SetPlayerData(index, playerData.ClientId);
 
         if (playerData.PlayerHealth <= 0)
         {
@@ -259,16 +247,10 @@ public class MultiplayerManager : NetworkBehaviour
             playerData.PlayerDeaths += 1;
             m_PlayerDataNetworkList[index] = playerData;
 
-            if (GameManager.Instance != null)
-                GameManager.Instance.SetPlayerData(index, playerData.ClientId);
-
             var indexKiller = FindPlayerDataIndex(pOwnerId);
             var playerDataKiller = GetPlayerDataByIndex(indexKiller);
 			playerDataKiller.PlayerKills += 1;
             m_PlayerDataNetworkList[indexKiller] = playerDataKiller;
-
-            if (GameManager.Instance != null)
-                GameManager.Instance.SetPlayerData(indexKiller, playerDataKiller.ClientId);
         }
     }
 
@@ -296,15 +278,12 @@ public class MultiplayerManager : NetworkBehaviour
 
     public int FindPlayerDataIndexByPlayerData(PlayerData pPlayerData)
     {
-	    Debug.Log($"Search for {pPlayerData.ClientId} in {m_PlayerDataNetworkList.Count} ids");
         for (var index = 0; index < m_PlayerDataNetworkList.Count; index++)
         {
 	        if (!m_PlayerDataNetworkList[index].Equals(pPlayerData)) continue;
 	        
-	        Debug.Log($"Index : {index}");
 	        return index;
         }
-        Debug.Log($"Not Found");
         return -1; // Return -1 if no player data with the given client id is found
     }
 

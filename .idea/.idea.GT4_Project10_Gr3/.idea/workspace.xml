@@ -12,9 +12,6 @@
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Team Deathmatch.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Team Deathmatch.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Game/ShootServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Scripts/Game/ShootServer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +172,7 @@
       <workItem from="1705739535189" duration="2440000" />
       <workItem from="1705744756852" duration="115000" />
       <workItem from="1705744878612" duration="6567000" />
-      <workItem from="1706081224470" duration="31531000" />
+      <workItem from="1706081224470" duration="33310000" />
     </task>
     <servers />
   </component>
@@ -192,13 +189,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs</url>
-          <line>301</line>
+          <line>283</line>
           <properties documentPath="P:\GT4_Project10_Gr3\Assets\Code\Scripts\MultiplayerManager.cs" initialLine="301" containingFunctionPresentation="Method 'FindPlayerDataIndexByPlayerData'">
             <startOffsets>
-              <option value="9628" />
+              <option value="8872" />
             </startOffsets>
             <endOffsets>
-              <option value="9684" />
+              <option value="8928" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />

@@ -15,35 +15,49 @@ public class DeathMatchManager : GameManager
 
 
     private int m_ScoreToWin = 3;
-    private int m_ScoreTeam1 = 0;
-    private int m_ScoreTeam2 = 0;
+    private NetworkVariable<int> m_ScoreTeam1;
+    private NetworkVariable<int> m_ScoreTeam2;
 
     private int m_MaxRounds = 5;
     private int m_CurrentRound = 1;
 
     private VisualElement m_Root;
 
-    private GameState m_GameState = GameState.Playing;
+    private NetworkVariable<GameState> m_GameState;
 
     protected override void Awake()
     {
         base.Awake();
 
         m_Root = m_Document.rootVisualElement;
+        
+        m_ScoreTeam1 = new NetworkVariable<int>();
+        m_ScoreTeam2 = new NetworkVariable<int>();
+        m_GameState = new NetworkVariable<GameState>();
 
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += OnPlayerDataNetworkListChanged;
         OnPlayerDataNetworkListChanged(null, null);
+
+        m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.Value.ToString();
+        m_ScoreTeam1.OnValueChanged += (value, newValue) =>
+        {
+            m_Root.Q<TextElement>("Team1").text = newValue.ToString();
+        };
+        m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.Value.ToString();
+        m_ScoreTeam2.OnValueChanged += (value, newValue) =>
+        {
+            m_Root.Q<TextElement>("Team2").text = newValue.ToString();
+        };
+        
+        m_GameState.Value = GameState.Playing;
     }
 
     protected void Update()
     {
-        switch (m_GameState)
+        switch (m_GameState.Value)
         {
             case GameState.Playing:
                 {
-                    CheckTeamStatus();
-                    m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
-                    m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.ToString();
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         SetVisibleScoreBoard(true);
@@ -52,10 +66,12 @@ public class DeathMatchManager : GameManager
                     {
                         SetVisibleScoreBoard(false);
                     }
+                    
+                    if (IsServer)
+                        Server_CheckTeamStatus();
                 }
                 break;
             case GameState.RoundEnd:
-                SetVictory();
                 SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundStart:
@@ -70,29 +86,26 @@ public class DeathMatchManager : GameManager
     {
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            Debug.Log($"- {clientId}");
             var player = m_SpawnManager.SpawnPlayer(clientId);
             m_PlayersGameObjects.Add(clientId, player);
         }
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
     }
 
-    private void CheckTeamStatus()
+    private void Server_CheckTeamStatus()
     {
         int livingPlayersTeam1 = CountLivingPlayers(true);
         int livingPlayersTeam2 = CountLivingPlayers(false);
 
         if (livingPlayersTeam1 > 0 && livingPlayersTeam2 == 0)
         {
-            m_ScoreTeam1++;
-            StartCoroutine(ManageRoundEnd());
-            return;
+            m_ScoreTeam1.Value++;
+            StartCoroutine(Server_ManageRoundEnd());
         }
-        if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
+        else if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
         {
-            m_ScoreTeam2++;
-            StartCoroutine(ManageRoundEnd());
-            return;
+            m_ScoreTeam2.Value++;
+            StartCoroutine(Server_ManageRoundEnd());
         }
     }
 
@@ -110,77 +123,80 @@ public class DeathMatchManager : GameManager
         return count;
     }
 
-    private IEnumerator ManageRoundEnd()
+    private IEnumerator Server_ManageRoundEnd()
     {
-        m_GameState = GameState.RoundEnd;
+        m_GameState.Value = GameState.RoundEnd;
 
-        DisablePlayerMovementScripts();
+        DisablePlayerMovementScripts_ServerRpc();
 
-        ShowEndRoundMessage();
-
+        ShowEndRoundMessage_ClientRpc();
+        
+        if (m_ScoreTeam1.Value == m_ScoreToWin || m_ScoreTeam2.Value == m_ScoreToWin)
+            EndGame_ClientRpc();
+        else
+            StartCoroutine(Server_StartNextRound());
+        
         yield return null;
     }
 
-    private IEnumerator  StartNextRound()
+    private IEnumerator Server_StartNextRound()
     {
-        m_GameState = GameState.RoundStart;
+        m_GameState.Value = GameState.RoundStart;
 
-        RespawnPlayers();
+        Server_RespawnPlayers();
+        DisablePlayerMovementScripts_ServerRpc();
 
-        ShowStartRoundTimer();
+        ShowStartRoundTimer_ClientRpc();
 
         yield return new WaitForSeconds(3f);
 
-        EnablePlayerMovementScripts();
+        EnablePlayerMovementScripts_ServerRpc();
 
-        m_GameState = GameState.Playing;
+        m_GameState.Value = GameState.Playing;
     }
 
-    private void ShowStartRoundTimer()
+    [ClientRpc]
+    private void ShowStartRoundTimer_ClientRpc()
     {
         //TODO : Timer affiché à l'écran de chaque joueur de 3 secondes avec un cercle autour qui se rétracte
-
-        return;
     }
 
-    private void ShowEndRoundMessage()
+    [ClientRpc]
+    private void ShowEndRoundMessage_ClientRpc()
     {
         //TODO : Afficher message à la fin du round pendant 3 ou 5 secondes avant de reset, respawn ect : Round Win ou Loose 
         //                                                                                                   1 - 0 ou 0 - 1
-
-        if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
-            EndGame();
-        else
-            StartCoroutine(StartNextRound());
     }
 
-    private void EndGame()
+    [ClientRpc]
+    private void EndGame_ClientRpc()
     {
-        //TODO : Ecran de fin (score, leaderboard?) puis retour au lobby après un certain temps
+        SetVictoryScreen();
     }
 
-    private void EnablePlayerMovementScripts()
+    [ServerRpc]
+    private void EnablePlayerMovementScripts_ServerRpc()
     {
         foreach (var playerObject in m_PlayersGameObjects.Values)
         {
             var movementScript = playerObject.GetComponent<PlayerCharacterController>();
-            if (movementScript != null)
-                movementScript.enabled = true;
+            if (!movementScript) continue;
+            
+            movementScript.SetActive_ClientRpc(true);
         }
-
-        return;
     }
 
-    private void DisablePlayerMovementScripts()
+    [ServerRpc]
+    private void DisablePlayerMovementScripts_ServerRpc()
     {
+        
         foreach (var playerObject in m_PlayersGameObjects.Values)
         {
             var movementScript = playerObject.GetComponent<PlayerCharacterController>();
-            if (movementScript != null)
-                movementScript.enabled = false;
+            if (!movementScript) continue;
+            
+            movementScript.SetActive_ClientRpc(false);
         }
-
-        return;
     }
 
     private void SetVisibleScoreBoard(bool pIsActive)
@@ -221,10 +237,10 @@ public class DeathMatchManager : GameManager
         listView.Rebuild();
     }
 
-    private void SetVictory()
+    private void SetVictoryScreen()
     {
-        var playerData = MultiplayerManager.Instance.GetPlayerDataByIndex(MultiplayerManager.Instance.FindPlayerDataIndex(OwnerClientId));
-        bool team1Win = m_ScoreTeam1 == m_ScoreToWin;
+        var playerData = MultiplayerManager.Instance.GetPlayerDataByIndex(MultiplayerManager.Instance.FindPlayerDataIndex(NetworkManager.Singleton.LocalClientId));
+        bool team1Win = m_ScoreTeam1.Value == m_ScoreToWin;
         bool victory = (playerData.IsTeamOne && team1Win) || (!playerData.IsTeamOne && !team1Win);
 
         m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.Flex;
