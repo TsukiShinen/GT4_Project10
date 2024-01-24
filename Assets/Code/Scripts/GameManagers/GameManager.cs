@@ -31,10 +31,7 @@ public class GameManager : NetworkBehaviour
     protected virtual void Awake()
 	{
 		if (Instance)
-		{
-            Destroy(this);
-            return;
-        }
+            Destroy(Instance);
 
 		Instance = this;
 	}

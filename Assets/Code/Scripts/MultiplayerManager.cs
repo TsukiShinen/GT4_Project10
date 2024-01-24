@@ -43,10 +43,7 @@ public class MultiplayerManager : NetworkBehaviour
     private void Awake()
 	{
 		if (Instance)
-		{
-			Destroy(this);
-			return;
-		}
+			Destroy(Instance.gameObject);
 
 		Instance = this;
 		DontDestroyOnLoad(gameObject);
@@ -117,6 +114,7 @@ public class MultiplayerManager : NetworkBehaviour
 	{
 		NetworkManager.Singleton.ConnectionApprovalCallback += Network_ConnectionApprovalCallback;
 		NetworkManager.Singleton.OnClientConnectedCallback += Network_OnClientConnectedCallback;
+		NetworkManager.Singleton.OnClientDisconnectCallback += Network_OnClientDisconnectCallback;
 	}
 
 	private void Network_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest pConnectionApprovalRequest, NetworkManager.ConnectionApprovalResponse pConnectionApprovalResponse)
@@ -151,6 +149,11 @@ public class MultiplayerManager : NetworkBehaviour
 		SetPlayerNameServerRpc(m_PlayerName);
 		SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }
+
+	private void Network_OnClientDisconnectCallback(ulong pClientId)
+	{
+		m_PlayerDataNetworkList.Remove(m_PlayerDataNetworkList[FindPlayerDataIndex(pClientId)]);
+	}
 
 	public void StartClient()
 	{
