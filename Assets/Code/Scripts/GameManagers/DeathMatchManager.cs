@@ -73,7 +73,6 @@ public class DeathMatchManager : GameManager
         GameObject[] spawnZones = GameObject.FindGameObjectsWithTag("ZoneSpawn");
         m_SpawnTeam1 = spawnZones[0]?.GetComponent<BoxCollider>();
         m_SpawnTeam2 = spawnZones[1]?.GetComponent<BoxCollider>();
-        Debug.Log($"SpawnZones : {m_SpawnTeam1} / {m_SpawnTeam2}");
 
         if (m_SpawnTeam1 != null && m_SpawnTeam2 != null)
             m_SpawnType = SpawnType.Zone;

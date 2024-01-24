@@ -419,7 +419,6 @@ namespace Unity.FPS.Gameplay
             // Update height instantly
             if (force)
             {
-                Debug.Log("UPDATE CHARACTER HEIGHT");
                 m_CapsuleCollider.height = m_TargetCharacterHeight;
                 m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;
                 PlayerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * CameraHeightRatio;
