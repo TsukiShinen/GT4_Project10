@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.FPS.Gameplay;
 using UnityEngine.UIElements;
+using System;
+using Random = UnityEngine.Random;
 
 public class DeathMatchManager : GameManager
 {
@@ -30,6 +32,9 @@ public class DeathMatchManager : GameManager
         base.Awake();
 
         m_Root = m_Document.rootVisualElement;
+
+        MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += OnPlayerDataNetworkListChanged;
+        OnPlayerDataNetworkListChanged(null, null);
     }
 
     protected override void Update()
@@ -38,10 +43,19 @@ public class DeathMatchManager : GameManager
         switch (m_GameState)
         {
             case GameState.Playing:
-                CheckTeamStatus();
-                m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
-                m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.ToString();
-                
+                {
+                    CheckTeamStatus();
+                    m_Root.Q<TextElement>("Team1").text = m_ScoreTeam1.ToString();
+                    m_Root.Q<TextElement>("Team2").text = m_ScoreTeam2.ToString();
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        SetVisibleScoreBoard(true);
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Tab))
+                    {
+                        SetVisibleScoreBoard(false);
+                    }
+                }
                 break;
             case GameState.RoundEnd:
                 SetVisibleScoreBoard(true);
@@ -50,6 +64,8 @@ public class DeathMatchManager : GameManager
                 // Attendez que la coroutine StartNextRound termine son exécution.
                 break;
         }
+
+
     }
 
     protected override void DetermineSpawnType()
@@ -82,7 +98,6 @@ public class DeathMatchManager : GameManager
             player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId, true);
             m_PlayersGameObjects.Add(playerData, player.gameObject);
         }
-
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
     }
 
@@ -303,32 +318,35 @@ public class DeathMatchManager : GameManager
         {
             m_Root.Q<VisualElement>("EndRound").style.display = DisplayStyle.Flex;
             m_Root.Q<VisualElement>("ScoreContainer");
-
-            var listView = m_Root.Q<ListView>("ScoreContainer");
-            listView.Clear();
-            var items = new List<VisualElement>();
-
-            foreach (var playerData in MultiplayerManager.Instance.GetPlayerDatas())
-            {
-                var scoreRow = m_ScoreElement.CloneTree();
-                scoreRow.Q<TextElement>("Name").text = playerData.PlayerName.ToString();
-                scoreRow.Q<TextElement>("Kills").text = playerData.PlayerKills.ToString();
-                scoreRow.Q<TextElement>("Deaths").text = playerData.PlayerDeaths.ToString();
-                items.Add(scoreRow);
-            }
-
-            listView.makeItem = () => new VisualElement();
-            listView.bindItem = (element, i) =>
-            {
-                element.Clear();
-                element.Add(items[i]);
-            };
-            listView.itemsSource = items;
-            listView.Rebuild();
         }
         else
         {
-            m_Root.Q<TextElement>("EndRound").style.display = DisplayStyle.None;
+            m_Root.Q<VisualElement>("EndRound").style.display = DisplayStyle.None;
         }
+    }
+
+    private void OnPlayerDataNetworkListChanged(object sender, EventArgs e)
+    {
+        var listView = m_Root.Q<ListView>("ScoreContainer");
+        listView.Clear();
+        var items = new List<VisualElement>();
+
+        foreach (var playerData in MultiplayerManager.Instance.GetPlayerDatas())
+        {
+            var scoreRow = m_ScoreElement.CloneTree();
+            scoreRow.Q<TextElement>("Name").text = playerData.PlayerName.ToString();
+            scoreRow.Q<TextElement>("Kills").text = playerData.PlayerKills.ToString();
+            scoreRow.Q<TextElement>("Deaths").text = playerData.PlayerDeaths.ToString();
+            items.Add(scoreRow);
+        }
+
+        listView.makeItem = () => new VisualElement();
+        listView.bindItem = (element, i) =>
+        {
+            element.Clear();
+            element.Add(items[i]);
+        };
+        listView.itemsSource = items;
+        listView.Rebuild();
     }
 }
