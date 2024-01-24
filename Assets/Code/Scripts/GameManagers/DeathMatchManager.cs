@@ -17,8 +17,8 @@ public class DeathMatchManager : GameManager
     private BoxCollider m_SpawnTeam2;
 
     private int m_ScoreToWin = 3;
-    private int m_ScoreTeam1;
-    private int m_ScoreTeam2;
+    private int m_ScoreTeam1 = 0;
+    private int m_ScoreTeam2 = 0;
 
     private int m_MaxRounds = 5;
     private int m_CurrentRound = 1;
@@ -63,7 +63,6 @@ public class DeathMatchManager : GameManager
                 break;
             case GameState.RoundStart:
                 m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.None;
-                // Attendez que la coroutine StartNextRound termine son exécution.
                 break;
         }
 
@@ -165,6 +164,7 @@ public class DeathMatchManager : GameManager
 
     public override void RespawnPlayer(PlayerData pPlayerData)
     {
+        Debug.Log("Respawn");
         if (m_PlayersGameObjects.TryGetValue(pPlayerData, out GameObject player))
         {
             Vector3 position = pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
@@ -172,12 +172,12 @@ public class DeathMatchManager : GameManager
             player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, direction);
         }
 
-
         base.RespawnPlayer(pPlayerData);
     }
 
     private void CheckTeamStatus()
     {
+        Debug.Log("Check");
         int livingPlayersTeam1 = CountLivingPlayers(true);
         int livingPlayersTeam2 = CountLivingPlayers(false);
 
@@ -221,20 +221,21 @@ public class DeathMatchManager : GameManager
 
     private IEnumerator ManageRoundEnd()
     {
+        Debug.Log("ManageRoundEnd");
+
         m_GameState = GameState.RoundEnd;
 
         DisablePlayerMovementScripts();
 
-        // Afficher le message de fin de round pendant 3 secondes
-        yield return new WaitForSeconds(3f);
-
         ShowEndRoundMessage();
 
-        StartCoroutine(StartNextRound());
+        yield return null;
     }
 
     private IEnumerator StartNextRound()
     {
+        Debug.Log("Manage Next Round");
+
         m_GameState = GameState.RoundStart;
 
         RespawnPlayers();
@@ -243,24 +244,11 @@ public class DeathMatchManager : GameManager
 
         yield return new WaitForSeconds(3f);
 
+        Debug.Log("Play Round");
         EnablePlayerMovementScripts();
 
         m_GameState = GameState.Playing;
     }
-
-    /*private void StartNextRound()
-    {
-        //TODO : Figer les joueurs restants, afficher message de fin de round,
-        //Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
-        m_CurrentRound++;
-        if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
-        {
-            EndGame();
-            return;
-        }
-        else
-            StartCoroutine(ShowEndRoundMessage());
-    }*/
 
     private void RespawnPlayers()
     {
@@ -279,18 +267,15 @@ public class DeathMatchManager : GameManager
         return;
     }
 
-    private IEnumerator ShowEndRoundMessage()
+    private void ShowEndRoundMessage()
     {
-        DisablePlayerMovementScripts();
-        //TODO : Afficher message à la fin du round pendant quelques second avant de reset, respawn ect : Round Win ou Loose 
+        //TODO : Afficher message à la fin du round pendant 3 ou 5 secondes avant de reset, respawn ect : Round Win ou Loose 
         //                                                                                                   1 - 0 ou 0 - 1
-
-        yield return new WaitForSeconds(3f); //3s ou 5s
 
         if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
             EndGame();
         else
-            StartNextRound();
+            StartCoroutine(StartNextRound());
     }
 
     private void EndGame()

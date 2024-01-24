@@ -6,6 +6,7 @@ using NUnit.Framework;
 using ScriptableObjects.GameModes;
 using Unity.Netcode;
 using Unity.Services.Authentication;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -233,9 +234,27 @@ public class MultiplayerManager : NetworkBehaviour
 
         if (playerData.PlayerHealth <= 0)
         {
-            GameManager.Instance.RespawnPlayer(playerData);
-            playerData.PlayerHealth = playerData.PlayerMaxHealth;
-			playerData.PlayerDeaths += 1;
+			if(GameModeConfig.CanRespawn)
+			{
+				GameManager.Instance.RespawnPlayer(playerData);
+				playerData.PlayerHealth = playerData.PlayerMaxHealth;
+            }
+			else
+			{
+                PlayerData teamMateData;
+
+				if (TryFindTeammate(playerData, out teamMateData))
+				{
+					Debug.Log(playerData.ClientId);
+					Debug.Log(teamMateData.ClientId);
+
+					GameManager.Instance.SetCamera_ServerRpc(playerData.ClientId, teamMateData.ClientId);				
+
+				}
+				GameManager.Instance.SetGameObject_ServerRpc(playerData.ClientId, false);
+			}
+
+            playerData.PlayerDeaths += 1;
             m_PlayerDataNetworkList[index] = playerData;
 
             if (GameManager.Instance != null)
@@ -298,4 +317,21 @@ public class MultiplayerManager : NetworkBehaviour
     {
 		return m_PlayerDataNetworkList;
     }
+
+    private bool TryFindTeammate(PlayerData playerData, out PlayerData teammateData)
+    {
+        teammateData = default;
+
+        foreach (var teammate in m_PlayerDataNetworkList)
+        {
+            if (teammate.IsTeamOne == playerData.IsTeamOne && teammate.PlayerHealth > 0)
+            {
+				teammateData = teammate;
+                return true;
+            }
+        }
+
+		return false;
+    }
+
 }

@@ -102,4 +102,11 @@ public class GameManager : NetworkBehaviour
 		    }
 	    });
     }
+
+    [ServerRpc]
+    public void SetGameObject_ServerRpc(ulong pClientId, bool pIsActive)
+    {
+        Debug.Log("SetGameObject_ServerRpc");
+        m_PlayersGameObjects[MultiplayerManager.Instance.FindPlayerData(pClientId)].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
+    }
 }

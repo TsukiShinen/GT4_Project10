@@ -15,6 +15,9 @@ namespace ScriptableObjects.GameModes
 		[SerializeField] private bool m_HasTeams;
 		public bool HasTeams => m_HasTeams;
 		
+		[SerializeField] private bool m_CanRespawn;
+		public bool CanRespawn => m_CanRespawn;
+		
 		[SerializeField, Scene] private string m_SceneName;
 		public string SceneName => m_SceneName;
 	}
