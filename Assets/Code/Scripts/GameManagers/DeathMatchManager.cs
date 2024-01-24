@@ -58,9 +58,11 @@ public class DeathMatchManager : GameManager
                 }
                 break;
             case GameState.RoundEnd:
+                SetVictory();
                 SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundStart:
+                m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.None;
                 // Attendez que la coroutine StartNextRound termine son exécution.
                 break;
         }
@@ -357,5 +359,16 @@ public class DeathMatchManager : GameManager
         };
         listView.itemsSource = items;
         listView.Rebuild();
+    }
+
+    private void SetVictory()
+    {
+        var playerData = MultiplayerManager.Instance.GetPlayerDataByIndex(MultiplayerManager.Instance.FindPlayerDataIndex(OwnerClientId));
+        bool team1Win = m_ScoreTeam1 == m_ScoreToWin;
+        bool victory = (playerData.IsTeamOne && team1Win) || (!playerData.IsTeamOne && !team1Win);
+
+        m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.Flex;
+        m_Root.Q<TextElement>("Victory").text = victory ? "Victory" : "Lose";
+        m_Root.Q<TextElement>("Victory").style.color = victory ? Color.green : Color.red;
     }
 }
