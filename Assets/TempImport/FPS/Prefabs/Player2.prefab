@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3071459431
+  GlobalObjectIdHash: 4281677000
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -743,6 +743,7 @@ MonoBehaviour:
   ShootServer: {fileID: 4021369236839795509}
   StartingWeapons:
   - {fileID: 2116657115758560276, guid: b318fabc73446b746a1005cede0c4ceb, type: 3}
+  - {fileID: 2116657115758560276, guid: 31d97e822763d1f4cb769f7e3f7f7333, type: 3}
   WeaponCamera: {fileID: 4004351489064301777}
   WeaponParentSocket: {fileID: 1194439070053762566}
   DefaultWeaponPosition: {fileID: 204350168815613903}
@@ -861,6 +862,9 @@ MonoBehaviour:
   m_ProjectilePrefabDatabase:
   - ID: 1
     ProjectileBase: {fileID: 8924682559891268397, guid: 3c6b27d949cdda749892906e1f1d1b27,
+      type: 3}
+  - ID: 2
+    ProjectileBase: {fileID: 8924682559891268397, guid: f05c7e6fbbfbe824388456bb4abff9d4,
       type: 3}
 --- !u!114 &4636915861003858042
 MonoBehaviour:

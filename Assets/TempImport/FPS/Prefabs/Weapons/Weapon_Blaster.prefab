@@ -376,7 +376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e098d825ec3961b459d260dfa0a2bc10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Shoot: {fileID: 0}
   WeaponName: 
   WeaponIcon: {fileID: 0}
   CrosshairDataDefault:
