@@ -1,17 +1,11 @@
+using System;
 using Network;
 using System.Collections.Generic;
 using System.Linq;
+using GameManagers;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public enum SpawnType
-{
-	Null,
-    Zone,
-    Points
-}
 
 public enum GameState
 {
@@ -20,15 +14,12 @@ public enum GameState
 	RoundEnd
 }
 
-public class GameManager : NetworkBehaviour
+public abstract class GameManager : NetworkBehaviour
 {
+	protected Dictionary<ulong, Transform> m_PlayersGameObjects = new ();
 
-	[SerializeField] protected Transform m_PlayerPrefab;
-
-	protected Dictionary<ulong, GameObject> m_PlayersGameObjects = new ();
-
-    protected SpawnType m_SpawnType = SpawnType.Null;
-
+	[SerializeField] protected SpawnManager m_SpawnManager;
+	
     public static GameManager Instance { get; private set; }
     protected virtual void Awake()
 	{
@@ -38,36 +29,45 @@ public class GameManager : NetworkBehaviour
 		Instance = this;
 	}
 
+	private void OnEnable()
+	{
+		m_SpawnManager.OnPlayerRespawn += ResetPlayerGameObject_OnPlayerSpawn;
+	}
+
+	private void OnDisable()
+	{
+		m_SpawnManager.OnPlayerRespawn -= ResetPlayerGameObject_OnPlayerSpawn;
+	}
+
+	private void ResetPlayerGameObject_OnPlayerSpawn(ulong pClientId)
+	{
+		SetGameObject_ServerRpc(pClientId, true);
+		SetCamera_ServerRpc(pClientId, pClientId);
+	}
+
     private void Start()
     {
         LobbyManager.Instance.SetLobbyNull();
-    }
-
-    protected virtual void Update()
-    {
-
     }
 
     public override void OnNetworkSpawn()
     {
 	    if (!IsServer)
 		    return;
+	    
 		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 	}
-
-    protected virtual void DetermineSpawnType()
-	{
-		if(m_SpawnType == SpawnType.Null)
-            Debug.LogError("No spawn zone or spawn points defined.");
-    }
 
     protected virtual void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode, List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
     {
     }
 
-    public virtual void RespawnPlayer(ulong pCliendId)
-	{
-	}
+    protected void RespawnPlayers()
+    {
+	    foreach (var clientId in m_PlayersGameObjects.Keys)
+		    if (m_PlayersGameObjects.TryGetValue(clientId, out var playerGameObject)) 
+				m_SpawnManager.RespawnPlayer(playerGameObject, clientId);
+    }
 
     public void SetPlayerData(int pIndex, ulong pClientId)
     {
@@ -76,7 +76,7 @@ public class GameManager : NetworkBehaviour
 		m_PlayersGameObjects.Add(pClientId, gameObject);
     }
 
-    public PlayerData FindPlayerData(GameObject pPlayerGameObject)
+    public PlayerData FindPlayerData(Transform pPlayerGameObject)
     {
         foreach(var player in m_PlayersGameObjects)
 			if (pPlayerGameObject == player.Value)
@@ -85,7 +85,7 @@ public class GameManager : NetworkBehaviour
 		return default;
     }
 
-    public GameObject FindPlayerGameObject(ulong pClientId)
+    public Transform FindPlayerGameObject(ulong pClientId)
     {
 	    return m_PlayersGameObjects.GetValueOrDefault(pClientId);
     }

@@ -221,7 +221,7 @@ public class MultiplayerManager : NetworkBehaviour
             GameManager.Instance.SetPlayerData(playerDataIndex, playerData.ClientId);
     }
 
-    public void PlayerHit(float pDamage, GameObject pGo, ulong pOwnerId)
+    public void PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
     {
         var playerData = GameManager.Instance.FindPlayerData(pGo);
 		var index = FindPlayerDataIndexByPlayerData(playerData);
@@ -236,8 +236,10 @@ public class MultiplayerManager : NetworkBehaviour
         {
 			if(GameModeConfig.CanRespawn)
 			{
-				GameManager.Instance.RespawnPlayer(playerData.ClientId);
-				playerData.PlayerHealth = playerData.PlayerMaxHealth;
+				// TODO : Respawn
+				Debug.Log("TODO : RESPAWN");
+				//GameManager.Instance.RespawnPlayer(playerData.ClientId);
+				//playerData.PlayerHealth = playerData.PlayerMaxHealth;
             }
 			else
 			{
@@ -294,13 +296,15 @@ public class MultiplayerManager : NetworkBehaviour
 
     public int FindPlayerDataIndexByPlayerData(PlayerData pPlayerData)
     {
+	    Debug.Log($"Search for {pPlayerData.ClientId} in {m_PlayerDataNetworkList.Count} ids");
         for (var index = 0; index < m_PlayerDataNetworkList.Count; index++)
         {
-            if (m_PlayerDataNetworkList[index].Equals(pPlayerData))
-            {
-                return index;
-            }
+	        if (!m_PlayerDataNetworkList[index].Equals(pPlayerData)) continue;
+	        
+	        Debug.Log($"Index : {index}");
+	        return index;
         }
+        Debug.Log($"Not Found");
         return -1; // Return -1 if no player data with the given client id is found
     }
 

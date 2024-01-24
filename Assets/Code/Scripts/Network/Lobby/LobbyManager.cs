@@ -185,7 +185,6 @@ namespace Network
 				var relayJoinCode = await GetRelayJoinCode(allocation);
 				Debug.Log($"Relay Created / Code {relayJoinCode}");
 
-				Debug.Log(m_GameModes.GameModeConfigs.IndexOf(pGameMode).ToString());
 				await LobbyService.Instance.UpdateLobbyAsync(m_JoinedLobby.Id, new UpdateLobbyOptions
 				{
 					Data = new Dictionary<string, DataObject>

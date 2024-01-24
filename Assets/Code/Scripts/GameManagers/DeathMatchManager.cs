@@ -13,8 +13,6 @@ public class DeathMatchManager : GameManager
     [SerializeField] private UIDocument m_Document;
     [SerializeField] private VisualTreeAsset m_ScoreElement;
 
-    private BoxCollider m_SpawnTeam1;
-    private BoxCollider m_SpawnTeam2;
 
     private int m_ScoreToWin = 3;
     private int m_ScoreTeam1 = 0;
@@ -37,9 +35,8 @@ public class DeathMatchManager : GameManager
         OnPlayerDataNetworkListChanged(null, null);
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
         switch (m_GameState)
         {
             case GameState.Playing:
@@ -69,135 +66,30 @@ public class DeathMatchManager : GameManager
 
     }
 
-    protected override void DetermineSpawnType()
-    {
-        GameObject[] spawnZones = GameObject.FindGameObjectsWithTag("ZoneSpawn");
-        m_SpawnTeam1 = spawnZones[0]?.GetComponent<BoxCollider>();
-        m_SpawnTeam2 = spawnZones[1]?.GetComponent<BoxCollider>();
-
-        if (m_SpawnTeam1 != null && m_SpawnTeam2 != null)
-            m_SpawnType = SpawnType.Zone;
-
-        base.DetermineSpawnType();
-    }
-
     protected override void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode, List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
     {
-        DetermineSpawnType();
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            var playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
-
-            var player = Instantiate(m_PlayerPrefab);
-
-            if (m_SpawnTeam1 != null && m_SpawnTeam2 != null)
-            {
-                player.transform.position = playerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
-                player.transform.rotation = playerData.IsTeamOne ? m_SpawnTeam1.transform.rotation : m_SpawnTeam2.transform.rotation;
-            }
-
-            player.GetComponent<NetworkObject>().SpawnWithOwnership(clientId, true);
-
-            m_PlayersGameObjects.Add(clientId, player.gameObject);
+            Debug.Log($"- {clientId}");
+            var player = m_SpawnManager.SpawnPlayer(clientId);
+            m_PlayersGameObjects.Add(clientId, player);
         }
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
     }
 
-    private Vector3 GetRandomPointInSpawnZone(BoxCollider spawn)
-    {
-        if (spawn)
-        {
-            const int maxAttempts = 10;
-            for (int i = 0; i < maxAttempts; i++)
-            {
-                var randomPoint = new Vector3(
-                    Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
-                    spawn.bounds.min.y,
-                    Random.Range(spawn.bounds.min.z, spawn.bounds.max.z)
-                );
-
-                bool isLocationValid = IsSpawnLocationValid(randomPoint);
-
-                if (isLocationValid)
-                {
-                    return randomPoint;
-                }
-            }
-
-            Debug.LogError("Failed to find a valid spawn location after multiple attempts.");
-        }
-
-        Debug.LogError("No spawn zone defined.");
-
-        return Vector3.zero;
-    }
-
-    private bool IsSpawnLocationValid(Vector3 spawnLocation)
-    {
-        float playerHeight = 2f;
-        float playerRadius = 0.5f;
-        string playerTag = "Player";
-
-        Collider[] colliders = Physics.OverlapBox(spawnLocation + Vector3.up * (playerHeight / 2f), new Vector3(playerRadius, playerHeight / 2f, playerRadius));
-
-        foreach (Collider collider in colliders)
-        {
-            if (collider.CompareTag(playerTag))
-                return false;
-        }
-
-        Vector3[] rayDirections = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.forward + Vector3.left, Vector3.forward + Vector3.right, Vector3.back + Vector3.left, Vector3.back + Vector3.right };
-
-        float rayLength = 1f;
-
-        foreach (Vector3 direction in rayDirections)
-        {
-            if (Physics.Raycast(spawnLocation, direction, out RaycastHit hit, rayLength))
-                return false;
-        }
-
-        return true;
-    }
-
-
-    public override void RespawnPlayer(ulong pClientId)
-    {
-        Debug.Log("Respawn");
-        if (m_PlayersGameObjects.TryGetValue(pClientId, out GameObject player))
-        {
-            SetGameObject_ServerRpc(pClientId, true);
-            SetCamera_ServerRpc(pClientId, pClientId);
-            
-            var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
-            
-            Vector3 position = pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2);
-            Quaternion direction = pPlayerData.IsTeamOne ? m_SpawnTeam1.transform.rotation : m_SpawnTeam2.transform.rotation;
-            player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, direction);
-
-            pPlayerData.PlayerHealth = pPlayerData.PlayerMaxHealth;
-            MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(pClientId)] = pPlayerData;
-        }
-
-        base.RespawnPlayer(pClientId);
-    }
-
     private void CheckTeamStatus()
     {
-        Debug.Log("Check");
         int livingPlayersTeam1 = CountLivingPlayers(true);
         int livingPlayersTeam2 = CountLivingPlayers(false);
-        Debug.Log($"Team one Alive : {livingPlayersTeam1} / Team two Alive : {livingPlayersTeam2}");
 
         if (livingPlayersTeam1 > 0 && livingPlayersTeam2 == 0)
         {
-            Debug.Log("Team 1 Win Round");
             m_ScoreTeam1++;
             StartCoroutine(ManageRoundEnd());
             return;
         }
         if (livingPlayersTeam2 > 0 && livingPlayersTeam1 == 0)
         {
-            Debug.Log("Team 2 Win Round");
             m_ScoreTeam2++;
             StartCoroutine(ManageRoundEnd());
             return;
@@ -220,8 +112,6 @@ public class DeathMatchManager : GameManager
 
     private IEnumerator ManageRoundEnd()
     {
-        Debug.Log("ManageRoundEnd");
-
         m_GameState = GameState.RoundEnd;
 
         DisablePlayerMovementScripts();
@@ -233,8 +123,6 @@ public class DeathMatchManager : GameManager
 
     private IEnumerator  StartNextRound()
     {
-        Debug.Log("Manage Next Round");
-
         m_GameState = GameState.RoundStart;
 
         RespawnPlayers();
@@ -243,20 +131,9 @@ public class DeathMatchManager : GameManager
 
         yield return new WaitForSeconds(3f);
 
-        Debug.Log("Play Round");
         EnablePlayerMovementScripts();
 
         m_GameState = GameState.Playing;
-    }
-
-    private void RespawnPlayers()
-    {
-        foreach (var clientId in m_PlayersGameObjects.Keys)
-        {
-            RespawnPlayer(clientId);
-        }
-
-        return;
     }
 
     private void ShowStartRoundTimer()
