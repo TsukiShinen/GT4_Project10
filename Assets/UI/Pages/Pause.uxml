@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(173, 173, 173, 0.75); align-items: center;">
+        <ui:Label text="Pause" style="-unity-text-align: upper-center; font-size: 200px; margin-top: 10%;" />
+        <ui:Button text="Resume" name="Resume" style="font-size: 25%; width: 15%;" />
+        <ui:Button text="Quit" name="Quit" style="font-size: 25%; width: 15%; margin-top: 1%;" />
+    </ui:VisualElement>
+</ui:UXML>
