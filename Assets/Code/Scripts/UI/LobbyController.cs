@@ -131,8 +131,6 @@ public class LobbyController : NetworkBehaviour
         
         for (var i = 0; i < MultiplayerManager.Instance.MaxPlayerAmount; i++)
         {
-            Debug.Log(MultiplayerManager.Instance.IsPlayerIndexConnected(i));
-
             if (!MultiplayerManager.Instance.IsPlayerIndexConnected(i)) continue;
 
             var player = MultiplayerManager.Instance.GetPlayerDataByIndex(i);

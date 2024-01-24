@@ -1,25 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Unity.FPS.Gameplay;
 using UnityEngine.UIElements;
-using Unity.Services.Lobbies.Models;
-using Network;
-using ScriptableObjects.GameModes;
-using static UnityEngine.Rendering.GPUSort;
 
-public enum GameState
-{
-    Playing,
-    RoundStart,
-    RoundEnd
-}
-
-public class DeathmatchManager : GameManager
+public class DeathMatchManager : GameManager
 {
     [SerializeField] private UIDocument m_Document;
     [SerializeField] private VisualTreeAsset m_ScoreElement;
@@ -60,15 +47,9 @@ public class DeathmatchManager : GameManager
                 SetVisibleScoreBoard(true);
                 break;
             case GameState.RoundStart:
-                // Attendez que la coroutine StartNextRound termine son exécution.
+                // Attendez que la coroutine StartNextRound termine son exÃ©cution.
                 break;
         }
-        SetVisibleScoreBoard(true);
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
     }
 
     protected override void DetermineSpawnType()
@@ -76,6 +57,7 @@ public class DeathmatchManager : GameManager
         GameObject[] spawnZones = GameObject.FindGameObjectsWithTag("ZoneSpawn");
         m_SpawnTeam1 = spawnZones[0]?.GetComponent<BoxCollider>();
         m_SpawnTeam2 = spawnZones[1]?.GetComponent<BoxCollider>();
+        Debug.Log($"SpawnZones : {m_SpawnTeam1} / {m_SpawnTeam2}");
 
         if (m_SpawnTeam1 != null && m_SpawnTeam2 != null)
             m_SpawnType = SpawnType.Zone;
@@ -106,7 +88,7 @@ public class DeathmatchManager : GameManager
 
     private Vector3 GetRandomPointInSpawnZone(BoxCollider spawn)
     {
-        if (spawn != null)
+        if (spawn)
         {
             const int maxAttempts = 10;
             for (int i = 0; i < maxAttempts; i++)
@@ -167,21 +149,6 @@ public class DeathmatchManager : GameManager
             player.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(pPlayerData.IsTeamOne ? GetRandomPointInSpawnZone(m_SpawnTeam1) : GetRandomPointInSpawnZone(m_SpawnTeam2));
 
         base.RespawnPlayer(pPlayerData);
-    }
-
-    public override void SetPlayerData(int pIndex, PlayerData pNewPlayerData)
-    {
-        base.SetPlayerData(pIndex, pNewPlayerData);
-    }
-
-    public override PlayerData FindPlayerData(GameObject pPlayerGameObjects)
-    {
-        return base.FindPlayerData(pPlayerGameObjects);
-    }
-
-    public override GameObject FindPlayerGameObject(PlayerData pPlayerDatas)
-    {
-        return base.FindPlayerGameObject(pPlayerDatas);
     }
 
     private void CheckTeamStatus()
@@ -258,8 +225,8 @@ public class DeathmatchManager : GameManager
 
     /*private void StartNextRound()
     {
-        //TO DO : Figer les joueurs restants, afficher message de fin de round,
-        //Respawn, Update Score (UI?), Timer affiché à l'écran avant de laisser les joueurs se déplacer ect
+        //TODO : Figer les joueurs restants, afficher message de fin de round,
+        //Respawn, Update Score (UI?), Timer affichÃ© Ã  l'Ã©cran avant de laisser les joueurs se dÃ©placer ect
         m_CurrentRound++;
         if (m_ScoreTeam1 == m_ScoreToWin || m_ScoreTeam2 == m_ScoreToWin)
         {
@@ -282,7 +249,7 @@ public class DeathmatchManager : GameManager
 
     private void ShowStartRoundTimer()
     {
-        //TO DO : Timer affiché à l'écran de chaque joueur de 3 secondes avec un cercle autour qui se rétracte
+        //TODO : Timer affichÃ© Ã  l'Ã©cran de chaque joueur de 3 secondes avec un cercle autour qui se rÃ©tracte
 
         return;
     }
@@ -290,7 +257,7 @@ public class DeathmatchManager : GameManager
     private IEnumerator ShowEndRoundMessage()
     {
         DisablePlayerMovementScripts();
-        //TO DO : Afficher message à la fin du round pendant quelques second avant de reset, respawn ect : Round Win ou Loose 
+        //TODO : Afficher message Ã  la fin du round pendant quelques second avant de reset, respawn ect : Round Win ou Loose 
         //                                                                                                   1 - 0 ou 0 - 1
 
         yield return new WaitForSeconds(3f); //3s ou 5s
@@ -303,7 +270,7 @@ public class DeathmatchManager : GameManager
 
     private void EndGame()
     {
-        //TO DO : Ecran de fin (score, leaderboard?) puis retour au lobby après un certain temps
+        //TODO : Ecran de fin (score, leaderboard?) puis retour au lobby aprÃ¨s un certain temps
     }
 
     private void EnablePlayerMovementScripts()

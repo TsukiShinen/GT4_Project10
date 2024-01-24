@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Network;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,21 +11,26 @@ public enum SpawnType
     Points
 }
 
+public enum GameState
+{
+	Playing,
+	RoundStart,
+	RoundEnd
+}
+
 public class GameManager : NetworkBehaviour
 {
-	public static GameManager Instance { get; private set; }
 
 	[SerializeField] protected Transform m_PlayerPrefab;
 
-	//[SerializeField] private List<Transform> m_SpawnsTeam1;
-	//[SerializeField] private List<Transform> m_SpawnsTeam2;
-	[SerializeField] protected Dictionary<PlayerData, GameObject> m_PlayersGameObjects = new Dictionary<PlayerData, GameObject>();
+	protected Dictionary<PlayerData, GameObject> m_PlayersGameObjects = new Dictionary<PlayerData, GameObject>();
 
     protected SpawnType m_SpawnType = SpawnType.Null;
 
+    public static GameManager Instance { get; private set; }
     protected virtual void Awake()
 	{
-		if (Instance != null)
+		if (Instance)
 		{
             Destroy(this);
             return;
@@ -92,33 +95,25 @@ public class GameManager : NetworkBehaviour
         //}
 	}
 
-    public virtual void SetPlayerData(int pIndex, PlayerData pNewPlayerData)
+    public void SetPlayerData(int pIndex, PlayerData pNewPlayerData)
     {
 		var gameObject = m_PlayersGameObjects.ElementAt(pIndex).Value;
 		m_PlayersGameObjects.Remove(m_PlayersGameObjects.ElementAt(pIndex).Key);
 		m_PlayersGameObjects.Add(pNewPlayerData, gameObject);
     }
 
-    public virtual PlayerData FindPlayerData(GameObject pPlayerGameObjects)
+    public PlayerData FindPlayerData(GameObject pPlayerGameObject)
     {
         foreach(var player in m_PlayersGameObjects)
-		{
-			if (pPlayerGameObjects == player.Value)
+			if (pPlayerGameObject == player.Value)
 				return player.Key;
-		}
 
 		return default;
     }
 
-    public virtual GameObject FindPlayerGameObject(PlayerData pPlayerDatas)
+    public GameObject FindPlayerGameObject(PlayerData pPlayerData)
     {
-        if(m_PlayersGameObjects.TryGetValue(pPlayerDatas, out GameObject gameObject))
-		{
-			return gameObject;
-
-        }
-
-        return null;
+	    return m_PlayersGameObjects.GetValueOrDefault(pPlayerData);
     }
 
 }
