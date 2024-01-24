@@ -263,7 +263,7 @@ namespace Unity.FPS.Gameplay
                         IsGrounded = true;
 
                         // handle snapping to the ground
-                        m_Rigidbody.MovePosition(transform.position - Vector3.up * (hit.distance - m_CapsuleCollider.radius));
+                        //m_Rigidbody.MovePosition(transform.position - Vector3.up * (hit.distance));
                     }
                 }
                 else
@@ -276,13 +276,11 @@ namespace Unity.FPS.Gameplay
                         m_GroundNormal = rayHit.normal;
 
                         // adjust the character's position to be exactly on the ground
-                        m_Rigidbody.MovePosition(rayHit.point);
+                        //m_Rigidbody.MovePosition(rayHit.point);
                     }
                 }
             }
         }
-
-
 
         void HandleCharacterMovement()
         {
