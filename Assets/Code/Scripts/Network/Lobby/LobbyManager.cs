@@ -72,8 +72,8 @@ namespace Network
 			if (ParrelSync.ClonesManager.IsClone())
 			{
 				var customArgument = ParrelSync.ClonesManager.GetArgument();
-				AuthenticationService.Instance.SwitchProfile($"Clone{customArgument}_Profile");
-			}
+                AuthenticationService.Instance.SwitchProfile($"Clone{customArgument}Profile{UnityEngine.Random.Range(0, 100000)}");
+            }
 #endif
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
 			Debug.Log($"<color=green>===== Player Connected =====</color>");
