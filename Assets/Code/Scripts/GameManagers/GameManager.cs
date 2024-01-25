@@ -3,6 +3,7 @@ using Network;
 using System.Collections.Generic;
 using System.Linq;
 using GameManagers;
+using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,8 +42,8 @@ public abstract class GameManager : NetworkBehaviour
 
 	private void ResetPlayerGameObject_OnPlayerSpawn(ulong pClientId)
 	{
-		SetGameObject_ServerRpc(pClientId, true);
-		SetCamera_ServerRpc(pClientId, pClientId);
+		Server_SetGameObject(pClientId, true);
+		Server_SetCamera(pClientId, pClientId);
 	}
 
     private void Start()
@@ -52,7 +53,7 @@ public abstract class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-	    if (!IsServer)
+	    if (!NetworkManager.IsServer)
 		    return;
 	    
 		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
@@ -61,13 +62,16 @@ public abstract class GameManager : NetworkBehaviour
     protected virtual void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode, List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
     {
 	    // TODO : Really needed?
-    }
+    }  
 
     protected void Server_RespawnPlayers()
     {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
 	    foreach (var clientId in m_PlayersGameObjects.Keys)
 		    if (m_PlayersGameObjects.TryGetValue(clientId, out var playerGameObject)) 
-				m_SpawnManager.RespawnPlayer(playerGameObject, clientId);
+				m_SpawnManager.Server_RespawnPlayer(playerGameObject, clientId);
     }
 
     public PlayerData FindPlayerData(Transform pPlayerGameObject)
@@ -84,9 +88,39 @@ public abstract class GameManager : NetworkBehaviour
 	    return m_PlayersGameObjects.GetValueOrDefault(pClientId);
     }
 
-    [ServerRpc]
-    public void SetCamera_ServerRpc(ulong pClientId, ulong pTargetId)
+    protected void Server_EnablePlayerMovementScripts()
     {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
+	    foreach (var playerObject in m_PlayersGameObjects.Values)
+	    {
+		    var movementScript = playerObject.GetComponent<PlayerCharacterController>();
+		    if (!movementScript) continue;
+            
+		    movementScript.SetActive_ClientRpc(true);
+	    }
+    }
+
+    protected void Server_DisablePlayerMovementScripts()
+    {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
+	    foreach (var playerObject in m_PlayersGameObjects.Values)
+	    {
+		    var movementScript = playerObject.GetComponent<PlayerCharacterController>();
+		    if (!movementScript) continue;
+		    
+		    movementScript.SetActive_ClientRpc(false);
+	    }
+    }
+
+    public void Server_SetCamera(ulong pClientId, ulong pTargetId)
+    {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
 	    m_PlayersGameObjects[pTargetId].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
 	    {
 		    Send = new ClientRpcSendParams
@@ -96,9 +130,11 @@ public abstract class GameManager : NetworkBehaviour
 	    });
     }
 
-    [ServerRpc]
-    public void SetGameObject_ServerRpc(ulong pClientId, bool pIsActive)
+    public void Server_SetGameObject(ulong pClientId, bool pIsActive)
     {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
         m_PlayersGameObjects[pClientId].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
     }
 }

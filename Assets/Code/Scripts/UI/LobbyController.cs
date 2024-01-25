@@ -35,11 +35,11 @@ public class LobbyController : NetworkBehaviour
             SceneManager.LoadScene("Base", LoadSceneMode.Single);
         };
 
-        if (IsServer)
+        if (NetworkManager.IsServer)
         {
             m_Root.Q<Button>("Start").clicked += () =>
             {
-                if (!IsServer) return;
+                if (!NetworkManager.IsServer) return;
                 var sceneName = MultiplayerManager.Instance.GameModeConfig.SceneName;
                 LobbyManager.Instance.DeleteLobby();
                 NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

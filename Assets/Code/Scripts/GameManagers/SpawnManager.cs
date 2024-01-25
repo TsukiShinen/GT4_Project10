@@ -23,9 +23,9 @@ namespace GameManagers
 			Vector3.forward + Vector3.right, Vector3.back + Vector3.left, Vector3.back + Vector3.right
 		};
 
-		public Transform SpawnPlayer(ulong pClientId)
+		public Transform Server_SpawnPlayer(ulong pClientId)
 		{
-			if (!IsServer)
+			if (!NetworkManager.IsServer)
 				return null;
             
 			var playerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
@@ -35,16 +35,17 @@ namespace GameManagers
 			var (position, rotation) = GetSpawnPoint(playerData);
 			player.transform.position = position;
 			player.transform.rotation = rotation;
+			
 			player.GetComponent<NetworkObject>().SpawnWithOwnership(pClientId, true);
 			
 			return player;
 		}
 
-		public void RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
+		public void Server_RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
 		{
-			if (!IsServer)
+			if (!NetworkManager.IsServer)
 				return;
-			
+		
 			var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
 
 			// Reset Health TODO : Better

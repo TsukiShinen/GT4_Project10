@@ -238,10 +238,10 @@ public class MultiplayerManager : NetworkBehaviour
 					Debug.Log(playerData.ClientId);
 					Debug.Log(teamMateData.ClientId);
 
-					GameManager.Instance.SetCamera_ServerRpc(playerData.ClientId, teamMateData.ClientId);				
+					GameManager.Instance.Server_SetCamera(playerData.ClientId, teamMateData.ClientId);				
 
 				}
-				GameManager.Instance.SetGameObject_ServerRpc(playerData.ClientId, false);
+				GameManager.Instance.Server_SetGameObject(playerData.ClientId, false);
 			}
 
             playerData.PlayerDeaths += 1;

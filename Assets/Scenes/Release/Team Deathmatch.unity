@@ -1584,6 +1584,7 @@ GameObject:
   - component: {fileID: 699133954}
   - component: {fileID: 699133955}
   - component: {fileID: 699133956}
+  - component: {fileID: 699133957}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1642,6 +1643,7 @@ MonoBehaviour:
   m_Document: {fileID: 699133955}
   m_ScoreElement: {fileID: 9197481963319205126, guid: c30759e76ec7f9941ad3f22a80357443,
     type: 3}
+  m_RoundManager: {fileID: 699133957}
 --- !u!114 &699133955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1678,6 +1680,19 @@ MonoBehaviour:
   m_PlayerTag: Player
   m_SpawnTeam1: {fileID: 8800070885431438925}
   m_SpawnTeam2: {fileID: 144166625}
+--- !u!114 &699133957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699133951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6459e9497014fdf948fba95c8339a69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TimeBetweenRound: 3
 --- !u!4 &759815506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2141676431450117668, guid: cd17687759887a0438ee021e51abc9d9,
