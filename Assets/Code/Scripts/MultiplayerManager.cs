@@ -212,48 +212,6 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerDataNetworkList[playerDataIndex] = playerData;
     }
 
-    public void PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
-    {
-        var playerData = GameManager.Instance.FindPlayerData(pGo);
-		var index = FindPlayerDataIndexByPlayerData(playerData);
-        playerData.PlayerHealth -= pDamage;
-
-        m_PlayerDataNetworkList[index] = playerData;
-
-        if (playerData.PlayerHealth <= 0)
-        {
-			if(GameModeConfig.CanRespawn)
-			{
-				// TODO : Respawn
-				Debug.Log("TODO : RESPAWN");
-				//GameManager.Instance.RespawnPlayer(playerData.ClientId);
-				//playerData.PlayerHealth = playerData.PlayerMaxHealth;
-            }
-			else
-			{
-                PlayerData teamMateData;
-
-				if (TryFindTeammate(playerData, out teamMateData))
-				{
-					Debug.Log(playerData.ClientId);
-					Debug.Log(teamMateData.ClientId);
-
-					GameManager.Instance.Server_SetCamera(playerData.ClientId, teamMateData.ClientId);				
-
-				}
-				GameManager.Instance.Server_SetGameObject(playerData.ClientId, false);
-			}
-
-            playerData.PlayerDeaths += 1;
-            m_PlayerDataNetworkList[index] = playerData;
-
-            var indexKiller = FindPlayerDataIndex(pOwnerId);
-            var playerDataKiller = GetPlayerDataByIndex(indexKiller);
-			playerDataKiller.PlayerKills += 1;
-            m_PlayerDataNetworkList[indexKiller] = playerDataKiller;
-        }
-    }
-
     public bool IsPlayerIndexConnected(int pIndex)
 	{
 		return pIndex < m_PlayerDataNetworkList.Count;
@@ -299,22 +257,6 @@ public class MultiplayerManager : NetworkBehaviour
     public NetworkList<PlayerData> GetPlayerDatas()
     {
 		return m_PlayerDataNetworkList;
-    }
-
-    private bool TryFindTeammate(PlayerData playerData, out PlayerData teammateData)
-    {
-        teammateData = default;
-
-        foreach (var teammate in m_PlayerDataNetworkList)
-        {
-            if (teammate.IsTeamOne == playerData.IsTeamOne && teammate.PlayerHealth > 0)
-            {
-				teammateData = teammate;
-                return true;
-            }
-        }
-
-		return false;
     }
 
 }

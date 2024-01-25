@@ -137,4 +137,55 @@ public abstract class GameManager : NetworkBehaviour
 	    
         m_PlayersGameObjects[pClientId].GetComponent<SetGameObject>().SetGameObject_ClientRpc(pIsActive);
     }
+    
+    
+
+    public void Server_PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
+    {
+	    if (!NetworkManager.IsServer)
+		    return;
+	    
+	    var playerData = FindPlayerData(pGo);
+	    var index = MultiplayerManager.Instance.FindPlayerDataIndexByPlayerData(playerData);
+	    playerData.PlayerHealth -= pDamage;
+
+	    MultiplayerManager.Instance.GetPlayerDatas()[index] = playerData;
+
+	    if (playerData.PlayerHealth > 0) return;
+	    
+	    if(MultiplayerManager.Instance.GameModeConfig.CanRespawn)
+	    {
+		    m_SpawnManager.Server_RespawnPlayer(m_PlayersGameObjects[playerData.ClientId], playerData.ClientId);
+		    playerData.PlayerHealth = playerData.PlayerMaxHealth;
+	    }
+	    else
+	    {
+		    if (TryFindTeammate(playerData, out var teammateData))
+			    Server_SetCamera(playerData.ClientId, teammateData.ClientId);		
+		    
+		    Server_SetGameObject(playerData.ClientId, false);
+	    }
+
+	    playerData.PlayerDeaths += 1;
+	    MultiplayerManager.Instance.GetPlayerDatas()[index] = playerData;
+
+	    var indexKiller = MultiplayerManager.Instance.FindPlayerDataIndex(pOwnerId);
+	    var playerDataKiller = MultiplayerManager.Instance.GetPlayerDataByIndex(indexKiller);
+	    playerDataKiller.PlayerKills += 1;
+	    MultiplayerManager.Instance.GetPlayerDatas()[indexKiller] = playerDataKiller;
+    }
+
+    private bool TryFindTeammate(PlayerData playerData, out PlayerData teammateData)
+    {
+	    foreach (var teammate in MultiplayerManager.Instance.GetPlayerDatas())
+	    {
+		    if (teammate.IsTeamOne != playerData.IsTeamOne || !(teammate.PlayerHealth > 0)) continue;
+		    
+		    teammateData = teammate;
+		    return true;
+	    }
+
+	    teammateData = default;
+	    return false;
+    }
 }
