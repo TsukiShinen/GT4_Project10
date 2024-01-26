@@ -10,8 +10,8 @@ namespace GameManagers
 		[SerializeField] protected Transform m_PlayerPrefab;
 		
 		[Header("Player Parameters")]
-		[SerializeField] private float m_PlayerHeight = 2f;
-		[SerializeField] private float m_PlayerRadius = 0.5f;
+		[SerializeField] protected float m_PlayerHeight = 2f;
+		[SerializeField] protected float m_PlayerRadius = 0.5f;
 		[SerializeField] private string m_PlayerTag = "Player";
 
 		public Action<ulong> OnPlayerRespawn;
@@ -41,7 +41,7 @@ namespace GameManagers
 			return player;
 		}
 
-		public void Server_RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
+		public virtual void Server_RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
 		{
 			if (!NetworkManager.IsServer)
 				return;
@@ -78,5 +78,8 @@ namespace GameManagers
 		}
 
 		protected abstract Tuple<Vector3, Quaternion> GetSpawnPoint(PlayerData pPlayerData);
-	}
+		
+		public abstract void ResetAvailableSpawnPoints();
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Unity.FPS.Game;
+﻿using System;
+using Unity.FPS.Game;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
@@ -8,15 +9,13 @@ namespace Unity.FPS.Gameplay
         [Header("Parameters")] [Tooltip("Amount of health to heal on pickup")]
         public float HealAmount;
 
-        protected override void OnPicked(PlayerCharacterController player)
+        protected override void OnPicked(PlayerData playerData)
         {
-            Health playerHealth = player.GetComponent<Health>();
-            if (playerHealth && playerHealth.CanPickup())
-            {
-                playerHealth.Heal(HealAmount);
-                PlayPickupFeedback();
-                Destroy(gameObject);
-            }
+            playerData.PlayerHealth = Mathf.Clamp(playerData.PlayerHealth + HealAmount, 0, 100);
+            int index = MultiplayerManager.Instance.FindPlayerDataIndex(playerData.ClientId);
+            MultiplayerManager.Instance.GetPlayerDatas()[index] = playerData;
+            PlayPickupFeedback();
+            Destroy(gameObject);
         }
     }
 }

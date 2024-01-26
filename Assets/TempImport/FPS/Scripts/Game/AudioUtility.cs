@@ -46,10 +46,13 @@ namespace Unity.FPS.Game
             if (s_AudioManager == null)
                 s_AudioManager = GameObject.FindObjectOfType<AudioManager>();
 
+            if(s_AudioManager != null)
+            {
             var groups = s_AudioManager.FindMatchingGroups(group.ToString());
 
             if (groups.Length > 0)
                 return groups[0];
+            }
 
             Debug.LogWarning("Didn't find audio group for " + group.ToString());
             return null;

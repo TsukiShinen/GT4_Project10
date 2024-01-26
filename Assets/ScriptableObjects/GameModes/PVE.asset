@@ -15,4 +15,5 @@ MonoBehaviour:
   m_ModeName: PVE
   m_MaxPlayer: 2
   m_HasTeams: 0
+  m_CanRespawn: 1
   m_SceneName: PVE

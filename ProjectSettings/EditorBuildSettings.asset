@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Release/PVE Boss.unity
     guid: e0e779b334ff5a745988225a678abdd9
   - enabled: 1
+    path: Assets/Scenes/Release/Free For All.unity
+    guid: a37477621b112a74fab42882f7c0300f
+  - enabled: 1
     path: Assets/Scenes/Release/Team Deathmatch.unity
     guid: 9b27ebcaf9c492e47916a026401a8ddf
   - enabled: 1

@@ -120,7 +120,7 @@ public abstract class GameManager : NetworkBehaviour
     {
 	    if (!NetworkManager.IsServer)
 		    return;
-	    
+
 	    m_PlayersGameObjects[pTargetId].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
 	    {
 		    Send = new ClientRpcSendParams
@@ -140,7 +140,7 @@ public abstract class GameManager : NetworkBehaviour
     
     
 
-    public void Server_PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
+    public virtual void Server_PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
     {
 	    if (!NetworkManager.IsServer)
 		    return;
@@ -153,12 +153,13 @@ public abstract class GameManager : NetworkBehaviour
 
 	    if (playerData.PlayerHealth > 0) return;
 	    
-	    if(MultiplayerManager.Instance.GameModeConfig.CanRespawn)
+	    if(MultiplayerManager.Instance.GameModeConfig.CanRespawn && 
+			MultiplayerManager.Instance.GameModeConfig.ModeName != "Free For All")
 	    {
-		    m_SpawnManager.Server_RespawnPlayer(m_PlayersGameObjects[playerData.ClientId], playerData.ClientId);
-		    playerData.PlayerHealth = playerData.PlayerMaxHealth;
+            m_SpawnManager.Server_RespawnPlayer(m_PlayersGameObjects[playerData.ClientId], playerData.ClientId);
+			playerData.PlayerHealth = playerData.PlayerMaxHealth;
 	    }
-	    else
+	    else if (MultiplayerManager.Instance.GameModeConfig.ModeName != "Free For All")
 	    {
 		    if (TryFindTeammate(playerData, out var teammateData))
 			    Server_SetCamera(playerData.ClientId, teammateData.ClientId);		

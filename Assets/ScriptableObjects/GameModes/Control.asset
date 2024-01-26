@@ -15,4 +15,5 @@ MonoBehaviour:
   m_ModeName: Control
   m_MaxPlayer: 5
   m_HasTeams: 1
+  m_CanRespawn: 1
   m_SceneName: Control

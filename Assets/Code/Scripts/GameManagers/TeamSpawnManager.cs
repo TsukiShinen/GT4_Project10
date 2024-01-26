@@ -40,5 +40,7 @@ namespace GameManagers
 			Debug.LogError("No spawn zone defined.");
 			return null;
 		}
-	}
+
+		public override void ResetAvailableSpawnPoints() { }
+    }
 }

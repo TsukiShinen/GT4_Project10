@@ -2,7 +2,7 @@
 {
     public class JetpackPickup : Pickup
     {
-        protected override void OnPicked(PlayerCharacterController byPlayer)
+        /*protected override void OnPicked(PlayerCharacterController byPlayer)
         {
             var jetpack = byPlayer.GetComponent<Jetpack>();
             if (!jetpack)
@@ -13,6 +13,6 @@
                 PlayPickupFeedback();
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }

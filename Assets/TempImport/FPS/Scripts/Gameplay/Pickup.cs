@@ -1,4 +1,5 @@
 ﻿using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
@@ -50,19 +51,21 @@ namespace Unity.FPS.Gameplay
 
         void OnTriggerEnter(Collider other)
         {
-            PlayerCharacterController pickingPlayer = other.GetComponent<PlayerCharacterController>();
-
-            if (pickingPlayer != null)
+            if (other.TryGetComponent(out NetworkObject networkObject))
             {
-                OnPicked(pickingPlayer);
+                PlayerData playerData = MultiplayerManager.Instance.FindPlayerData(networkObject.OwnerClientId);
+                if (!playerData.Equals(default))
+                {
+                    OnPicked(playerData);
 
-                PickupEvent evt = Events.PickupEvent;
-                evt.Pickup = gameObject;
-                EventManager.Broadcast(evt);
+                    PickupEvent evt = Events.PickupEvent;
+                    evt.Pickup = gameObject;
+                    EventManager.Broadcast(evt);
+                }
             }
         }
 
-        protected virtual void OnPicked(PlayerCharacterController playerController)
+        protected virtual void OnPicked(PlayerData playerData)
         {
             PlayPickupFeedback();
         }

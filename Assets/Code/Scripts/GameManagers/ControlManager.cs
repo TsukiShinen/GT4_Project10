@@ -31,7 +31,7 @@ public class ControlPointGameManager : GameManager
     {
         foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            var player = m_SpawnManager.SpawnPlayer(clientId);
+            var player = m_SpawnManager.Server_SpawnPlayer(clientId);
             m_PlayersGameObjects.Add(clientId, player);
         }
         base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);

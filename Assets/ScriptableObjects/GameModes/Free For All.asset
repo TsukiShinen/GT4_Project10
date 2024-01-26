@@ -15,4 +15,5 @@ MonoBehaviour:
   m_ModeName: Free For All
   m_MaxPlayer: 10
   m_HasTeams: 0
-  m_SceneName: Base
+  m_CanRespawn: 1
+  m_SceneName: Free For All
