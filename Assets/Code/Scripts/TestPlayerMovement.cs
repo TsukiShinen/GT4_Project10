@@ -6,7 +6,7 @@ public class TestPlayerMovement : MonoBehaviour
 	{
 		var x = Input.GetAxisRaw("Horizontal") * Time.deltaTime;
 		var z = Input.GetAxisRaw("Vertical") * Time.deltaTime;
-		
-		transform.Translate(x ,0, z);
+
+		transform.Translate(x, 0, z);
 	}
 }

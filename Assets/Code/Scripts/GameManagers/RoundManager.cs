@@ -12,38 +12,24 @@ namespace GameManagers
 
 		public NetworkVariable<int> ScoreTeam1;
 		public NetworkVariable<int> ScoreTeam2;
-		
-		public EventHandler<RoundEventArgs> OnRoundEnded;
-		public EventHandler OnRoundStarting;
-		public EventHandler OnRoundStarted;
+		private int m_CurrentRound = 1;
 		public EventHandler<RoundEventArgs> OnEndMatch;
+
+		public EventHandler<RoundEventArgs> OnRoundEnded;
+		public EventHandler OnRoundStarted;
+		public EventHandler OnRoundStarting;
 
 		public Action<int> OnScoreTeam1Changed;
 		public Action<int> OnScoreTeam2Changed;
-		
+
 		private int m_MaxRounds => m_ScoreToWin * 2 - 1;
-		private int m_CurrentRound = 1;
-		
-		public class RoundEventArgs : EventArgs
-		{
-			public bool IsTeamOneWin;
-		}
 
 		private void Awake()
 		{
 			ScoreTeam1 = new NetworkVariable<int>();
 			ScoreTeam2 = new NetworkVariable<int>();
-			ScoreTeam1.OnValueChanged += (value, newValue) =>
-			{
-				OnScoreTeam1Changed?.Invoke(newValue);
-				
-			};
-			ScoreTeam2.OnValueChanged += (value, newValue) =>
-			{
-				OnScoreTeam2Changed?.Invoke(newValue);
-				
-			};
-
+			ScoreTeam1.OnValueChanged += (value, newValue) => { OnScoreTeam1Changed?.Invoke(newValue); };
+			ScoreTeam2.OnValueChanged += (value, newValue) => { OnScoreTeam2Changed?.Invoke(newValue); };
 		}
 
 		public void Server_EndRound(bool pIsTeamOneWin)
@@ -53,9 +39,9 @@ namespace GameManagers
 
 			ScoreTeam1.Value += pIsTeamOneWin ? 1 : 0;
 			ScoreTeam2.Value += pIsTeamOneWin ? 0 : 1;
-			
+
 			OnRoundEnded?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
-        
+
 			if (ScoreTeam1.Value == m_ScoreToWin || ScoreTeam2.Value == m_ScoreToWin)
 				OnEndMatch?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
 			else
@@ -67,6 +53,11 @@ namespace GameManagers
 			OnRoundStarting?.Invoke(this, EventArgs.Empty);
 			yield return new WaitForSeconds(m_TimeBetweenRound);
 			OnRoundStarted?.Invoke(this, EventArgs.Empty);
+		}
+
+		public class RoundEventArgs : EventArgs
+		{
+			public bool IsTeamOneWin;
 		}
 	}
 }

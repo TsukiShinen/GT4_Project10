@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Network;
 using ScriptableObjects.GameModes;
@@ -11,7 +10,7 @@ public class MenuLobbyController : MonoBehaviour
 	[SerializeField] private CreateLobbyController m_CreateLobby;
 	[SerializeField] private VisualTreeAsset m_RoomElement;
 	[SerializeField] private GameModes m_GameModes;
-	
+
 	private VisualElement m_Root;
 
 	private void Start()
@@ -23,11 +22,8 @@ public class MenuLobbyController : MonoBehaviour
 		{
 			MultiplayerManager.Instance.PlayerName = e.newValue;
 		});
-		
-		m_Root.Q<Button>("Add").clicked += async () =>
-		{
-			m_CreateLobby.Open();
-		};
+
+		m_Root.Q<Button>("Add").clicked += async () => { m_CreateLobby.Open(); };
 
 		m_Root.Q<Button>("Refresh").clicked += async () =>
 		{
@@ -45,15 +41,14 @@ public class MenuLobbyController : MonoBehaviour
 			{
 				var lobbyView = m_RoomElement.CloneTree();
 				lobbyView.Q<TextElement>("Name").text = lobby.Name;
-				if (lobby.Data.TryGetValue(LobbyManager.k_KeyGameModeIndex, out var value) && int.Parse(value.Value) < m_GameModes.GameModeConfigs.Count)
-					lobbyView.Q<TextElement>("GameMode").text = m_GameModes.GameModeConfigs[int.Parse(value.Value)].ModeName;
+				if (lobby.Data.TryGetValue(LobbyManager.k_KeyGameModeIndex, out var value) &&
+				    int.Parse(value.Value) < m_GameModes.GameModeConfigs.Count)
+					lobbyView.Q<TextElement>("GameMode").text =
+						m_GameModes.GameModeConfigs[int.Parse(value.Value)].ModeName;
 				else
 					continue;
 				lobbyView.Q<TextElement>("PlayerCount").text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
-				lobbyView.AddManipulator(new Clickable(e =>
-				{
-					LobbyManager.Instance.JoinWithId(lobby.Id);
-				}));
+				lobbyView.AddManipulator(new Clickable(e => { LobbyManager.Instance.JoinWithId(lobby.Id); }));
 				items.Add(lobbyView);
 			}
 
@@ -73,8 +68,8 @@ public class MenuLobbyController : MonoBehaviour
 		};
 	}
 
-    public void SetEnable(bool isActive)
-    {
-        m_Root.style.display = isActive ? DisplayStyle.Flex : DisplayStyle.None;
-    }
+	public void SetEnable(bool isActive)
+	{
+		m_Root.style.display = isActive ? DisplayStyle.Flex : DisplayStyle.None;
+	}
 }

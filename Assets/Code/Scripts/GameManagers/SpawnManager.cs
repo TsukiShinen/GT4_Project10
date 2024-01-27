@@ -7,27 +7,28 @@ namespace GameManagers
 {
 	public abstract class SpawnManager : NetworkBehaviour
 	{
+		private const float k_RayLength = 1f;
 		[SerializeField] protected Transform m_PlayerPrefab;
-		
-		[Header("Player Parameters")]
-		[SerializeField] protected float m_PlayerHeight = 2f;
+
+		[Header("Player Parameters")] [SerializeField]
+		protected float m_PlayerHeight = 2f;
+
 		[SerializeField] protected float m_PlayerRadius = 0.5f;
 		[SerializeField] private string m_PlayerTag = "Player";
 
-		public Action<ulong> OnPlayerRespawn;
-		
-		private const float k_RayLength = 1f;
 		private readonly Vector3[] m_RayDirections =
 		{
 			Vector3.forward, Vector3.back, Vector3.left, Vector3.right, Vector3.forward + Vector3.left,
 			Vector3.forward + Vector3.right, Vector3.back + Vector3.left, Vector3.back + Vector3.right
 		};
 
+		public Action<ulong> OnPlayerRespawn;
+
 		public Transform Server_SpawnPlayer(ulong pClientId)
 		{
 			if (!NetworkManager.IsServer)
 				return null;
-            
+
 			var playerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
 
 			var player = Instantiate(m_PlayerPrefab);
@@ -35,9 +36,9 @@ namespace GameManagers
 			var (position, rotation) = GetSpawnPoint(playerData);
 			player.transform.position = position;
 			player.transform.rotation = rotation;
-			
+
 			player.GetComponent<NetworkObject>().SpawnWithOwnership(pClientId, true);
-			
+
 			return player;
 		}
 
@@ -45,7 +46,7 @@ namespace GameManagers
 		{
 			if (!NetworkManager.IsServer)
 				return;
-		
+
 			var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
 
 			// Reset Health TODO : Better
@@ -56,7 +57,7 @@ namespace GameManagers
 			// Reset position Player TODO : Not from PlayerHealth
 			var (position, rotation) = GetSpawnPoint(pPlayerData);
 			pPlayerGameObject.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, rotation);
-			
+
 			OnPlayerRespawn?.Invoke(pClientId);
 		}
 
@@ -78,8 +79,7 @@ namespace GameManagers
 		}
 
 		protected abstract Tuple<Vector3, Quaternion> GetSpawnPoint(PlayerData pPlayerData);
-		
-		public abstract void ResetAvailableSpawnPoints();
 
-    }
+		public abstract void ResetAvailableSpawnPoints();
+	}
 }

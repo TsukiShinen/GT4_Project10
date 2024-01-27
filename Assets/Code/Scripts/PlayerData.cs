@@ -18,14 +18,14 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 	public bool Equals(PlayerData other)
 	{
 		return ClientId == other.ClientId &&
-			   PlayerName == other.PlayerName &&
-			   IsTeamOne == other.IsTeamOne &&
-			   PlayerId == other.PlayerId &&
-			   PlayerHealth == other.PlayerHealth &&
-               PlayerMaxHealth == other.PlayerMaxHealth &&
-               PlayerKills == other.PlayerKills &&
-               PlayerDeaths == other.PlayerDeaths;
-    }
+		       PlayerName == other.PlayerName &&
+		       IsTeamOne == other.IsTeamOne &&
+		       PlayerId == other.PlayerId &&
+		       PlayerHealth == other.PlayerHealth &&
+		       PlayerMaxHealth == other.PlayerMaxHealth &&
+		       PlayerKills == other.PlayerKills &&
+		       PlayerDeaths == other.PlayerDeaths;
+	}
 
 	public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
 	{

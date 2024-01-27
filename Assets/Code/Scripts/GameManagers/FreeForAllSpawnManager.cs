@@ -1,89 +1,89 @@
-using GameManagers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameManagers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FreeForAllSpawnManager : SpawnManager
 {
-    [Header("Spawn Points")]
-    [SerializeField] private List<Transform> m_SpawnPoints;
-    private List<Transform> m_AvailableSpawnPoints;
+	private const int k_MaxAttempts = 10;
 
-    [Header("Respawn Time")]
-    [SerializeField] private int m_RespawnTime;
+	[Header("Spawn Points")] [SerializeField]
+	private List<Transform> m_SpawnPoints;
 
-    private const int k_MaxAttempts = 10;
+	[Header("Respawn Time")] [SerializeField]
+	private int m_RespawnTime;
 
-    private void Awake()
-    {
-        m_AvailableSpawnPoints = new List<Transform>(m_SpawnPoints);
-    }
+	private List<Transform> m_AvailableSpawnPoints;
 
-    public override void Server_RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
-    {
-        if (!NetworkManager.IsServer)
-            return;
+	private void Awake()
+	{
+		m_AvailableSpawnPoints = new List<Transform>(m_SpawnPoints);
+	}
 
-        StartCoroutine(RespawnCoroutine(pPlayerGameObject, pClientId));
-    }
+	public override void Server_RespawnPlayer(Transform pPlayerGameObject, ulong pClientId)
+	{
+		if (!NetworkManager.IsServer)
+			return;
 
-    protected override Tuple<Vector3, Quaternion> GetSpawnPoint(PlayerData pPlayerData)
-    {
-        if (m_AvailableSpawnPoints != null && m_AvailableSpawnPoints.Count > 0)
-        {
-            for (var i = 0; i < k_MaxAttempts; i++)
-            {
-                var randomSpawnIndex = UnityEngine.Random.Range(0, m_AvailableSpawnPoints.Count);
-                var randomSpawnPoint = m_AvailableSpawnPoints[randomSpawnIndex];
+		StartCoroutine(RespawnCoroutine(pPlayerGameObject, pClientId));
+	}
 
-                var randomPoint = randomSpawnPoint.position;
+	protected override Tuple<Vector3, Quaternion> GetSpawnPoint(PlayerData pPlayerData)
+	{
+		if (m_AvailableSpawnPoints != null && m_AvailableSpawnPoints.Count > 0)
+		{
+			for (var i = 0; i < k_MaxAttempts; i++)
+			{
+				var randomSpawnIndex = Random.Range(0, m_AvailableSpawnPoints.Count);
+				var randomSpawnPoint = m_AvailableSpawnPoints[randomSpawnIndex];
 
-                var isLocationValid = IsSpawnLocationValid(randomPoint);
-                if (!isLocationValid) continue;
+				var randomPoint = randomSpawnPoint.position;
 
-                m_AvailableSpawnPoints.RemoveAt(randomSpawnIndex);
+				var isLocationValid = IsSpawnLocationValid(randomPoint);
+				if (!isLocationValid) continue;
 
-                var rotation = randomSpawnPoint.transform.rotation;
-                return new Tuple<Vector3, Quaternion>(randomPoint, rotation);
-            }
+				m_AvailableSpawnPoints.RemoveAt(randomSpawnIndex);
 
-            Debug.LogError("Failed to find a valid spawn location after multiple attempts.");
-        }
-        else
-        {
-            Debug.LogError("No spawn points available.");
-        }
+				var rotation = randomSpawnPoint.transform.rotation;
+				return new Tuple<Vector3, Quaternion>(randomPoint, rotation);
+			}
 
-        return null;
-    }
+			Debug.LogError("Failed to find a valid spawn location after multiple attempts.");
+		}
+		else
+		{
+			Debug.LogError("No spawn points available.");
+		}
 
-    private IEnumerator RespawnCoroutine(Transform pPlayerGameObject, ulong pClientId)
-    {
-        var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
+		return null;
+	}
 
-        // Reset Health TODO : Better
-        pPlayerData.PlayerHealth = pPlayerData.PlayerMaxHealth;
-        MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(pClientId)] =
-            pPlayerData;
+	private IEnumerator RespawnCoroutine(Transform pPlayerGameObject, ulong pClientId)
+	{
+		var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
 
-        // Reset position Player TODO : Not from PlayerHealth
-        var (position, rotation) = GetSpawnPoint(pPlayerData);
+		// Reset Health TODO : Better
+		pPlayerData.PlayerHealth = pPlayerData.PlayerMaxHealth;
+		MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(pClientId)] =
+			pPlayerData;
 
-        yield return new WaitForSeconds(m_RespawnTime);
+		// Reset position Player TODO : Not from PlayerHealth
+		var (position, rotation) = GetSpawnPoint(pPlayerData);
 
-        pPlayerGameObject.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, rotation);
+		yield return new WaitForSeconds(m_RespawnTime);
 
-        OnPlayerRespawn?.Invoke(pClientId);
+		pPlayerGameObject.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, rotation);
 
-        ResetAvailableSpawnPoints();
-    }
+		OnPlayerRespawn?.Invoke(pClientId);
 
-    public override void ResetAvailableSpawnPoints()
-    {
-        m_AvailableSpawnPoints.Clear();
-        m_AvailableSpawnPoints.AddRange(m_SpawnPoints);
-    }
+		ResetAvailableSpawnPoints();
+	}
 
+	public override void ResetAvailableSpawnPoints()
+	{
+		m_AvailableSpawnPoints.Clear();
+		m_AvailableSpawnPoints.AddRange(m_SpawnPoints);
+	}
 }
-
