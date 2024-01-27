@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 4636915861003858042}
   - component: {fileID: 5239360057361040828}
   - component: {fileID: 5880388211720014294}
+  - component: {fileID: 8120238997205211685}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -405,7 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4281677000
+  GlobalObjectIdHash: 3071459431
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -764,6 +765,7 @@ MonoBehaviour:
   FpsWeaponLayer:
     serializedVersion: 2
     m_Bits: 1024
+  m_WeaponSwitch: {fileID: 8120238997205211685}
 --- !u!114 &-2506321481543883504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,6 +905,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d87d19b4a29d2a14ba4f421c1aaf0f09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8120238997205211685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990597715232981582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1930df8f92c44484eac343704f51df83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2228908939216628199

@@ -76,6 +76,8 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Layer to set FPS weapon gameObjects to")]
         public LayerMask FpsWeaponLayer;
 
+        public WeaponSwitch m_WeaponSwitch;
+
         public bool IsAiming { get; private set; }
         public bool IsPointingAtEnemy { get; private set; }
         public int ActiveWeaponIndex { get; private set; }
@@ -125,6 +127,8 @@ namespace Unity.FPS.Gameplay
 
         void Update()
         {
+            if (!IsOwner)
+                return;
             // shoot handling
             WeaponController activeWeapon = GetActiveWeapon();
 
@@ -391,7 +395,7 @@ namespace Unity.FPS.Gameplay
                     WeaponController oldWeapon = GetWeaponAtSlotIndex(ActiveWeaponIndex);
                     if (oldWeapon != null)
                     {
-                        oldWeapon.ShowWeapon(false);
+                        m_WeaponSwitch.Switch(oldWeapon, false);
                     }
 
                     ActiveWeaponIndex = m_WeaponSwitchNewWeaponIndex;
@@ -457,8 +461,8 @@ namespace Unity.FPS.Gameplay
                     // Set owner to this gameObject so the weapon can alter projectile/damage logic accordingly
                     weaponInstance.Owner = gameObject;
                     weaponInstance.SourcePrefab = weaponPrefab.gameObject;
-                    weaponInstance.ShowWeapon(false);
-
+                    m_WeaponSwitch.AddWeaponController(weaponInstance);
+                    m_WeaponSwitch.Switch(weaponInstance, false);
                     if (IsOwner)
                     {
                         weaponInstance.SetOwner();
@@ -569,7 +573,7 @@ namespace Unity.FPS.Gameplay
         {
             if (newWeapon != null)
             {
-                newWeapon.ShowWeapon(true);
+                m_WeaponSwitch.Switch(newWeapon, true);
             }
         }
     }
