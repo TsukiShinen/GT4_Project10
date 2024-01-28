@@ -27,6 +27,14 @@ public class FreeForAllManager : GameManager
 		m_OwnData.Q<TextElement>("PlayerKills").text = "0";
 		m_EnemyData = m_Root.Q<VisualElement>("EnemyPlayerFFA");
 		m_EnemyData.Q<TextElement>("PlayerKills").text = "0";
+		foreach (var player in MultiplayerManager.Instance.GetPlayerDatas())
+		{
+			if (player.ClientId == NetworkManager.Singleton.LocalClientId)
+				continue;
+			
+			m_EnemyData.Q<TextElement>("PlayerName").text = player.PlayerName.ToString();
+			break;
+		}
 		
 		MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += UI_OnPlayerKill;
 	}
@@ -34,6 +42,7 @@ public class FreeForAllManager : GameManager
 	private void UI_OnPlayerKill(object sender, EventArgs e)
 	{
 		PlayerData enemyMostKill = default;
+		enemyMostKill.PlayerKills = -1;
 		foreach (var player in MultiplayerManager.Instance.GetPlayerDatas())
 		{
 			if (player.ClientId == NetworkManager.Singleton.LocalClientId)
@@ -89,14 +98,23 @@ public class FreeForAllManager : GameManager
 		foreach (var player in players)
 			if (player.PlayerKills >= m_WinConditionKills)
 			{
-				DeclareWinner(player);
+				EndGame_ClientRpc(player);
 				break;
 			}
 	}
 
-	private void DeclareWinner(PlayerData player)
+	[ClientRpc]
+	private void EndGame_ClientRpc(PlayerData pWinner)
 	{
-		Debug.Log(player.PlayerName + " a gagn� la partie !");
+		var victory = pWinner.ClientId == NetworkManager.Singleton.LocalClientId;
+
+		m_WinScreen.rootVisualElement.Q<TextElement>("Win").style.display = victory ? DisplayStyle.Flex : DisplayStyle.None;
+		m_WinScreen.rootVisualElement.Q<TextElement>("Lose").style.display = victory ? DisplayStyle.None : DisplayStyle.Flex;
+		m_WinScreen.rootVisualElement.style.display = DisplayStyle.Flex;
+	
+	
+		UnityEngine.Cursor.lockState = CursorLockMode.None;
+		UnityEngine.Cursor.visible = true;
 	}
 
 	public override void Server_PlayerHit(float pDamage, Transform pGo, ulong pOwnerId)
