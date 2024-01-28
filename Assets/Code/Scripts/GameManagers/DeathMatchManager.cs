@@ -21,11 +21,6 @@ public class DeathMatchManager : GameManager
 
 		m_GameState = new NetworkVariable<GameState>();
 
-		m_Root.Q<TextElement>("Team1Score").text = ScoreManager.Instance.ScoreTeam1.Value.ToString();
-		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
-		m_Root.Q<TextElement>("Team2Score").text = ScoreManager.Instance.ScoreTeam2.Value.ToString();
-		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
-
 		if (!NetworkManager.IsServer)
 			return;
 
@@ -35,6 +30,16 @@ public class DeathMatchManager : GameManager
 		m_RoundManager.OnRoundStarting += Server_OnRoundStarting;
 		m_RoundManager.OnRoundStarted += Server_OnRoundStarted;
 		m_RoundManager.OnEndMatch += Server_OnEndMatch;
+	}
+
+	protected override void Start()
+	{
+		base.Start();
+
+		m_Root.Q<TextElement>("Team1Score").text = MultiplayerManager.Instance.ScoreTeam1.Value.ToString();
+		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
+		m_Root.Q<TextElement>("Team2Score").text = MultiplayerManager.Instance.ScoreTeam2.Value.ToString();
+		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
 	}
 
 	protected void Update()

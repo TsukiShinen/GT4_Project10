@@ -75,7 +75,7 @@ public abstract class GameManager : NetworkBehaviour
 		health.value = e.PlayerHealth;
 	}
 
-	private void Start()
+	protected virtual void Start()
 	{
 		LobbyManager.Instance.SetLobbyNull();
 		UpdatePlayerLife(MultiplayerManager.Instance.FindPlayerData(NetworkManager.Singleton.LocalClientId));
