@@ -271,6 +271,7 @@ namespace Unity.FPS.Gameplay
                 // otherwise, remember we are putting down our current weapon for switching to the next one
                 else
                 {
+                    Debug.Log("else");
                     m_WeaponSwitchState = WeaponSwitchState.PutDownPrevious;
                 }
 
