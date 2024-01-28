@@ -13,7 +13,14 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 	public int PlayerKills;
 	public int PlayerDeaths;
 
-	public bool IsAlive => PlayerHealth > 0;
+    public int WeaponAmmo1;
+    public int WeaponAmmo1Max;
+    public int WeaponAmmo2;
+    public int WeaponAmmo2Max;
+    public int WeaponAmmo3;
+    public int WeaponAmmo3Max;
+
+    public bool IsAlive => PlayerHealth > 0;
 
 	public bool Equals(PlayerData other)
 	{
