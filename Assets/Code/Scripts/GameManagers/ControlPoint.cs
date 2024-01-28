@@ -21,7 +21,6 @@ public class ControlPoint : NetworkBehaviour
 	[SerializeField] private UIDocument m_Document;
 	[SerializeField] private BoxCollider m_BoxCollider;
 
-	public ControlPointState CurrentState = ControlPointState.Neutral;
 	public int CurrentTeam;
 	public int LastTeamOnPoint;
 	public float PointsPerSeconds = 1f;
@@ -31,6 +30,10 @@ public class ControlPoint : NetworkBehaviour
 	private bool m_IsCapturing;
 
 	private ProgressBar m_ProgressBar;
+
+	private bool IsContested;
+	
+	public bool IsCaptured => !IsContested && ((CurrentTeam == 1 && m_ControlValue >= m_ControlTimeRequired) || (CurrentTeam == 2 && m_ControlValue <= -m_ControlTimeRequired));
 
 	private void Awake()
 	{
@@ -42,14 +45,33 @@ public class ControlPoint : NetworkBehaviour
 
 	private void Update()
 	{
-		CapturePoint();
+		var playersInside = new List<PlayerData>(GetPlayersInside());
 
-		NeutralPoint();
+		if (playersInside.Count == 0)
+		{
+			NeutralPoint();
+			return;
+		}
+		
+		var teamInside = GetTeamInside(GetPlayersInside());
+		if (teamInside == -1)
+		{
+			Contested();
+			return;
+		}
+
+		CurrentTeam = teamInside;
+		CapturePoint();
+	}
+
+	private void Contested()
+	{
+		IsContested = true;
 	}
 
 	private void NeutralPoint()
 	{
-		if (CurrentState != ControlPointState.Neutral && Mathf.Abs(m_ControlValue) > float.Epsilon)
+		if (Mathf.Abs(m_ControlValue) > float.Epsilon)
 			return;
 
 		if (LastTeamOnPoint == 1)
@@ -69,14 +91,14 @@ public class ControlPoint : NetworkBehaviour
 
 	private void CapturePoint()
 	{
-		if (CurrentState != ControlPointState.Capturing) return;
+		IsContested = false;
+		if (IsCaptured) return;
 
 		m_ControlValue += CurrentTeam == 1 ? Time.deltaTime : -Time.deltaTime;
 
-		if (Mathf.Abs(m_ControlValue) >= m_ControlTimeRequired)
+		if (IsCaptured)
 		{
 			m_ControlValue = m_ControlTimeRequired * Mathf.Sign(m_ControlValue);
-			CurrentState = ControlPointState.Captured;
 		}
 
 		m_ProgressBar.value = Mathf.Abs(m_ControlValue);
@@ -94,90 +116,7 @@ public class ControlPoint : NetworkBehaviour
 		LastTeamOnPoint = CurrentTeam;
 	}
 
-	private void OnTriggerEnter(Collider other)
-	{
-		if (!other.TryGetComponent(out NetworkObject networkObject)) return;
-
-		var clientId = networkObject.OwnerClientId;
-		var playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
-
-		var playerTeam = playerData.IsTeamOne ? 1 : 2;
-
-		switch (CurrentState)
-		{
-			case ControlPointState.Neutral:
-				StartCapture(playerTeam);
-				break;
-
-			case ControlPointState.Capturing:
-				var teamInside = GetTeamInside(GetPlayersInside());
-				if (teamInside != -1 && teamInside != CurrentTeam)
-					StopCapture();
-				break;
-
-			case ControlPointState.Captured:
-				break;
-
-			case ControlPointState.Contested:
-				var teamInsideContested = GetTeamInside(GetPlayersInside());
-				if (teamInsideContested != -1)
-				{
-					if (teamInsideContested == CurrentTeam)
-					{
-						CurrentState = ControlPointState.Captured;
-						StartCapture(CurrentTeam);
-					}
-					else
-					{
-						StopCapture();
-						StartCapture(teamInsideContested);
-					}
-				}
-
-				break;
-
-			case ControlPointState.Controlled:
-				break;
-		}
-	}
-
-	private void OnTriggerExit(Collider other)
-	{
-		if (!other.TryGetComponent(out NetworkObject networkObject)) return;
-
-		var clientId = networkObject.OwnerClientId;
-		var playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
-
-		var playersInside = new List<PlayerData>(GetPlayersInside());
-		playersInside.Remove(playerData);
-
-		var sameTeamInside = playersInside.Exists(playerInside =>
-			(playerInside.IsTeamOne && playerData.IsTeamOne) ||
-			(!playerInside.IsTeamOne && !playerData.IsTeamOne));
-
-		if (sameTeamInside) return;
-
-		StopCapture();
-		CurrentState = ControlPointState.Neutral;
-		CurrentTeam = 0;
-	}
-
-	private void StartCapture(int team)
-	{
-		if (m_IsCapturing) return;
-
-		m_IsCapturing = true;
-		CurrentState = ControlPointState.Capturing;
-		CurrentTeam = team;
-	}
-
-	private void StopCapture()
-	{
-		CurrentState = ControlPointState.Contested;
-		m_IsCapturing = false;
-	}
-
-	public PlayerData[] GetPlayersInside()
+	public List<PlayerData> GetPlayersInside()
 	{
 		var colliders = Physics.OverlapBox(transform.TransformPoint(m_BoxCollider.center), m_BoxCollider.size / 2f,
 			transform.rotation);
@@ -195,12 +134,12 @@ public class ControlPoint : NetworkBehaviour
 				playersInside.Add(player);
 		}
 
-		return playersInside.ToArray();
+		return playersInside;
 	}
 
-	public int GetTeamInside(PlayerData[] playersInside)
+	public int GetTeamInside(List<PlayerData> playersInside)
 	{
-		if (playersInside.Length == 0)
+		if (playersInside.Count == 0)
 			return -1;
 
 		var teamInside = playersInside[0].IsTeamOne ? 1 : 2;

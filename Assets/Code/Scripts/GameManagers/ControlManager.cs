@@ -45,23 +45,17 @@ public class ControlPointGameManager : GameManager
 
 	private void Server_UpdateScores()
 	{
-		switch (m_ControlPoint.CurrentState)
-		{
-			case ControlPointState.Captured:
-				var pointsMultiplier = m_ControlPoint.GetPlayersInside().Length;
-				if (m_ControlPoint.CurrentTeam == 1)
-					m_ScoreTeam1.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
-				else if (m_ControlPoint.CurrentTeam == 2)
-					m_ScoreTeam2.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
+		if (!m_ControlPoint.IsCaptured) return;
+		
+		var pointsMultiplier = m_ControlPoint.GetPlayersInside().Count;
+		if (m_ControlPoint.CurrentTeam == 1)
+			m_ScoreTeam1.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
+		else if (m_ControlPoint.CurrentTeam == 2)
+			m_ScoreTeam2.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
 
-				if (m_ScoreTeam1.Value >= m_PointsToWin || m_ScoreTeam2.Value >= m_PointsToWin)
-				{
-					m_ControlPoint.CurrentState = ControlPointState.Controlled;
-					EndGame_ClientRpc(m_ScoreTeam1.Value >= m_PointsToWin);
-				}
-
-				break;
-		}
+		if (!(m_ScoreTeam1.Value >= m_PointsToWin) && !(m_ScoreTeam2.Value >= m_PointsToWin)) return;
+		
+		EndGame_ClientRpc(m_ScoreTeam1.Value >= m_PointsToWin);
 	}
 
 	[ClientRpc]
