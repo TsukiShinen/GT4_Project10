@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameManagers;
 using NaughtyAttributes;
@@ -107,9 +108,7 @@ public class DeathMatchManager : GameManager
 
             PlayerData playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
 			if(playerData.PlayerActiveWeaponId != 0)
-			{
-				player.GetComponent<PlayerWeaponsManager>().SwitchToWeaponIndex(playerData.PlayerActiveWeaponId);
-			}
+                StartCoroutine(DelayedSwitchWeapon(player, playerData.PlayerActiveWeaponId));
 
 			playerData.PlayerHealth = playerData.PlayerMaxHealth;
 
@@ -120,7 +119,14 @@ public class DeathMatchManager : GameManager
 		base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
 	}
 
-	private void Server_CheckTeamStatus()
+    private IEnumerator DelayedSwitchWeapon(Transform player, int weaponId)
+    {
+        yield return new WaitForEndOfFrame();
+
+        player.GetComponent<PlayerWeaponsManager>().SwitchToWeaponIndex(weaponId);
+    }
+
+    private void Server_CheckTeamStatus()
 	{
 		var livingPlayersTeam1 = CountLivingPlayers(true);
 		var livingPlayersTeam2 = CountLivingPlayers(false);
