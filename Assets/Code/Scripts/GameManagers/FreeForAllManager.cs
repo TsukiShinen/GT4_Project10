@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public class FreeForAllManager : GameManager
 {
@@ -10,6 +14,50 @@ public class FreeForAllManager : GameManager
 
 	[Header("Win Condition")] [SerializeField]
 	private int m_WinConditionKills;
+
+	private VisualElement m_OwnData;
+	private VisualElement m_EnemyData;
+	protected override void Awake()
+	{
+		base.Awake();
+
+		m_OwnData = m_Root.Q<VisualElement>("OwnPlayerFFA");
+		m_OwnData.Q<TextElement>("PlayerName").text = MultiplayerManager.Instance
+			.FindPlayerData(NetworkManager.Singleton.LocalClientId).PlayerName.ToString();
+		m_OwnData.Q<TextElement>("PlayerKills").text = "0";
+		m_EnemyData = m_Root.Q<VisualElement>("EnemyPlayerFFA");
+		m_EnemyData.Q<TextElement>("PlayerKills").text = "0";
+		
+		MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += UI_OnPlayerKill;
+	}
+
+	private void UI_OnPlayerKill(object sender, EventArgs e)
+	{
+		PlayerData enemyMostKill = default;
+		foreach (var player in MultiplayerManager.Instance.GetPlayerDatas())
+		{
+			if (player.ClientId == NetworkManager.Singleton.LocalClientId)
+			{
+				m_OwnData.Q<TextElement>("PlayerKills").text = player.PlayerKills.ToString();
+				continue;
+			}
+			
+			if (enemyMostKill.PlayerKills < player.PlayerKills)
+				enemyMostKill = player;
+		}
+		
+		m_EnemyData.Q<TextElement>("PlayerName").text = enemyMostKill.PlayerName.ToString();
+		m_EnemyData.Q<TextElement>("PlayerKills").text = enemyMostKill.PlayerKills.ToString();
+
+        // Reorder the visual element player scores based on their max kills
+        var scoreList = m_Root.Q("Score");
+        var orderedPlayers = scoreList.Children().OrderByDescending(p => int.Parse(p.Q<TextElement>("PlayerKills").text)).ToArray();
+        foreach (var player in orderedPlayers)
+        {
+            scoreList.Remove(player);
+            scoreList.Add(player);
+        }
+	}
 
 	private void Update()
 	{

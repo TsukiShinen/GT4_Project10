@@ -23,7 +23,7 @@ public class ControlPoint : NetworkBehaviour
 
 	public ControlPointState CurrentState = ControlPointState.Neutral;
 	public int CurrentTeam;
-	public float PointsPerSeconds = 0.83f; // 2 mins
+	public float PointsPerSeconds = 1f;
 
 	private readonly float m_ControlTimeRequired = 2f;
 	private float m_ControlValue;

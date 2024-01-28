@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GameManagers;
 using Network;
@@ -21,6 +22,13 @@ public abstract class GameManager : NetworkBehaviour
 	protected Dictionary<ulong, Transform> m_PlayersGameObjects = new();
 
 	public bool IsClientPaused;
+
+	/// <summary>
+	/// Event that is raised when a player kills another player.
+	/// </summary>
+	/// <param name="killer">The data of the player who performed the kill.</param>
+	/// <param name="victim">The data of the player who was killed.</param>
+	public Action<PlayerData, PlayerData> OnPlayerKill;
 
 	protected VisualElement m_Root;
 	
@@ -198,6 +206,8 @@ public abstract class GameManager : NetworkBehaviour
 		var playerDataKiller = MultiplayerManager.Instance.GetPlayerDataByIndex(indexKiller);
 		playerDataKiller.PlayerKills += 1;
 		MultiplayerManager.Instance.GetPlayerDatas()[indexKiller] = playerDataKiller;
+		
+		OnPlayerKill?.Invoke(playerDataKiller, playerData);
 	}
 
 	private bool TryFindTeammate(PlayerData playerData, out PlayerData teammateData)
