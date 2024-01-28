@@ -5,6 +5,7 @@ using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public enum GameState
 {
@@ -15,10 +16,13 @@ public enum GameState
 
 public abstract class GameManager : NetworkBehaviour
 {
+	[SerializeField] protected UIDocument m_Document;
 	[SerializeField] protected SpawnManager m_SpawnManager;
 	protected Dictionary<ulong, Transform> m_PlayersGameObjects = new();
 
 	public bool IsClientPaused;
+
+	protected VisualElement m_Root;
 	
 	public static GameManager Instance { get; private set; }
 
@@ -28,11 +32,31 @@ public abstract class GameManager : NetworkBehaviour
 			Destroy(Instance);
 
 		Instance = this;
+
+		m_Root = m_Document.rootVisualElement;
+
+		MultiplayerManager.Instance.GetPlayerDatas().OnListChanged += OnPlayerDataNetworkListChanged;
+	}
+
+	private void OnPlayerDataNetworkListChanged(NetworkListEvent<PlayerData> e)
+	{
+		if (e.Value.ClientId != NetworkManager.LocalClientId)
+			return;
+
+		UpdatePlayerLife(e.Value);
+	}
+
+	private void UpdatePlayerLife(PlayerData e)
+	{
+		var health = m_Root.Q<ProgressBar>("Health");
+		health.highValue = e.PlayerMaxHealth;
+		health.value = e.PlayerHealth;
 	}
 
 	private void Start()
 	{
 		LobbyManager.Instance.SetLobbyNull();
+		UpdatePlayerLife(MultiplayerManager.Instance.FindPlayerData(NetworkManager.Singleton.LocalClientId));
 	}
 
 	private void OnEnable()

@@ -9,30 +9,21 @@ using UnityEngine.UIElements;
 
 public class DeathMatchManager : GameManager
 {
-	[SerializeField] private UIDocument m_Document;
 	[SerializeField] private VisualTreeAsset m_ScoreElement;
 	[SerializeField] [Required] private RoundManager m_RoundManager;
 
 	private NetworkVariable<GameState> m_GameState;
 
-	private VisualElement m_Root;
-
 	protected override void Awake()
 	{
 		base.Awake();
 
-		m_Root = m_Document.rootVisualElement;
-
 		m_GameState = new NetworkVariable<GameState>();
-
-		MultiplayerManager.Instance.GetPlayerDatas().OnListChanged += OnPlayerDataNetworkListChanged;
 
 		m_Root.Q<TextElement>("Team1Score").text = m_RoundManager.ScoreTeam1.Value.ToString();
 		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
 		m_Root.Q<TextElement>("Team2Score").text = m_RoundManager.ScoreTeam2.Value.ToString();
 		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
-
-		UpdatePlayerLife(MultiplayerManager.Instance.FindPlayerData(NetworkManager.Singleton.LocalClientId));
 
 		if (!NetworkManager.IsServer)
 			return;
@@ -43,21 +34,6 @@ public class DeathMatchManager : GameManager
 		m_RoundManager.OnRoundStarting += Server_OnRoundStarting;
 		m_RoundManager.OnRoundStarted += Server_OnRoundStarted;
 		m_RoundManager.OnEndMatch += Server_OnEndMatch;
-	}
-
-	private void OnPlayerDataNetworkListChanged(NetworkListEvent<PlayerData> e)
-	{
-		if (e.Value.ClientId != NetworkManager.LocalClientId)
-			return;
-
-		UpdatePlayerLife(e.Value);
-	}
-
-	private void UpdatePlayerLife(PlayerData e)
-	{
-		var health = m_Root.Q<ProgressBar>("Health");
-		health.highValue = e.PlayerMaxHealth;
-		health.value = e.PlayerHealth;
 	}
 
 	protected void Update()
