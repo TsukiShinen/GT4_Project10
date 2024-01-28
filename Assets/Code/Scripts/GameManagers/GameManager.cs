@@ -166,7 +166,7 @@ public abstract class GameManager : NetworkBehaviour
 		if (!NetworkManager.IsServer)
 			return;
 
-		m_PlayersGameObjects[pTargetId].GetComponent<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
+		m_PlayersGameObjects[pTargetId].GetComponentInChildren<SetPlayerCamera>().Set_ClientRpc(new ClientRpcParams
 		{
 			Send = new ClientRpcSendParams
 			{
