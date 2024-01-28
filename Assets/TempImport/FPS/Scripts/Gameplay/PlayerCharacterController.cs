@@ -336,7 +336,7 @@ namespace Unity.FPS.Gameplay
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [ServerRpc]
         private void HandleMovement_ServerRpc(bool pIsSprinting, Vector3 pMoveInput)
         {
             if (pIsSprinting)
