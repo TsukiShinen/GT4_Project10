@@ -458,7 +458,6 @@ namespace Unity.FPS.Gameplay
             // Update smooth height
             else if (m_CapsuleCollider.height != m_TargetCharacterHeight)
             {
-                Debug.Log("UPDATE CHARACTER HEIGHT 2");
                 // resize the capsule and adjust camera position
                 m_CapsuleCollider.height = Mathf.Lerp(m_CapsuleCollider.height, m_TargetCharacterHeight, CrouchingSharpness * Time.deltaTime);
                 m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;

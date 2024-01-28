@@ -124,7 +124,7 @@ public class FreeForAllManager : GameManager
 
 		if (playerData.PlayerHealth > 0) return;
 
-		if (Random.value <= 1f)
+		if (Random.value <= 0.5f)
 			if (m_HealBonusPrefab != null)
 				Instantiate(m_HealBonusPrefab, pGo.position, Quaternion.identity);
 

@@ -273,6 +273,15 @@ namespace Unity.FPS.Gameplay
                 {
                     m_WeaponSwitchState = WeaponSwitchState.PutDownPrevious;
                 }
+
+                PlayerData playerData =
+                    MultiplayerManager.Instance.GetPlayerDataByIndex(
+                        MultiplayerManager.Instance.FindPlayerDataIndex(NetworkManager.Singleton.LocalClientId));
+                int playerIndex = MultiplayerManager.Instance.FindPlayerDataIndexByPlayerData(playerData);
+                playerData.PlayerActiveWeaponId = newWeaponIndex;
+
+                if (IsOwner)
+                    MultiplayerManager.Instance.GetPlayerDatas()[playerIndex] = playerData;
             }
         }
 

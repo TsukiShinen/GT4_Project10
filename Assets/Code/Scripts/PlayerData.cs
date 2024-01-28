@@ -12,6 +12,7 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 	public float PlayerMaxHealth;
 	public int PlayerKills;
 	public int PlayerDeaths;
+    public int PlayerActiveWeaponId;
 
     public int WeaponAmmo1;
     public int WeaponAmmo1Max;
@@ -31,7 +32,8 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 		       PlayerHealth == other.PlayerHealth &&
 		       PlayerMaxHealth == other.PlayerMaxHealth &&
 		       PlayerKills == other.PlayerKills &&
-		       PlayerDeaths == other.PlayerDeaths;
+		       PlayerDeaths == other.PlayerDeaths &&
+               PlayerActiveWeaponId == other.PlayerActiveWeaponId; ;
 	}
 
 	public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -44,5 +46,6 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable
 		serializer.SerializeValue(ref PlayerMaxHealth);
 		serializer.SerializeValue(ref PlayerKills);
 		serializer.SerializeValue(ref PlayerDeaths);
+		serializer.SerializeValue(ref PlayerActiveWeaponId);
 	}
 }

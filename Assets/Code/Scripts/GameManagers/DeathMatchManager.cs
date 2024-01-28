@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GameManagers;
 using NaughtyAttributes;
+using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -92,7 +93,14 @@ public class DeathMatchManager : GameManager
 		{
 			var player = m_SpawnManager.Server_SpawnPlayer(clientId);
 			m_PlayersGameObjects.Add(clientId, player);
-		}
+
+            PlayerData playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
+			if(playerData.PlayerActiveWeaponId != 0)
+			{
+				Debug.Log("Switch to last weapon");
+				player.GetComponent<PlayerWeaponsManager>().SwitchToWeaponIndex(playerData.PlayerActiveWeaponId);
+			}
+        }
 
 		base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
 	}

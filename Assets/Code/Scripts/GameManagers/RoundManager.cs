@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameManagers
 {
@@ -50,14 +51,24 @@ namespace GameManagers
 
 		private IEnumerator StartNextRound()
 		{
-			OnRoundStarting?.Invoke(this, EventArgs.Empty);
+			//OnRoundStarting?.Invoke(this, EventArgs.Empty);
 			yield return new WaitForSeconds(m_TimeBetweenRound);
-			OnRoundStarted?.Invoke(this, EventArgs.Empty);
+			ReloadScene();
+			//OnRoundStarted?.Invoke(this, EventArgs.Empty);
 		}
 
 		public class RoundEventArgs : EventArgs
 		{
 			public bool IsTeamOneWin;
 		}
-	}
+
+        private void ReloadScene()
+        {
+			if (!NetworkManager.IsServer)
+				return;
+	
+			NetworkManager.Singleton.SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        }
+
+    }
 }
