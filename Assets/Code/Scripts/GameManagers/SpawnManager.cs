@@ -30,7 +30,7 @@ namespace GameManagers
 			SearchSpawns();
 		}
 
-		public abstract void SearchSpawns();
+		protected abstract void SearchSpawns();
 		
 		public Transform Server_SpawnPlayer(ulong pClientId)
 		{

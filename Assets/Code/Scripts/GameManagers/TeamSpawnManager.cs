@@ -12,7 +12,7 @@ namespace GameManagers
 		private BoxCollider m_SpawnTeam1;
 		private BoxCollider m_SpawnTeam2;
 
-		public override void SearchSpawns()
+		protected override void SearchSpawns()
         {
             var spawnZones = GameObject.FindGameObjectsWithTag("ZoneSpawn");
 			if(spawnZones != null)

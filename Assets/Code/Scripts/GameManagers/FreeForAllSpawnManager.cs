@@ -18,7 +18,7 @@ public class FreeForAllSpawnManager : SpawnManager
 
 	private List<Transform> m_AvailableSpawnPoints;
 
-	public override void SearchSpawns()
+	protected override void SearchSpawns()
 	{
 		m_AvailableSpawnPoints = new List<Transform>(m_SpawnPoints);
 	}

@@ -103,6 +103,11 @@ public abstract class GameManager : NetworkBehaviour
 		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 	}
 
+	public override void OnNetworkDespawn()
+	{
+		NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
+	}
+
 	protected virtual void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode,
 		List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
 	{

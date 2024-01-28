@@ -89,7 +89,6 @@ public class DeathMatchManager : GameManager
 	protected override void SceneManager_OnLoadEventCompleted(string pSceneName, LoadSceneMode pLoadMode,
 		List<ulong> pClientsCompleted, List<ulong> pClientTimouts)
 	{
-		m_SpawnManager.SearchSpawns();
 		foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
 		{
 			var player = m_SpawnManager.Server_SpawnPlayer(clientId);
@@ -98,7 +97,6 @@ public class DeathMatchManager : GameManager
             PlayerData playerData = MultiplayerManager.Instance.FindPlayerData(clientId);
 			if(playerData.PlayerActiveWeaponId != 0)
 			{
-				Debug.Log("Switch to last weapon");
 				player.GetComponent<PlayerWeaponsManager>().SwitchToWeaponIndex(playerData.PlayerActiveWeaponId);
 			}
         }
