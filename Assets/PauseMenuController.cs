@@ -10,7 +10,6 @@ using UnityEngine.UIElements;
 public class PauseMenuController : MonoBehaviour
 {
     [SerializeField] private UIDocument m_PauseDocument;
-    [SerializeField] private PlayerInputHandler m_playerInput;
 
     private VisualElement m_Root;
     private bool m_Paused;
@@ -43,7 +42,7 @@ public class PauseMenuController : MonoBehaviour
 
     private void SetPause(bool pIsPause)
     {
-        m_playerInput.SetPaused(pIsPause);
+        GameManager.Instance.IsClientPaused = pIsPause;
         m_Paused = pIsPause;
         UnityEngine.Cursor.lockState = pIsPause ? CursorLockMode.None : CursorLockMode.Locked;
         UnityEngine.Cursor.visible = pIsPause ? true : false;

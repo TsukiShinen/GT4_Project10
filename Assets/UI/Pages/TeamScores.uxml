@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/TeamScore.uss?fileID=7433441132597879392&amp;guid=bd4264c8c3e46374d850a55962c3d3be&amp;type=3#TeamScore" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.39); align-items: center; justify-content: center;">
+        <ui:VisualElement name="Background" style="background-color: rgba(0, 0, 0, 0.59); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 48px; padding-right: 48px; padding-bottom: 48px; padding-left: 48px; border-top-left-radius: 32px; border-top-right-radius: 32px; border-bottom-right-radius: 32px; border-bottom-left-radius: 32px; width: 70%; height: 70%; align-items: center;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <ui:VisualElement name="Team1" style="flex-grow: 1; border-right-width: 2px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); align-items: center;">
+                    <ui:Label text="Team 1" name="Team" style="color: rgb(0, 255, 255); font-size: 50px; -unity-text-align: middle-center; border-bottom-width: 32px;" />
+                    <ui:VisualElement style="flex-direction: row; width: 90%;">
+                        <ui:Label text="Player" style="width: 33%; color: rgb(255, 255, 255); font-size: 30px;" />
+                        <ui:Label text="Kills" style="width: 33%; -unity-text-outline-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-text-align: upper-center; font-size: 30px;" />
+                        <ui:Label text="Death" style="width: 33%; color: rgb(255, 255, 255); -unity-text-align: upper-center; font-size: 30px;" />
+                    </ui:VisualElement>
+                    <ui:ListView name="ListTeam1" item-template="project://database/Assets/UI/Pages/Elements/ScoreRow.uxml?fileID=9197481963319205126&amp;guid=c30759e76ec7f9941ad3f22a80357443&amp;type=3#ScoreRow" style="width: 90%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Team2" style="flex-grow: 0; width: 50%; display: flex; align-items: center;">
+                    <ui:Label text="Team 2" name="Team" style="color: rgb(255, 0, 0); font-size: 50px; -unity-text-align: middle-center; border-bottom-width: 32px;" />
+                    <ui:VisualElement style="flex-direction: row; width: 90%;">
+                        <ui:Label text="Player" style="width: 33%; color: rgb(255, 255, 255); font-size: 30px;" />
+                        <ui:Label text="Kills" style="width: 33%; -unity-text-outline-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-text-align: upper-center; font-size: 30px;" />
+                        <ui:Label text="Death" style="width: 33%; color: rgb(255, 255, 255); -unity-text-align: upper-center; font-size: 30px;" />
+                    </ui:VisualElement>
+                    <ui:ListView name="ListTeam2" item-template="project://database/Assets/UI/Pages/Elements/ScoreRow.uxml?fileID=9197481963319205126&amp;guid=c30759e76ec7f9941ad3f22a80357443&amp;type=3#ScoreRow" style="width: 90%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

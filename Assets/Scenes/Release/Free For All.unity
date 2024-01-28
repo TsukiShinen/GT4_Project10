@@ -1284,6 +1284,7 @@ GameObject:
   - component: {fileID: 638250734}
   - component: {fileID: 638250737}
   - component: {fileID: 638250736}
+  - component: {fileID: 638250738}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1363,6 +1364,23 @@ MonoBehaviour:
   m_HealBonusPrefab: {fileID: 2620131183356007199, guid: d40ae884302b6684a8b3b6f3d55a71ba,
     type: 3}
   m_WinConditionKills: 20
+--- !u!114 &638250738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638250733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 60a2bc671c1158843aa6aa96eadc9c4a, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 336be4ba23697ab47be66df1846b89f4,
+    type: 3}
+  m_SortingOrder: 0
 --- !u!1001 &654708432
 PrefabInstance:
   m_ObjectHideFlags: 0

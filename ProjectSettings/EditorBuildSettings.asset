@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Release/Control.unity
     guid: d9f44cb0f830b484bb044f61a7a310b2
+  - enabled: 1
+    path: Assets/Scenes/Test/PVE.unity
+    guid: 32d169670217c5141a3328ba742606fc
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

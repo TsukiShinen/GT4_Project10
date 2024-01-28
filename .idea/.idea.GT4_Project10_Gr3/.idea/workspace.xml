@@ -9,9 +9,36 @@
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/MultiplayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PauseMenuController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PauseMenuController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Control.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Control.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Free For All.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Free For All.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/PVE.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/PVE.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Team Deathmatch.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Team Deathmatch.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI Toolkit/PanelSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI Toolkit/PanelSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/DM.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/DM.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Lobby.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Lobby.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyCreation.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyCreation.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyFilter.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyFilter.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/LobbyRoom.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/MainMenu.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/MainMenu.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Menu_SearchLobby.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Menu_SearchLobby.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/MessagePopUp.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/MessagePopUp.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Pause.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/Pause.uxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/PlayerListElement.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/PlayerListElement.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/ScoreRow.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/ScoreRow.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,6 +197,7 @@
       <workItem from="1705744878612" duration="6567000" />
       <workItem from="1706081224470" duration="33310000" />
       <workItem from="1706190448235" duration="11221000" />
+      <workItem from="1706436111423" duration="3732000" />
     </task>
     <servers />
   </component>

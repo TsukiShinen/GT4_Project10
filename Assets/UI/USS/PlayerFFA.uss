@@ -1,0 +1,7 @@
+.own {
+    background-color: rgba(0, 255, 255, 0.59);
+}
+
+.ennemy {
+    background-color: rgba(255, 0, 0, 0.59);
+}

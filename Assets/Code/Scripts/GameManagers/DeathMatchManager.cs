@@ -25,14 +25,14 @@ public class DeathMatchManager : GameManager
 
 		m_GameState = new NetworkVariable<GameState>();
 
-		MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += OnPlayerDataNetworkListChanged;
-		OnPlayerDataNetworkListChanged(null, null);
+		MultiplayerManager.Instance.GetPlayerDatas().OnListChanged += OnPlayerDataNetworkListChanged;
 
-		m_Root.Q<TextElement>("Team1").text = m_RoundManager.ScoreTeam1.Value.ToString();
-		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1").text = value.ToString(); };
-		m_Root.Q<TextElement>("Team2").text = m_RoundManager.ScoreTeam2.Value.ToString();
-		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2").text = value.ToString(); };
-		m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.None;
+		m_Root.Q<TextElement>("Team1Score").text = m_RoundManager.ScoreTeam1.Value.ToString();
+		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
+		m_Root.Q<TextElement>("Team2Score").text = m_RoundManager.ScoreTeam2.Value.ToString();
+		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
+
+		UpdatePlayerLife(MultiplayerManager.Instance.FindPlayerData(NetworkManager.Singleton.LocalClientId));
 
 		if (!NetworkManager.IsServer)
 			return;
@@ -45,15 +45,26 @@ public class DeathMatchManager : GameManager
 		m_RoundManager.OnEndMatch += Server_OnEndMatch;
 	}
 
+	private void OnPlayerDataNetworkListChanged(NetworkListEvent<PlayerData> e)
+	{
+		if (e.Value.ClientId != NetworkManager.LocalClientId)
+			return;
+
+		UpdatePlayerLife(e.Value);
+	}
+
+	private void UpdatePlayerLife(PlayerData e)
+	{
+		var health = m_Root.Q<ProgressBar>("Health");
+		health.highValue = e.PlayerMaxHealth;
+		health.value = e.PlayerHealth;
+	}
+
 	protected void Update()
 	{
 		switch (m_GameState.Value)
 		{
 			case GameState.Playing:
-				if (Input.GetKeyDown(KeyCode.Tab))
-					SetVisibleScoreBoard(true);
-				else if (Input.GetKeyUp(KeyCode.Tab)) SetVisibleScoreBoard(false);
-
 				if (NetworkManager.IsServer)
 					Server_CheckTeamStatus();
 				break;
@@ -151,46 +162,8 @@ public class DeathMatchManager : GameManager
 		SetVictoryScreen(pIsTeamOnWin);
 	}
 
-	private void SetVisibleScoreBoard(bool pIsActive)
-	{
-		if (pIsActive)
-		{
-			m_Root.Q<VisualElement>("EndRound").style.display = DisplayStyle.Flex;
-			m_Root.Q<VisualElement>("ScoreContainer");
-		}
-		else
-		{
-			m_Root.Q<VisualElement>("EndRound").style.display = DisplayStyle.None;
-		}
-	}
-
-	private void OnPlayerDataNetworkListChanged(object sender, EventArgs e)
-	{
-		var listView = m_Root.Q<ListView>("ScoreContainer");
-		listView.Clear();
-		var items = new List<VisualElement>();
-
-		foreach (var playerData in MultiplayerManager.Instance.GetPlayerDatas())
-		{
-			var scoreRow = m_ScoreElement.CloneTree();
-			scoreRow.Q<TextElement>("Name").text = playerData.PlayerName.ToString();
-			scoreRow.Q<TextElement>("Kills").text = playerData.PlayerKills.ToString();
-			scoreRow.Q<TextElement>("Deaths").text = playerData.PlayerDeaths.ToString();
-			items.Add(scoreRow);
-		}
-
-		listView.makeItem = () => new VisualElement();
-		listView.bindItem = (element, i) =>
-		{
-			element.Clear();
-			element.Add(items[i]);
-		};
-		listView.itemsSource = items;
-		listView.Rebuild();
-	}
-
 	private void SetVictoryScreen(bool pIsTeamOneWin)
-	{
+	{/* TODO : Player Victory screen
 		var playerData =
 			MultiplayerManager.Instance.GetPlayerDataByIndex(
 				MultiplayerManager.Instance.FindPlayerDataIndex(NetworkManager.Singleton.LocalClientId));
@@ -198,6 +171,6 @@ public class DeathMatchManager : GameManager
 
 		m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.Flex;
 		m_Root.Q<TextElement>("Victory").text = victory ? "Victory" : "Lose";
-		m_Root.Q<TextElement>("Victory").style.color = victory ? Color.green : Color.red;
+		m_Root.Q<TextElement>("Victory").style.color = victory ? Color.green : Color.red;*/
 	}
 }

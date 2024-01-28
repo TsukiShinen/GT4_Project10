@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Menu_InGame_Base" src="project://database/Assets/UI/Pages/PlayerUI.uxml?fileID=9197481963319205126&amp;guid=88dc53d5a1574c94c8b1f21965322a31&amp;type=3#PlayerUI" />
+    <Style src="project://database/Assets/UI/USS/CaptureTheFlag.uss?fileID=7433441132597879392&amp;guid=ffc40899b0c5cea48859a0f460ef195b&amp;type=3#CaptureTheFlag" />
+    <ui:Instance template="Menu_InGame_Base" style="width: 100%; height: 100%; position: absolute;" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center;">
+        <ui:VisualElement name="TimerBackground" style="flex-direction: row; background-color: rgba(0, 0, 0, 0); padding-top: 8px; padding-right: 16px; padding-bottom: 8px; padding-left: 16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; margin-top: 8px; margin-bottom: 16px; height: 40px;" />
+        <ui:VisualElement name="Scores" style="width: 296px; height: 80px; background-color: rgb(0, 209, 255); border-top-left-radius: 32px; border-top-right-radius: 32px; border-bottom-right-radius: 32px; border-bottom-left-radius: 32px; overflow: hidden; flex-direction: row; justify-content: space-between; align-items: center; padding-top: 16px; padding-right: 56px; padding-bottom: 16px; padding-left: 56px; margin-bottom: 16px;">
+            <ui:VisualElement style="height: 26px; width: 152px; overflow: hidden; rotate: 30deg; background-color: rgb(255, 0, 0); scale: -1 7; translate: 209px 0; position: absolute; top: 44px; left: -61px;" />
+            <ui:Label text="100%" name="Team1Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
+            <ui:Label text="100%" name="Team2Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
+        </ui:VisualElement>
+        <ui:ProgressBar value="22" style="width: 500px; height: 10px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+    </ui:VisualElement>
+</ui:UXML>

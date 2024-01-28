@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/PlayerFFA.uss?fileID=7433441132597879392&amp;guid=df1349f732e3ff5439dd7ef0b909da27&amp;type=3#PlayerFFA" />
+    <ui:VisualElement name="PlayerFFA" class="own" style="flex-direction: row; justify-content: space-between; background-color: rgba(0, 255, 255, 0.59); border-top-left-radius: 8px; border-bottom-right-radius: 8px; width: 350px; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px;">
+        <ui:VisualElement name="PlayerInfo" style="flex-direction: row;">
+            <ui:Label text="1" name="PlayerPosition" />
+            <ui:Label text="TsukiShinen" name="PlayerName" />
+        </ui:VisualElement>
+        <ui:Label text="30" name="PlayerKills" />
+    </ui:VisualElement>
+</ui:UXML>

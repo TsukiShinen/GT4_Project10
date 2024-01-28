@@ -30,7 +30,6 @@ namespace Unity.FPS.Gameplay
         GameFlowManager m_GameFlowManager;
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
-        bool m_IsPaused;
 
         void Start()
         {
@@ -47,7 +46,7 @@ namespace Unity.FPS.Gameplay
 
         public bool CanProcessInput()
         {
-            return Cursor.lockState == CursorLockMode.Locked && IsOwner && !m_IsPaused;
+            return Cursor.lockState == CursorLockMode.Locked && IsOwner && !GameManager.Instance.IsClientPaused;
         }
 
         public Vector3 GetMoveInput()
@@ -266,11 +265,6 @@ namespace Unity.FPS.Gameplay
             }
 
             return 0f;
-        }
-
-        public void SetPaused(bool pIsPause)
-        {
-            m_IsPaused = pIsPause;
         }
     }
 }

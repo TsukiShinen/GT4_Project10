@@ -18,6 +18,8 @@ public abstract class GameManager : NetworkBehaviour
 	[SerializeField] protected SpawnManager m_SpawnManager;
 	protected Dictionary<ulong, Transform> m_PlayersGameObjects = new();
 
+	public bool IsClientPaused;
+	
 	public static GameManager Instance { get; private set; }
 
 	protected virtual void Awake()

@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Menu_InGame_Base" src="project://database/Assets/UI/Pages/PlayerUI.uxml?fileID=9197481963319205126&amp;guid=88dc53d5a1574c94c8b1f21965322a31&amp;type=3#PlayerUI" />
+    <ui:Template name="PlayerFFA" src="project://database/Assets/UI/Pages/Elements/PlayerFFA.uxml?fileID=9197481963319205126&amp;guid=4befd8db11922bf49b45a747262e9dfc&amp;type=3#PlayerFFA" />
+    <ui:Instance template="Menu_InGame_Base" style="width: 100%; height: 100%; position: absolute;" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center;">
+        <ui:VisualElement name="TimerBackground" style="flex-direction: row; background-color: rgba(0, 0, 0, 0); padding-top: 8px; padding-right: 16px; padding-bottom: 8px; padding-left: 16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; margin-top: 8px; margin-bottom: 16px; height: 40px;" />
+        <ui:VisualElement>
+            <ui:Instance template="PlayerFFA" name="PlayerFFA" />
+            <ui:Instance template="PlayerFFA" name="PlayerFFA" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

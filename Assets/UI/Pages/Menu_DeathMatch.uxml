@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Menu_InGame_Base" src="project://database/Assets/UI/Pages/PlayerUI.uxml?fileID=9197481963319205126&amp;guid=88dc53d5a1574c94c8b1f21965322a31&amp;type=3#PlayerUI" />
+    <ui:Instance template="Menu_InGame_Base" style="width: 100%; height: 100%; position: absolute;" />
+    <ui:VisualElement style="flex-grow: 1; align-items: center;">
+        <ui:VisualElement name="TimerBackground" style="flex-direction: row; background-color: rgba(0, 0, 0, 0); padding-top: 8px; padding-right: 16px; padding-bottom: 8px; padding-left: 16px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; margin-top: 8px; margin-bottom: 16px; height: 40px;" />
+        <ui:VisualElement name="Scores" style="width: 206px; height: 80px; background-color: rgb(0, 209, 255); border-top-left-radius: 16px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; border-bottom-left-radius: 16px; overflow: hidden; flex-direction: row; justify-content: space-between; align-items: center; padding-top: 16px; padding-right: 32px; padding-bottom: 16px; padding-left: 32px;">
+            <ui:VisualElement style="height: 26px; width: 120px; overflow: hidden; rotate: 30deg; background-color: rgb(255, 0, 0); scale: -1 7; translate: 209px 0; position: absolute; top: 58px; left: -115px;" />
+            <ui:Label text="10" name="Team1Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
+            <ui:Label text="5" name="Team2Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

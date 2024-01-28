@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/InGame.uss?fileID=7433441132597879392&amp;guid=28f92263661dfaa469c87e1625a02d47&amp;type=3#InGame" />
+    <ui:VisualElement name="Crosshair" style="flex-grow: 1; width: 100%; height: 100%; justify-content: center; align-items: center; position: absolute;">
+        <ui:VisualElement name="CrosshairIcon" style="background-image: url(&apos;project://database/Assets/TempImport/FPS/Art/Textures/UI/Crosshair_Blaster_Center.png?fileID=2800000&amp;guid=2b5b80f3ebc88174a8c662e280fdb09c&amp;type=3#Crosshair_Blaster_Center&apos;); width: 18px; height: 18px;" />
+    </ui:VisualElement>
+    <ui:ProgressBar value="50" name="Health" class="health-bar" style="width: 400px; height: 60px; position: absolute; bottom: 30px; left: 30px;">
+        <ui:VisualElement style="flex-grow: 1; position: absolute; width: 100%; height: 100%; align-items: flex-start; justify-content: center;">
+            <ui:VisualElement name="HealthIcon" style="background-image: url(&apos;project://database/Assets/TempImport/FPS/Art/Textures/UI/HUD_LifeBar_Icon.png?fileID=2800000&amp;guid=42026ddb8af9ab4469471032859446cb&amp;type=3#HUD_LifeBar_Icon&apos;); width: 40px; height: 40px; margin-left: 20px;" />
+        </ui:VisualElement>
+    </ui:ProgressBar>
+    <ui:ProgressBar value="22" name="WeaponInfo" class="weapon-bar" style="position: absolute; right: 30px; bottom: 30px; width: 350px; height: 50px;">
+        <ui:VisualElement style="flex-grow: 1; position: absolute; width: 100%; height: 100%; align-items: flex-end; justify-content: center;">
+            <ui:VisualElement name="WeaponIcon" style="background-image: url(&apos;project://database/Assets/TempImport/FPS/Art/Textures/UI/HUD_Weapon03.png?fileID=2800000&amp;guid=3c187e19c32c13542ba8a0c1a3a88ece&amp;type=3#HUD_Weapon03&apos;); width: 88px; height: 56px; background-color: rgba(0, 0, 0, 0); -unity-background-image-tint-color: rgb(0, 0, 0); margin-right: 20px;" />
+        </ui:VisualElement>
+    </ui:ProgressBar>
+</ui:UXML>
