@@ -8,8 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59bf5e52-6615-4918-a287-df55eb0d33ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/DeathMatchManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GT4_Project10_Gr3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/ControlManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/ControlManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/ControlPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/GameManagers/ControlPoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Scripts/PlayerHealth.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/Control.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/Control.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TempImport/FPS/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Pages/Menu_CaptureTheFlags.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Pages/Menu_CaptureTheFlags.uxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +36,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Core/NetworkObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Messaging/Messages/RpcMessages.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Messaging/NetworkMessageManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/NetworkVariable/NetworkVariableBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Runtime/Transports/UTP/UnityTransport.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Tests/Runtime/ClientOnlyConnectionTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.7.1/Tests/Runtime/NetworkSpawnManagerTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -168,7 +174,7 @@
       <workItem from="1705744878612" duration="6567000" />
       <workItem from="1706081224470" duration="33310000" />
       <workItem from="1706190448235" duration="11221000" />
-      <workItem from="1706436111423" duration="4195000" />
+      <workItem from="1706436111423" duration="7201000" />
     </task>
     <servers />
   </component>

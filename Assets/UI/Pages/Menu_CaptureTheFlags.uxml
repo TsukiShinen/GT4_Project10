@@ -9,6 +9,6 @@
             <ui:Label text="100%" name="Team1Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
             <ui:Label text="100%" name="Team2Score" style="min-width: auto; color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 36px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; -unity-text-align: middle-center; width: 45px;" />
         </ui:VisualElement>
-        <ui:ProgressBar value="22" style="width: 500px; height: 10px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+        <ui:ProgressBar value="30.6" name="CapturePoint" class="teamone" style="width: 500px; height: 10px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
     </ui:VisualElement>
 </ui:UXML>

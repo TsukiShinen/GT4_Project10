@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class ControlPointGameManager : GameManager
 {
@@ -16,6 +17,11 @@ public class ControlPointGameManager : GameManager
 
 		m_ScoreTeam1 = new NetworkVariable<float>();
 		m_ScoreTeam2 = new NetworkVariable<float>();
+		
+		m_Root.Q<TextElement>("Team1Score").text = "0%";
+		m_ScoreTeam1.OnValueChanged += (v, value) => { m_Root.Q<TextElement>("Team1Score").text = Mathf.Round(100 * value / m_PointsToWin) + "%"; };
+		m_Root.Q<TextElement>("Team2Score").text = "0%";
+		m_ScoreTeam2.OnValueChanged += (v, value) => { m_Root.Q<TextElement>("Team2Score").text = Mathf.Round(100 * value / m_PointsToWin) + "%"; };
 	}
 
 	protected void Update()
@@ -43,15 +49,13 @@ public class ControlPointGameManager : GameManager
 		{
 			case ControlPointState.Captured:
 				var pointsMultiplier = m_ControlPoint.GetPlayersInside().Length;
-				Debug.Log("Multiplier : " + pointsMultiplier);
 				if (m_ControlPoint.CurrentTeam == 1)
-					m_ScoreTeam1.Value += m_ControlPoint.PointsPerTick * pointsMultiplier;
+					m_ScoreTeam1.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
 				else if (m_ControlPoint.CurrentTeam == 2)
-					m_ScoreTeam2.Value += m_ControlPoint.PointsPerTick * pointsMultiplier;
+					m_ScoreTeam2.Value += m_ControlPoint.PointsPerSeconds * Time.deltaTime * pointsMultiplier;
 
 				if (m_ScoreTeam1.Value >= m_PointsToWin || m_ScoreTeam2.Value >= m_PointsToWin)
 				{
-					Debug.Log("Team " + (m_ScoreTeam1.Value >= m_PointsToWin ? "1" : "2") + " Win !");
 					m_ControlPoint.CurrentState = ControlPointState.Controlled;
 					EndGame_ClientRpc();
 				}
