@@ -23,6 +23,7 @@ public class ControlPoint : NetworkBehaviour
 
 	public ControlPointState CurrentState = ControlPointState.Neutral;
 	public int CurrentTeam;
+	public int LastTeamOnPoint;
 	public float PointsPerSeconds = 1f;
 
 	private readonly float m_ControlTimeRequired = 2f;
@@ -42,6 +43,28 @@ public class ControlPoint : NetworkBehaviour
 	private void Update()
 	{
 		CapturePoint();
+
+		NeutralPoint();
+	}
+
+	private void NeutralPoint()
+	{
+		if (CurrentState != ControlPointState.Neutral && Mathf.Abs(m_ControlValue) > float.Epsilon)
+			return;
+
+		if (LastTeamOnPoint == 1)
+		{
+			m_ControlValue -= Time.deltaTime;
+			if (m_ControlValue <= 0)
+				m_ControlValue = 0;
+		}
+		else
+		{
+			m_ControlValue += Time.deltaTime;
+			if (m_ControlValue >= 0)
+				m_ControlValue = 0;
+		}
+		m_ProgressBar.value = Mathf.Abs(m_ControlValue);
 	}
 
 	private void CapturePoint()
@@ -67,6 +90,8 @@ public class ControlPoint : NetworkBehaviour
 			m_ProgressBar.RemoveFromClassList("teamone");
 			m_ProgressBar.AddToClassList("teamtwo");
 		}
+
+		LastTeamOnPoint = CurrentTeam;
 	}
 
 	private void OnTriggerEnter(Collider other)
