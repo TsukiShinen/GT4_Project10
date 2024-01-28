@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameManagers;
+using Unity.FPS.Gameplay;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -64,7 +65,6 @@ public class FreeForAllSpawnManager : SpawnManager
 	{
 		var pPlayerData = MultiplayerManager.Instance.FindPlayerData(pClientId);
 
-		// Reset Health TODO : Better
 		pPlayerData.PlayerHealth = pPlayerData.PlayerMaxHealth;
 		MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(pClientId)] =
 			pPlayerData;
@@ -74,7 +74,7 @@ public class FreeForAllSpawnManager : SpawnManager
 
 		yield return new WaitForSeconds(m_RespawnTime);
 
-		pPlayerGameObject.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, rotation);
+		pPlayerGameObject.GetComponent<PlayerCharacterController>().RespawnPlayerClientRpc(position, rotation);
 
 		OnPlayerRespawn?.Invoke(pClientId);
 

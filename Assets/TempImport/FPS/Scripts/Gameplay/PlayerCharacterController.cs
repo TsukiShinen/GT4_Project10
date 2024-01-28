@@ -516,5 +516,13 @@ namespace Unity.FPS.Gameplay
             return true;
         }
 
+
+        [ClientRpc]
+        public void RespawnPlayerClientRpc(Vector3 position, Quaternion direction)
+        {
+            transform.position = position;
+            transform.rotation = direction;
+            m_Rigidbody.velocity = Vector3.zero;
+        }
     }
 }
