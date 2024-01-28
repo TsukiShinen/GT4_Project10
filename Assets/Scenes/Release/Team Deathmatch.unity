@@ -450,12 +450,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 144166627}
   m_SourcePrefab: {fileID: 100100000, guid: 1d0a5305bc438974ab65db9ced677a2b, type: 3}
---- !u!65 &144166625 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 3795129743526377669, guid: 1d0a5305bc438974ab65db9ced677a2b,
-    type: 3}
-  m_PrefabInstance: {fileID: 144166624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &144166626 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1659353249917707408, guid: 1d0a5305bc438974ab65db9ced677a2b,
@@ -1702,8 +1696,6 @@ MonoBehaviour:
   m_PlayerHeight: 2
   m_PlayerRadius: 0.5
   m_PlayerTag: Player
-  m_SpawnTeam1: {fileID: 8800070885431438925}
-  m_SpawnTeam2: {fileID: 144166625}
 --- !u!114 &699133957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1718,10 +1710,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TimeBetweenRound: 3
   m_ScoreToWin: 3
-  ScoreTeam1:
-    m_InternalValue: 0
-  ScoreTeam2:
-    m_InternalValue: 0
 --- !u!4 &759815506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2141676431450117668, guid: cd17687759887a0438ee021e51abc9d9,
@@ -2858,6 +2846,79 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1204775409}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1205534368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1205534370}
+  - component: {fileID: 1205534369}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1205534369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205534368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf5805b1ce50470692e41c1f9cc33ea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: 0}
+    PlayerPrefab: {fileID: 0}
+    Prefabs:
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: c27e22e3702a2664ab703df682b0c5ae, type: 2}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 1
+    EnableNetworkLogs: 1
+    OldPrefabList: []
+  RunInBackground: 1
+  LogLevel: 1
+  ScoreTeam1:
+    m_InternalValue: 0
+  ScoreTeam2:
+    m_InternalValue: 0
+--- !u!4 &1205534370
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205534368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1212145535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2141676431450117668, guid: cd17687759887a0438ee021e51abc9d9,
@@ -5857,12 +5918,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8800070885431438927}
   m_SourcePrefab: {fileID: 100100000, guid: 1d0a5305bc438974ab65db9ced677a2b, type: 3}
---- !u!65 &8800070885431438925 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 3795129743526377669, guid: 1d0a5305bc438974ab65db9ced677a2b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8800070885431438924}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8800070885431438926 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1659353249917707408, guid: 1d0a5305bc438974ab65db9ced677a2b,
@@ -5963,6 +6018,7 @@ SceneRoots:
   - {fileID: 1185980527}
   - {fileID: 1652490561}
   - {fileID: 1868886782}
+  - {fileID: 1205534370}
   - {fileID: 2729281213735534851}
   - {fileID: 2729281213673322026}
   - {fileID: 2729281214287269654}

@@ -46,6 +46,8 @@ public abstract class GameManager : NetworkBehaviour
 		m_WinScreen.rootVisualElement.style.display = DisplayStyle.None;
 		m_WinScreen.rootVisualElement.Q<Button>("ToMenu").clicked += () =>
 		{
+			if (ScoreManager.Instance)
+				Destroy(ScoreManager.Instance.gameObject);
 			NetworkManager.Singleton.Shutdown();
 			Destroy(NetworkManager.Singleton.gameObject);
 			SceneManager.LoadScene("Base", LoadSceneMode.Single);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameManagers;
 using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -26,6 +27,8 @@ public class PauseMenuController : MonoBehaviour
 
         m_Root.Q<Button>("Quit").clicked += () =>
         {
+            if (ScoreManager.Instance)
+                Destroy(ScoreManager.Instance.gameObject);
             NetworkManager.Singleton.Shutdown();
             Destroy(NetworkManager.Singleton.gameObject);
             SceneManager.LoadScene("Base", LoadSceneMode.Single);

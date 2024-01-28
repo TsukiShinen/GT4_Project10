@@ -21,9 +21,9 @@ public class DeathMatchManager : GameManager
 
 		m_GameState = new NetworkVariable<GameState>();
 
-		m_Root.Q<TextElement>("Team1Score").text = m_RoundManager.ScoreTeam1.Value.ToString();
+		m_Root.Q<TextElement>("Team1Score").text = ScoreManager.Instance.ScoreTeam1.Value.ToString();
 		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
-		m_Root.Q<TextElement>("Team2Score").text = m_RoundManager.ScoreTeam2.Value.ToString();
+		m_Root.Q<TextElement>("Team2Score").text = ScoreManager.Instance.ScoreTeam2.Value.ToString();
 		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
 
 		if (!NetworkManager.IsServer)
@@ -99,7 +99,12 @@ public class DeathMatchManager : GameManager
 			{
 				player.GetComponent<PlayerWeaponsManager>().SwitchToWeaponIndex(playerData.PlayerActiveWeaponId);
 			}
-        }
+
+			playerData.PlayerHealth = playerData.PlayerMaxHealth;
+
+			MultiplayerManager.Instance.GetPlayerDatas()[MultiplayerManager.Instance.FindPlayerDataIndex(clientId)] =
+				playerData;
+		}
 
 		base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
 	}

@@ -11,8 +11,6 @@ namespace GameManagers
 		[SerializeField] private float m_TimeBetweenRound = 3;
 		[SerializeField] private int m_ScoreToWin = 3;
 
-		public NetworkVariable<int> ScoreTeam1;
-		public NetworkVariable<int> ScoreTeam2;
 		private int m_CurrentRound = 1;
 		public EventHandler<RoundEventArgs> OnEndMatch;
 
@@ -27,10 +25,8 @@ namespace GameManagers
 
 		private void Awake()
 		{
-			ScoreTeam1 = new NetworkVariable<int>();
-			ScoreTeam2 = new NetworkVariable<int>();
-			ScoreTeam1.OnValueChanged += (value, newValue) => { OnScoreTeam1Changed?.Invoke(newValue); };
-			ScoreTeam2.OnValueChanged += (value, newValue) => { OnScoreTeam2Changed?.Invoke(newValue); };
+			ScoreManager.Instance.ScoreTeam1.OnValueChanged += (value, newValue) => { OnScoreTeam1Changed?.Invoke(newValue); };
+			ScoreManager.Instance.ScoreTeam2.OnValueChanged += (value, newValue) => { OnScoreTeam2Changed?.Invoke(newValue); };
 		}
 
 		public void Server_EndRound(bool pIsTeamOneWin)
@@ -38,12 +34,12 @@ namespace GameManagers
 			if (!NetworkManager.IsServer)
 				return;
 
-			ScoreTeam1.Value += pIsTeamOneWin ? 1 : 0;
-			ScoreTeam2.Value += pIsTeamOneWin ? 0 : 1;
+			ScoreManager.Instance.ScoreTeam1.Value += pIsTeamOneWin ? 1 : 0;
+			ScoreManager.Instance.ScoreTeam2.Value += pIsTeamOneWin ? 0 : 1;
 
 			OnRoundEnded?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
 
-			if (ScoreTeam1.Value == m_ScoreToWin || ScoreTeam2.Value == m_ScoreToWin)
+			if (ScoreManager.Instance.ScoreTeam1.Value == m_ScoreToWin || ScoreManager.Instance.ScoreTeam2.Value == m_ScoreToWin)
 				OnEndMatch?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
 			else
 				StartCoroutine(StartNextRound());
