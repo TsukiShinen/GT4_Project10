@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Unity.FPS.Gameplay
 {
@@ -54,13 +56,24 @@ namespace Unity.FPS.Gameplay
             Vector3 rayOrigin = m_ProjectileBase.InitialPosition;
             Vector3 rayDirection = m_ProjectileBase.InitialDirection;
 
-            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, Range, HittableLayers, k_TriggerInteraction))
+            ShootServerRpc(rayOrigin, rayDirection);
+        }
+
+        [ServerRpc]
+        private void ShootServerRpc(Vector3 pRayOrigin, Vector3 pRayDirection)
+        {
+            RaycastHit[] hits = Physics.RaycastAll(pRayOrigin, pRayDirection, Range, HittableLayers, k_TriggerInteraction);
+            System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+
+            foreach (var hit in hits)
             {
                 if (IsHitValid(hit))
                 {
                     OnHit(hit.point, hit.normal, hit.collider);
+                    return;
                 }
             }
+            Destroy(gameObject);
         }
 
         bool IsHitValid(RaycastHit hit)
@@ -88,11 +101,12 @@ namespace Unity.FPS.Gameplay
 
         void OnHit(Vector3 point, Vector3 normal, Collider collider)
         {
+
             // damage
-            Damageable damageable = collider.GetComponent<Damageable>();
+            PlayerHealth damageable = collider.GetComponent<PlayerHealth>();
             if (damageable)
             {
-                damageable.InflictDamage(Damage, false, Owner);
+                damageable.InflictDamage(Damage, OwnerId);
             }
 
             // impact vfx
@@ -111,7 +125,6 @@ namespace Unity.FPS.Gameplay
                 AudioUtility.CreateSFX(ImpactSfxClip, point, AudioUtility.AudioGroups.Impact, 1f, 3f);
             }
 
-            // Self Destruct
             Destroy(gameObject);
         }
     }
