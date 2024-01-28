@@ -34,11 +34,6 @@ public class DeathMatchManager : GameManager
 		m_RoundManager.OnEndMatch += Server_OnEndMatch;
 	}
 
-	protected override void Start()
-	{
-		base.Start();
-	}
-
 	protected void Update()
 	{
 		switch (m_GameState.Value)
@@ -93,13 +88,6 @@ public class DeathMatchManager : GameManager
 	{
 		var obj = Instantiate(m_PrefabScoreManager);
 		obj.Spawn();
-
-		m_Root.Q<TextElement>("Team1Score").text = ScoreManager.Instance.ScoreTeam1.Value.ToString();
-		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
-		m_Root.Q<TextElement>("Team2Score").text = ScoreManager.Instance.ScoreTeam2.Value.ToString();
-		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
-
-		m_RoundManager.BindScore();
 		
 		foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
 		{
@@ -117,6 +105,19 @@ public class DeathMatchManager : GameManager
 		}
 
 		base.SceneManager_OnLoadEventCompleted(pSceneName, pLoadMode, pClientsCompleted, pClientTimouts);
+
+		SetupScore_ClientRpc();
+	}
+
+	[ClientRpc]
+	public void SetupScore_ClientRpc()
+	{
+		m_RoundManager.BindScore();
+
+		m_Root.Q<TextElement>("Team1Score").text = ScoreManager.Instance.ScoreTeam1.Value.ToString();
+		m_RoundManager.OnScoreTeam1Changed += value => { m_Root.Q<TextElement>("Team1Score").text = value.ToString(); };
+		m_Root.Q<TextElement>("Team2Score").text = ScoreManager.Instance.ScoreTeam2.Value.ToString();
+		m_RoundManager.OnScoreTeam2Changed += value => { m_Root.Q<TextElement>("Team2Score").text = value.ToString(); };
 	}
 
     private IEnumerator DelayedSwitchWeapon(Transform player, int weaponId)
