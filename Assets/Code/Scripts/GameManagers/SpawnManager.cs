@@ -25,6 +25,13 @@ namespace GameManagers
 
 		public Action<ulong> OnPlayerRespawn;
 
+		private void Awake()
+		{
+			SearchSpawns();
+		}
+
+		public abstract void SearchSpawns();
+		
 		public Transform Server_SpawnPlayer(ulong pClientId)
 		{
 			if (!NetworkManager.IsServer)
