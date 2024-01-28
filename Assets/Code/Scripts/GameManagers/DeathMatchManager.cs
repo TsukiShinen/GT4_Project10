@@ -80,6 +80,7 @@ public class DeathMatchManager : GameManager
 
 	private void Server_OnEndMatch(object sender, RoundManager.RoundEventArgs e)
 	{
+		Server_RespawnPlayers();
 		Server_DisablePlayerMovementScripts();
 		EndGame_ClientRpc(e.IsTeamOneWin);
 	}
@@ -139,14 +140,18 @@ public class DeathMatchManager : GameManager
 	}
 
 	private void SetVictoryScreen(bool pIsTeamOneWin)
-	{/* TODO : Player Victory screen
+	{
 		var playerData =
 			MultiplayerManager.Instance.GetPlayerDataByIndex(
 				MultiplayerManager.Instance.FindPlayerDataIndex(NetworkManager.Singleton.LocalClientId));
 		var victory = (playerData.IsTeamOne && pIsTeamOneWin) || (!playerData.IsTeamOne && !pIsTeamOneWin);
 
-		m_Root.Q<TextElement>("Victory").style.display = DisplayStyle.Flex;
-		m_Root.Q<TextElement>("Victory").text = victory ? "Victory" : "Lose";
-		m_Root.Q<TextElement>("Victory").style.color = victory ? Color.green : Color.red;*/
+		m_WinScreen.rootVisualElement.Q<TextElement>("Win").style.display = victory ? DisplayStyle.Flex : DisplayStyle.None;
+		m_WinScreen.rootVisualElement.Q<TextElement>("Lose").style.display = victory ? DisplayStyle.None : DisplayStyle.Flex;
+		m_WinScreen.rootVisualElement.style.display = DisplayStyle.Flex;
+		
+		
+		UnityEngine.Cursor.lockState = CursorLockMode.None;
+		UnityEngine.Cursor.visible = true;
 	}
 }

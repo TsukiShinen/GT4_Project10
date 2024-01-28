@@ -18,6 +18,7 @@ public enum GameState
 public abstract class GameManager : NetworkBehaviour
 {
 	[SerializeField] protected UIDocument m_Document;
+	[SerializeField] protected UIDocument m_WinScreen;
 	[SerializeField] protected SpawnManager m_SpawnManager;
 	protected Dictionary<ulong, Transform> m_PlayersGameObjects = new();
 
@@ -42,7 +43,18 @@ public abstract class GameManager : NetworkBehaviour
 		Instance = this;
 
 		m_Root = m_Document.rootVisualElement;
-
+		m_WinScreen.rootVisualElement.style.display = DisplayStyle.None;
+		m_WinScreen.rootVisualElement.Q<Button>("ToMenu").clicked += () =>
+		{
+			NetworkManager.Singleton.Shutdown();
+			Destroy(NetworkManager.Singleton.gameObject);
+			SceneManager.LoadScene("Base", LoadSceneMode.Single);
+		};
+		
+		
+		UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+		UnityEngine.Cursor.visible = false;
+		
 		MultiplayerManager.Instance.GetPlayerDatas().OnListChanged += OnPlayerDataNetworkListChanged;
 	}
 

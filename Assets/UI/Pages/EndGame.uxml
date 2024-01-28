@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.59);">
+        <ui:Label text="Win" name="Win" style="font-size: 100px; -unity-font-style: bold; -unity-text-align: middle-center; color: rgb(0, 255, 0); display: flex;" />
+        <ui:Label text="Lose" name="Lose" style="font-size: 100px; -unity-font-style: bold; -unity-text-align: middle-center; color: rgb(255, 0, 0); display: none;" />
+        <ui:Button text="Menu" name="ToMenu" style="font-size: 30px; padding-top: 10px; padding-right: 32px; padding-bottom: 10px; padding-left: 32px; margin-top: 32px;" />
+    </ui:VisualElement>
+</ui:UXML>
