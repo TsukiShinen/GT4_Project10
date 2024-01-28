@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,13 +13,14 @@ namespace GameManagers
         
         private void Awake()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            
-            Instance = this;
+	        if (Instance)
+	        {
+		        Destroy(gameObject);
+		        return;
+	        }
+
+	        Instance = this;
+	        DontDestroyOnLoad(gameObject);
             
             ScoreTeam1 = new NetworkVariable<int>();
             ScoreTeam2 = new NetworkVariable<int>();

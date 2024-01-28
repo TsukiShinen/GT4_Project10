@@ -23,10 +23,11 @@ namespace GameManagers
 
 		private int m_MaxRounds => m_ScoreToWin * 2 - 1;
 
-		private void Start()
+
+		public void BindScore()
 		{
-			MultiplayerManager.Instance.ScoreTeam1.OnValueChanged += (value, newValue) => { OnScoreTeam1Changed?.Invoke(newValue); };
-			MultiplayerManager.Instance.ScoreTeam2.OnValueChanged += (value, newValue) => { OnScoreTeam2Changed?.Invoke(newValue); };
+			ScoreManager.Instance.ScoreTeam1.OnValueChanged += (value, newValue) => { OnScoreTeam1Changed?.Invoke(newValue); };
+			ScoreManager.Instance.ScoreTeam2.OnValueChanged += (value, newValue) => { OnScoreTeam2Changed?.Invoke(newValue); };
 		}
 
 		public void Server_EndRound(bool pIsTeamOneWin)
@@ -34,12 +35,12 @@ namespace GameManagers
 			if (!NetworkManager.IsServer)
 				return;
 
-			MultiplayerManager.Instance.ScoreTeam1.Value += pIsTeamOneWin ? 1 : 0;
-			MultiplayerManager.Instance.ScoreTeam2.Value += pIsTeamOneWin ? 0 : 1;
+			ScoreManager.Instance.ScoreTeam1.Value += pIsTeamOneWin ? 1 : 0;
+			ScoreManager.Instance.ScoreTeam2.Value += pIsTeamOneWin ? 0 : 1;
 
 			OnRoundEnded?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
 
-			if (MultiplayerManager.Instance.ScoreTeam1.Value == m_ScoreToWin || MultiplayerManager.Instance.ScoreTeam2.Value == m_ScoreToWin)
+			if (ScoreManager.Instance.ScoreTeam1.Value == m_ScoreToWin || ScoreManager.Instance.ScoreTeam2.Value == m_ScoreToWin)
 				OnEndMatch?.Invoke(this, new RoundEventArgs { IsTeamOneWin = pIsTeamOneWin });
 			else
 				StartCoroutine(StartNextRound());
@@ -65,6 +66,5 @@ namespace GameManagers
 	
 			NetworkManager.Singleton.SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
         }
-
-    }
+	}
 }

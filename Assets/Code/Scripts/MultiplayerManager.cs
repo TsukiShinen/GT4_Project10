@@ -20,8 +20,6 @@ public class MultiplayerManager : NetworkBehaviour
 
 	private NetworkList<PlayerData> m_PlayerDataNetworkList;
 	private string m_PlayerName;
-	public NetworkVariable<int> ScoreTeam1;
-	public NetworkVariable<int> ScoreTeam2;
 
 	public string PlayerName
 	{
@@ -46,9 +44,6 @@ public class MultiplayerManager : NetworkBehaviour
 		m_PlayerName = PlayerPrefs.GetString(k_PlayerPref_PlayerName, "Client" + Random.Range(100, 1000));
 		m_PlayerDataNetworkList = new NetworkList<PlayerData>();
 		m_PlayerDataNetworkList.OnListChanged += PlayerDataNetwork_OnListChanged;
-            
-		ScoreTeam1 = new NetworkVariable<int>();
-		ScoreTeam2 = new NetworkVariable<int>();
 	}
 
 	private void Start()

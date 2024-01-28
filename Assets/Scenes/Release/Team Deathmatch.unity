@@ -1662,6 +1662,8 @@ MonoBehaviour:
   m_ScoreElement: {fileID: 9197481963319205126, guid: c30759e76ec7f9941ad3f22a80357443,
     type: 3}
   m_RoundManager: {fileID: 699133957}
+  m_PrefabScoreManager: {fileID: 3078351934646148705, guid: 2a811ea8a90a4414b82d6cdff556384e,
+    type: 3}
 --- !u!114 &699133955
 MonoBehaviour:
   m_ObjectHideFlags: 0
