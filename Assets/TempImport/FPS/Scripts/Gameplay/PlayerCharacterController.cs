@@ -452,7 +452,7 @@ namespace Unity.FPS.Gameplay
             {
                 m_CapsuleCollider.height = m_TargetCharacterHeight;
                 m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;
-                PlayerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * CameraHeightRatio;
+                PlayerCameraTransform.localPosition = Vector3.up * m_TargetCharacterHeight * CameraHeightRatio;
                 m_Actor.AimPoint.transform.localPosition = m_CapsuleCollider.center;
             }
             // Update smooth height
@@ -462,7 +462,7 @@ namespace Unity.FPS.Gameplay
                 // resize the capsule and adjust camera position
                 m_CapsuleCollider.height = Mathf.Lerp(m_CapsuleCollider.height, m_TargetCharacterHeight, CrouchingSharpness * Time.deltaTime);
                 m_CapsuleCollider.center = Vector3.up * m_CapsuleCollider.height * 0.5f;
-                PlayerCamera.transform.localPosition = Vector3.Lerp(PlayerCamera.transform.localPosition,
+                PlayerCameraTransform.localPosition = Vector3.Lerp(PlayerCamera.transform.localPosition,
                     Vector3.up * m_TargetCharacterHeight * CameraHeightRatio, CrouchingSharpness * Time.deltaTime);
                 m_Actor.AimPoint.transform.localPosition = m_CapsuleCollider.center;
             }
@@ -516,5 +516,13 @@ namespace Unity.FPS.Gameplay
             return true;
         }
 
+
+        [ClientRpc]
+        public void RespawnPlayerClientRpc(Vector3 position, Quaternion direction)
+        {
+            transform.position = position;
+            transform.rotation = direction;
+            m_Rigidbody.velocity = Vector3.zero;
+        }
     }
 }

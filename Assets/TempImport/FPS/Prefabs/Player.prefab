@@ -953,6 +953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 8303093099919959869}
+  PlayerCameraTransform: {fileID: 0}
   WeaponParentSocket: {fileID: 3361326784658045617}
   AudioSource: {fileID: 1272397862697293493}
   GravityDownForce: 20

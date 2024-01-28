@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ namespace GameManagers
 
 			// Reset position Player TODO : Not from PlayerHealth
 			var (position, rotation) = GetSpawnPoint(pPlayerData);
-			pPlayerGameObject.GetComponent<PlayerHealth>().RespawnPlayerClientRpc(position, rotation);
+			pPlayerGameObject.GetComponent<PlayerCharacterController>().RespawnPlayerClientRpc(position, rotation);
 
 			OnPlayerRespawn?.Invoke(pClientId);
 		}

@@ -12,11 +12,4 @@ public class PlayerHealth : NetworkBehaviour
 	{
 		GameManager.Instance.Server_PlayerHit(pDamage, transform, pOwnerId);
 	}
-
-	[ClientRpc]
-	public void RespawnPlayerClientRpc(Vector3 position, Quaternion direction)
-	{
-		transform.position = position;
-		transform.rotation = direction;
-	}
 }
